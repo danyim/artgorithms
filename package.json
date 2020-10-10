@@ -8,8 +8,12 @@
     "start": "next start"
   },
   "dependencies": {
-    "next": "9.5.5",
+    "next": "latest",
     "react": "16.13.1",
-    "react-dom": "16.13.1"
+    "react-dom": "16.13.1",
+    "styled-components": "^5.2.0"
+  },
+  "devDependencies": {
+    "babel-plugin-styled-components": "^1.8.0"
   }
 }
