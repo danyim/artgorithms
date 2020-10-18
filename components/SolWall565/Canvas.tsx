@@ -4,12 +4,15 @@ import ReactDOM from "react-dom";
 interface Props {
   width: number;
   height: number;
-  lines: number;
-  area: number;
-  style: object;
+  lines?: number;
+  area?: number;
+  style?: object;
 }
 
 class Canvas extends React.Component<Props> {
+  canvas: HTMLCanvasElement;
+  ctx: CanvasRenderingContext2D;
+
   static defaultProps = {
     width: 500,
     height: 400,
@@ -229,7 +232,7 @@ class Canvas extends React.Component<Props> {
 
     const removeDupes = (arr) => {
       const set = new Set(arr.map((v) => `${v.x},${v.y}`));
-      return Array.from(set.values()).map((v) => ({
+      return Array.from(set.values()).map((v: string) => ({
         x: v.split(",")[0],
         y: v.split(",")[1],
       }));

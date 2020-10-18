@@ -1,27 +1,17 @@
 import React from "react";
 
 interface Props {
-  lines: number;
-  lineWidth: number;
-  rotation: number;
-  sections: number;
-  space: number;
-  area: number;
-  color: number;
-  handleChange: () => {};
+  lines?: number;
+  lineWidth?: number;
+  rotation?: number;
+  sections?: number;
+  space?: number;
+  area?: number;
+  color?: number;
+  handleChange: (string, number) => {};
 }
 
 class CanvasControls extends React.Component<Props> {
-  static defaultProps = {
-    lines: null,
-    linewidth: null,
-    rotation: null,
-    sections: null,
-    space: null,
-    area: null,
-    color: null,
-  };
-
   constructor(props) {
     super(props);
 
@@ -29,11 +19,11 @@ class CanvasControls extends React.Component<Props> {
     this.renderControl = this.renderControl.bind(this);
   }
 
-  onInput(e, prop) {
+  onInput(e, prop: string) {
     this.props.handleChange(prop, parseInt(e.target.value, 10));
   }
 
-  renderControl(key, label, min = 0, max = 100, step = 5) {
+  renderControl(key: string, label: string, min = 0, max = 100, step = 5) {
     return (
       <p>
         <label htmlFor={key}>

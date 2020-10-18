@@ -17,7 +17,7 @@ export const Home = () => {
         <p>mixing algorithms and art, building off the shoulders of giants</p>
         <SolWall1A />
         <Farben />
-        <SolWall565 />
+        <SolWall565 width={500} height={500} />
       </main>
     </div>
   );

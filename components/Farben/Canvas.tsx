@@ -6,10 +6,14 @@ interface Props {
   height: number;
   lines: number;
   area: number;
+  space: number;
   style: object;
 }
 
 class Canvas extends React.Component<Props> {
+  canvas: HTMLCanvasElement;
+  ctx: CanvasRenderingContext2D;
+
   static defaultProps = {
     width: 500,
     height: 400,

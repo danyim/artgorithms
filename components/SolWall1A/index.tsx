@@ -2,12 +2,13 @@ import React from "react";
 import Canvas from "./Canvas";
 import CanvasControls from "../CanvasControls";
 
-interface Props {
-  width: number;
-  height: number;
+interface Props {}
+
+interface State {
+  space: number;
 }
 
-class CanvasContainer extends React.Component<Props> {
+class CanvasContainer extends React.Component<Props, State> {
   static defaultProps = {};
 
   constructor(props) {
@@ -34,14 +35,12 @@ class CanvasContainer extends React.Component<Props> {
   }
 
   render() {
+    const { space } = this.state;
+
     return (
       <div className="mdl-grid">
         <div className="mdl-cell mdl-cell--8-col">
-          <Canvas
-            width={this.props.width}
-            height={this.props.height}
-            {...this.state}
-          />
+          <Canvas width={500} height={500} space={space} />
         </div>
         <div className="mdl-cell mdl-cell--4-col">
           <h4>Wall Drawing 1: Drawing Series II 18 A (1968)</h4>

@@ -2,14 +2,18 @@ import React from "react";
 import ReactDOM from "react-dom";
 
 interface Props {
-  width: number;
-  height: number;
-  lines: number;
-  lineWidth: number;
-  style: object;
+  width?: number;
+  height?: number;
+  lines?: number;
+  space: number;
+  lineWidth?: number;
+  style?: object;
 }
 
 class Canvas extends React.Component<Props> {
+  canvas: HTMLCanvasElement;
+  ctx: CanvasRenderingContext2D;
+
   static defaultProps = {
     width: 500,
     height: 400,
@@ -79,39 +83,6 @@ class Canvas extends React.Component<Props> {
   }
 
   draw() {
-    const w = this.canvas.width;
-    const h = this.canvas.height;
-
-    const randPt = () => {
-      return { x: Math.random() * w, y: Math.random() * h };
-    };
-
-    const randPtInBounds = (bounds) => {
-      let r;
-      while (true) {
-        r = randPt();
-        if (!this.constructor.pointInRectangle(r, bounds)) return r;
-      }
-      // return { x: Math.random() * w, y: Math.random() * h };
-    };
-
-    const randColor = (noAlpha = false) => {
-      const r = () => Math.floor(Math.random() * 255);
-      return `rgba(${r()}, ${r()}, ${r()}, ${
-        noAlpha ? 1.0 : parseFloat(Math.random().toFixed(2))
-      })`;
-    };
-    const randGrey = (noAlpha = false) => {
-      const r = 255 - (Math.floor(Math.random() * 255) + 35);
-      return `rgba(${r}, ${r}, ${r}, ${
-        noAlpha ? 1.0 : parseFloat(Math.random().toFixed(2))
-      })`;
-    };
-
-    // for (let k = 0; k < this.props.lines; k++) {
-    //   this.addLine(randPt(), randPt(), randColor(), 2);
-    // }
-
     // Draws a diagonal
     const xToYAxis = (canvasWidth, canvasHeight) => {
       const spacer = 10;
@@ -152,7 +123,14 @@ class Canvas extends React.Component<Props> {
     // xToYAxis(w, h);
   }
 
-  drawSol(x, y, spacer = 10, size = 120, lineWidth = null, color = "black") {
+  drawSol(
+    x: number,
+    y: number,
+    spacer: number = 10,
+    size: number = 120,
+    lineWidth: number = null,
+    color: string = "black"
+  ) {
     // This is the ratio of the horiz/vert sections vs diagonal
     const hRatio = 0.7;
     const vRatio = 0.7;
@@ -216,7 +194,14 @@ class Canvas extends React.Component<Props> {
    * @return {RectangleBounds}           Returns points A, B, C, D that were created
    * for the rectangle
    */
-  drawLineRect(x, y, w, h, c, lineWidth) {
+  drawLineRect(
+    x: number,
+    y: number,
+    w: number,
+    h: number,
+    c: string,
+    lineWidth: number
+  ) {
     this.ctx.save();
     this.ctx.translate(x, y);
     this.addLine({ x: 0, y: 0 }, { x: w, y: 0 }, c, lineWidth); // Top
@@ -232,7 +217,16 @@ class Canvas extends React.Component<Props> {
     };
   }
 
-  drawLineRectWithFill(x, y, w, h, c, lineWidth, spacer, fillFunctions = []) {
+  drawLineRectWithFill(
+    x: number,
+    y: number,
+    w: number,
+    h: number,
+    c: string,
+    lineWidth: number,
+    spacer: number,
+    fillFunctions = []
+  ) {
     this.ctx.save();
     this.ctx.translate(x, y);
     this.addLine({ x: 0, y: 0 }, { x: w, y: 0 }, c, 2); // Top

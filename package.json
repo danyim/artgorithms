@@ -3,9 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "next dev",
     "build": "next build",
-    "serve": "next start"
+    "serve": "next start",
+    "start": "next dev",
+    "tsc:watch": "npm run tsc -- --watch",
+    "tsc": "tsc --noEmit"
   },
   "dependencies": {
     "next": "latest",
