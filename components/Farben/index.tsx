@@ -1,6 +1,7 @@
 import React from "react";
 import Canvas from "./Canvas";
 import CanvasControls from "../CanvasControls";
+import { Placard } from "../Placard";
 
 interface Props {
   width: number;
@@ -21,12 +22,7 @@ class Farben extends React.Component<Props> {
     // Comment out the controllers you wish to hide here and the UI will update
     // accordingly
     this.state = {
-      // lines: 1,
-      // rotation: 0,
-      // sections: 4,
-      space: 10,
-      // area: 2500
-      color: 10,
+      space: 5,
     };
   }
 
@@ -47,17 +43,24 @@ class Farben extends React.Component<Props> {
             {...this.state}
           />
         </div>
-        <div className="mdl-cell mdl-cell--4-col" />
         <div className="mdl-cell mdl-cell--4-col">
-          <h4>256 Farben (1974/1984)</h4>
-          <p>by Gerhard Richter</p>
-          <p>
-            <a href="https://www.sfmoma.org/artwork/FC.643">SF MOMA</a>
-          </p>
+          <Placard
+            title="256 Farben (1974/1984)"
+            artistName="Gerhard Richter"
+            description={() => (
+              <>
+                <small>
+                  <a href="https://www.sfmoma.org/artwork/FC.643">SF MOMA</a>
+                </small>
 
-          <CanvasControls {...this.state} handleChange={this.handleChange} />
+                <CanvasControls
+                  {...this.state}
+                  handleChange={this.handleChange}
+                />
+              </>
+            )}
+          />
         </div>
-        <div className="mdl-cell mdl-cell--4-col" />
       </div>
     );
   }

@@ -49,7 +49,7 @@ class CanvasControls extends React.Component<Props> {
           ? this.renderControl("color", "Colors", 5, 100, 5)
           : null}
         {this.props.space
-          ? this.renderControl("space", "Spacing", 5, 100, 5)
+          ? this.renderControl("space", "Spacing", 5, 50, 5)
           : null}
         {this.props.lineWidth
           ? this.renderControl("lineWidth", "Line Width", 1, 10, 1)

@@ -20,31 +20,6 @@ class Canvas extends React.Component<Props> {
     style: {},
   };
 
-  static vector(a, b) {
-    return {
-      x: b.x - a.x,
-      y: b.y - a.y,
-    };
-  }
-
-  static dot(u, v) {
-    return u.x * v.x + u.y * v.y;
-  }
-
-  static pointInRectangle(m, r) {
-    const AB = this.vector(r.A, r.B);
-    const AM = this.vector(r.A, m);
-    const BC = this.vector(r.B, r.C);
-    const BM = this.vector(r.B, m);
-    const dotABAM = this.dot(AB, AM);
-    const dotABAB = this.dot(AB, AB);
-    const dotBCBM = this.dot(BC, BM);
-    const dotBCBC = this.dot(BC, BC);
-    return (
-      dotABAM >= 0 && dotABAM <= dotABAB && dotBCBM >= 0 && dotBCBM <= dotBCBC
-    );
-  }
-
   constructor(props) {
     super(props);
 
@@ -52,7 +27,6 @@ class Canvas extends React.Component<Props> {
     this.clearCanvas = this.clearCanvas.bind(this);
     this.draw = this.draw.bind(this);
     this.drawSol = this.drawSol.bind(this);
-    this.drawLineRect = this.drawLineRect.bind(this);
     this.drawLinesOnMajorDiagonal = this.drawLinesOnMajorDiagonal.bind(this);
     this.drawLinesOnMinorDiagonal = this.drawLinesOnMinorDiagonal.bind(this);
   }
@@ -83,44 +57,7 @@ class Canvas extends React.Component<Props> {
   }
 
   draw() {
-    // Draws a diagonal
-    const xToYAxis = (canvasWidth, canvasHeight) => {
-      const spacer = 10;
-      let linesDrawn = 0;
-      for (
-        let k = 0;
-        k <= canvasHeight && k <= canvasWidth && linesDrawn < this.props.lines;
-        k += spacer
-      ) {
-        this.addLine({ x: k, y: 0 }, { x: 0, y: k }, null, 2);
-        linesDrawn += 1;
-      }
-      for (
-        let k = spacer;
-        k <= canvasHeight && k <= canvasWidth && linesDrawn < this.props.lines;
-        k += spacer
-      ) {
-        this.addLine(
-          { x: k, y: canvasHeight },
-          { x: canvasHeight, y: k },
-          null,
-          2
-        );
-        linesDrawn += 1;
-      }
-    };
-
-    // Draw a bound
-    // this.ctx.fillStyle = 'green';
-    // this.ctx.fillRect(10, 10, 100, 100);
-    // const rect = this.drawLineRect(50, 50, 100, 100);
-    // console.log('false?', this.constructor.pointInRectangle({ x: 0, y: 0 }, rect));
-    // console.log('true?', this.constructor.pointInRectangle({ x: 75, y: 75 }, rect));
-
     this.drawSol(0, 0, this.props.space, 120, this.props.lineWidth);
-
-    // Try to fill that bound with lines
-    // xToYAxis(w, h);
   }
 
   drawSol(
@@ -181,40 +118,6 @@ class Canvas extends React.Component<Props> {
       );
     }
     this.ctx.restore();
-  }
-
-  /**
-   * Draws a bordered rectangle
-   * @param  {Number} x         x coord for top left point
-   * @param  {Number} y         y coord for top left point
-   * @param  {Number} w         Width of the rectangle
-   * @param  {Number} h         Height
-   * @param  {String} c         Color
-   * @param  {Number} lineWidth 1-n line width
-   * @return {RectangleBounds}           Returns points A, B, C, D that were created
-   * for the rectangle
-   */
-  drawLineRect(
-    x: number,
-    y: number,
-    w: number,
-    h: number,
-    c: string,
-    lineWidth: number
-  ) {
-    this.ctx.save();
-    this.ctx.translate(x, y);
-    this.addLine({ x: 0, y: 0 }, { x: w, y: 0 }, c, lineWidth); // Top
-    this.addLine({ x: 0, y: 0 }, { x: 0, y: h }, c, lineWidth); // Left
-    this.addLine({ x: w, y: 0 }, { x: w, y: h }, c, lineWidth); // Right
-    this.addLine({ x: 0, y: h }, { x: w, y: h }, c, lineWidth); // Bottom
-    this.ctx.restore();
-    return {
-      A: { x, y },
-      B: { x: x + w, y },
-      C: { x: x + w, y: y + h },
-      D: { x, y: y + h },
-    };
   }
 
   drawLineRectWithFill(
