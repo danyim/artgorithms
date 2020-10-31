@@ -1,3 +1,4 @@
+import debug from "debug";
 import {
   Bounds,
   Point,
@@ -97,7 +98,7 @@ export const generateRandomPointsOnBounds = (
       getRangeQuartile(lastRangePoint, totalLength) !==
       getRangeQuartile(nextRangePoint, totalLength)
     ) {
-      console.log("ADD CORNER: Between", lastRangePoint, "and", nextRangePoint);
+      debug("util")("CORNER: Between", lastRangePoint, "and", nextRangePoint);
       // Given that we know that the two quartiles of the pairs are different, idenitfy which corner
       // need to add and push the appropriate range value to the list
       const cornerRangeValue = getPreviousQuartileRangeValue(
@@ -108,11 +109,11 @@ export const generateRandomPointsOnBounds = (
     }
     randRangePoints.push(nextRangePoint);
     lastRangePoint = nextRangePoint;
-    console.log("pair:", randRangePoints.slice(randRangePoints.length - 3));
+    debug("util")("pair:", randRangePoints.slice(randRangePoints.length - 3));
   }
 
-  console.log(randRangePoints, "out of", totalLength);
-  console.log("maxPairDistance", maxPairDistance);
+  debug("util")(randRangePoints, "out of", totalLength);
+  debug("util")("maxPairDistance", maxPairDistance);
 
   // Translated points in the coordinate system
   const points: Point[] = [];

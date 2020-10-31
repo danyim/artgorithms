@@ -1,4 +1,5 @@
 import React from "react";
+import debug from "debug";
 import {
   centroid,
   closestDistToPoint,
@@ -42,7 +43,8 @@ export const Canvas = ({ width, height, space }: Props) => {
     const wrappedRowPoints = createWrappedRow({
       numItems: numSquares,
       numPerLine: 8,
-      itemWidth: squareSize,
+      width: squareSize,
+      height: squareSize,
       padding: padding,
       offsetX: 0,
       offsetY: 0,
@@ -76,7 +78,7 @@ export const Canvas = ({ width, height, space }: Props) => {
       // Chose 6 random points along the edges of the outer box
       const boundaryPoints = generateRandomPointsOnBounds(ctx, squareBounds, 6);
 
-      console.log("boundaryPoints", boundaryPoints);
+      debug("util")("boundaryPoints", boundaryPoints);
 
       /** Method 1: Find boundary points until all inner points are taken */
       while (innerSquarePoints.length > 0) {
@@ -93,7 +95,7 @@ export const Canvas = ({ width, height, space }: Props) => {
         ) {
           pushIfTruthy(polygonVertices, boundaryPoints.shift());
         }
-        console.log("polygonVertices", polygonVertices);
+        debug("util")("polygonVertices", polygonVertices);
 
         // Create the centroid
         const centerPoint = centroid(polygonVertices);

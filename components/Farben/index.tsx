@@ -1,14 +1,15 @@
 import React from "react";
 import Canvas from "./Canvas";
-import CanvasControls from "../CanvasControls";
 import { Placard } from "../Placard";
+import CanvasInputs from "../CanvasInputs";
+import Slider from "../Slider";
 
 interface Props {
   width?: number;
   height?: number;
 }
 
-export const Farben = ({ width = 500, height = 400 }: Props) => {
+export const Farben = ({ width = 1000, height = 450 }: Props) => {
   const [space, setSpace] = React.useState(5);
 
   const handleChange = (key: string, val: number) => {
@@ -30,7 +31,15 @@ export const Farben = ({ width = 500, height = 400 }: Props) => {
                 <a href="https://www.sfmoma.org/artwork/FC.643">SF MOMA</a>
               </small>
 
-              <CanvasControls space={space} handleChange={handleChange} />
+              <CanvasInputs>
+                <Slider
+                  keyName="space"
+                  label="Spacing"
+                  minStepMax={[5, 5, 50]}
+                  value={space}
+                  handleChange={handleChange}
+                />
+              </CanvasInputs>
             </>
           )}
         />

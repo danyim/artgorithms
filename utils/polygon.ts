@@ -74,14 +74,16 @@ export function pushIfTruthy<A>(arr: A[], value: A) {
 export const createWrappedRow = ({
   numItems,
   numPerLine,
-  itemWidth,
+  width,
+  height,
   padding,
   offsetX,
   offsetY,
 }: {
   numItems: number;
   numPerLine: number;
-  itemWidth: number;
+  width: number;
+  height: number;
   padding: number;
   offsetX: number;
   offsetY: number;
@@ -89,23 +91,23 @@ export const createWrappedRow = ({
   // TODO: First position does _not_ start at 0,0 or offsetX,offsetY
 
   const positions: Point[] = [];
-  let x = Math.max(offsetX - (itemWidth + padding), 0);
-  let y = Math.max(offsetY - (itemWidth + padding), 0);
+  let x = Math.max(offsetX - (width + padding), 0);
+  let y = Math.max(offsetY - (width + padding), 0);
   let itemsPlaced = 0;
   for (let row = 0; row <= Math.ceil(numItems / numPerLine); row++) {
     for (let col = 0; col < numPerLine; col++) {
       if (itemsPlaced >= numItems) {
         break;
       }
-      x += itemWidth + padding;
+      x += width + padding;
       itemsPlaced++;
       positions.push({
         x,
         y,
       });
     }
-    x = Math.max(offsetX - (itemWidth + padding), 0);
-    y += itemWidth + padding;
+    x = Math.max(offsetX - (width + padding), 0);
+    y += height + padding;
   }
 
   return positions;

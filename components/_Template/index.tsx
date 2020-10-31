@@ -1,7 +1,8 @@
 import React from "react";
 import Canvas from "./Canvas";
-import CanvasControls from "../CanvasControls";
 import { Placard } from "../Placard";
+import CanvasInputs from "../CanvasInputs";
+import Slider from "../Slider";
 
 interface Props {}
 
@@ -30,7 +31,15 @@ export const SolCubeFormsCanvasContainer = () => {
                   IdeelArt
                 </a>
               </small>
-              <CanvasControls space={space} handleChange={handleChange} />
+              <CanvasInputs>
+                <Slider
+                  keyName="space"
+                  label="Spacing"
+                  minStepMax={[5, 5, 50]}
+                  value={space}
+                  handleChange={handleChange}
+                />
+              </CanvasInputs>
             </>
           )}
         />

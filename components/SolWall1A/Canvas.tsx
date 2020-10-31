@@ -1,73 +1,52 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import { Point } from "../../utils/polygon";
 
 interface Props {
-  width?: number;
-  height?: number;
-  lines?: number;
+  width: number;
+  height: number;
   space: number;
-  lineWidth?: number;
-  style?: object;
+  lineWidth: number;
 }
 
-class Canvas extends React.Component<Props> {
-  canvas: HTMLCanvasElement;
-  ctx: CanvasRenderingContext2D;
+export const Canvas = ({ width, height, space, lineWidth }: Props) => {
+  const canvasRef = React.useRef<HTMLCanvasElement>();
 
-  static defaultProps = {
-    width: 500,
-    height: 400,
-    style: {},
+  const addLine = (
+    ctx: CanvasRenderingContext2D,
+    start: Point,
+    end: Point,
+    color: string = "black",
+    width: number = 1
+  ) => {
+    if (color) ctx.strokeStyle = color;
+    ctx.lineWidth = lineWidth;
+    ctx.beginPath();
+    ctx.moveTo(start.x, start.y);
+    ctx.lineTo(end.x, end.y);
+    ctx.stroke();
   };
 
-  constructor(props) {
-    super(props);
+  const clearCanvas = (ctx: CanvasRenderingContext2D) => {
+    ctx.clearRect(0, 0, width, height);
+  };
 
-    this.addLine = this.addLine.bind(this);
-    this.clearCanvas = this.clearCanvas.bind(this);
-    this.draw = this.draw.bind(this);
-    this.drawSol = this.drawSol.bind(this);
-    this.drawLinesOnMajorDiagonal = this.drawLinesOnMajorDiagonal.bind(this);
-    this.drawLinesOnMinorDiagonal = this.drawLinesOnMinorDiagonal.bind(this);
-  }
+  const draw = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) {
+      console.error("Could not get ref");
+      return;
+    }
 
-  componentDidMount() {
-    this.canvas = ReactDOM.findDOMNode(this); // eslint-disable-line
-    this.ctx = this.canvas.getContext("2d");
+    const ctx = canvas.getContext("2d");
+    clearCanvas(ctx);
 
-    this.draw();
-  }
+    const x = 0;
+    const y = 0;
+    const padding = space;
+    const size = 120;
+    const lineWidth = null;
+    const color = "black";
 
-  componentWillUpdate() {
-    this.clearCanvas();
-    this.draw();
-  }
-
-  addLine(start, end, color = "black", width = 1) {
-    if (color) this.ctx.strokeStyle = color;
-    this.ctx.lineWidth = width;
-    this.ctx.beginPath();
-    this.ctx.moveTo(start.x, start.y);
-    this.ctx.lineTo(end.x, end.y);
-    this.ctx.stroke();
-  }
-
-  clearCanvas() {
-    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-  }
-
-  draw() {
-    this.drawSol(0, 0, this.props.space, 120, this.props.lineWidth);
-  }
-
-  drawSol(
-    x: number,
-    y: number,
-    spacer: number = 10,
-    size: number = 120,
-    lineWidth: number = null,
-    color: string = "black"
-  ) {
     // This is the ratio of the horiz/vert sections vs diagonal
     const hRatio = 0.7;
     const vRatio = 0.7;
@@ -90,23 +69,24 @@ class Canvas extends React.Component<Props> {
       [size * 3, size * 3],
     ];
 
-    this.ctx.save();
-    this.ctx.translate(x, y);
+    ctx.save();
+    ctx.translate(x, y);
     for (let k = 0; k < positions.length; k += 1) {
       let drawFns = [];
-      let space = spacer;
+      let space = padding;
       if (k === 0 || k === 3 || k === 12 || k === 15) {
-        drawFns = [this.drawLinesOnMinorDiagonal];
+        drawFns = [drawLinesOnMinorDiagonal];
       } else if (k === 1 || k === 2 || k === 13 || k === 14) {
-        drawFns = [this.drawLinesOnVertical];
+        drawFns = [drawLinesOnVertical];
         space *= vRatio;
       } else if (k === 4 || k === 7 || k === 8 || k === 11) {
-        drawFns = [this.drawLinesOnMajorDiagonal];
+        drawFns = [drawLinesOnMajorDiagonal];
       } else if (k === 5 || k === 6 || k === 9 || k === 10) {
-        drawFns = [this.drawLinesOnHorizontal];
+        drawFns = [drawLinesOnHorizontal];
         space *= hRatio;
       }
-      this.drawLineRectWithFill(
+      drawLineRectWithFill(
+        ctx,
         positions[k][0],
         positions[k][1],
         size,
@@ -117,73 +97,93 @@ class Canvas extends React.Component<Props> {
         drawFns
       );
     }
-    this.ctx.restore();
-  }
+    ctx.restore();
+  };
 
-  drawLineRectWithFill(
+  const drawLineRectWithFill = (
+    ctx: CanvasRenderingContext2D,
     x: number,
     y: number,
     w: number,
     h: number,
     c: string,
     lineWidth: number,
-    spacer: number,
+    padding: number,
     fillFunctions = []
-  ) {
-    this.ctx.save();
-    this.ctx.translate(x, y);
-    this.addLine({ x: 0, y: 0 }, { x: w, y: 0 }, c, 2); // Top
-    this.addLine({ x: 0, y: 0 }, { x: 0, y: h }, c, 2); // Left
-    this.addLine({ x: w, y: 0 }, { x: w, y: h }, c, 2); // Right
-    this.addLine({ x: 0, y: h }, { x: w, y: h }, c, 2); // Bottom
+  ) => {
+    ctx.save();
+    ctx.translate(x, y);
+    addLine(ctx, { x: 0, y: 0 }, { x: w, y: 0 }, c, 2); // Top
+    addLine(ctx, { x: 0, y: 0 }, { x: 0, y: h }, c, 2); // Left
+    addLine(ctx, { x: w, y: 0 }, { x: w, y: h }, c, 2); // Right
+    addLine(ctx, { x: 0, y: h }, { x: w, y: h }, c, 2); // Bottom
 
     for (let k = 0; k < fillFunctions.length; k++) {
-      fillFunctions[k].apply(this, [w, h, spacer, lineWidth]);
+      fillFunctions[k].apply(this, [ctx, w, h, padding, lineWidth]);
     }
 
-    this.ctx.restore();
-  }
+    ctx.restore();
+  };
 
-  drawLinesOnHorizontal(w, h, spacer = 10, lineWidth = null) {
-    for (let k = 0; k <= h && k <= w; k += spacer) {
-      this.addLine({ x: 0, y: k }, { x: w, y: k }, null, lineWidth);
+  const drawLinesOnHorizontal = (
+    ctx: CanvasRenderingContext2D,
+    w: number,
+    h: number,
+    padding: number = 10,
+    lineWidth: number = null
+  ) => {
+    for (let k = 0; k <= h && k <= w; k += padding) {
+      addLine(ctx, { x: 0, y: k }, { x: w, y: k }, null, lineWidth);
     }
-  }
+  };
 
-  drawLinesOnVertical(w, h, spacer = 10, lineWidth = null) {
-    for (let k = 0; k <= h && k <= w; k += spacer) {
-      this.addLine({ x: k, y: 0 }, { x: k, y: h }, null, lineWidth);
+  const drawLinesOnVertical = (
+    ctx: CanvasRenderingContext2D,
+    w: number,
+    h: number,
+    padding: number = 10,
+    lineWidth: number = null
+  ) => {
+    for (let k = 0; k <= h && k <= w; k += padding) {
+      addLine(ctx, { x: k, y: 0 }, { x: k, y: h }, null, lineWidth);
     }
-  }
+  };
 
-  drawLinesOnMajorDiagonal(w, h, spacer = 10, lineWidth = null) {
-    for (let k = 0; k <= h && k <= w; k += spacer) {
-      this.addLine({ x: k, y: 0 }, { x: w, y: h - k }, null, lineWidth);
+  const drawLinesOnMajorDiagonal = (
+    ctx: CanvasRenderingContext2D,
+    w: number,
+    h: number,
+    padding: number = 10,
+    lineWidth: number = null
+  ) => {
+    for (let k = 0; k <= h && k <= w; k += padding) {
+      addLine(ctx, { x: k, y: 0 }, { x: w, y: h - k }, null, lineWidth);
     }
-    for (let k = spacer; k <= h && k <= w; k += spacer) {
-      this.addLine({ x: 0, y: k }, { x: w - k, y: h }, null, lineWidth);
+    for (let k = padding; k <= h && k <= w; k += padding) {
+      addLine(ctx, { x: 0, y: k }, { x: w - k, y: h }, null, lineWidth);
     }
-  }
+  };
 
-  drawLinesOnMinorDiagonal(w, h, spacer = 10, lineWidth = null) {
-    for (let k = 0; k <= h && k <= w; k += spacer) {
-      this.addLine({ x: k, y: 0 }, { x: 0, y: k }, null, lineWidth);
+  const drawLinesOnMinorDiagonal = (
+    ctx: CanvasRenderingContext2D,
+    w: number,
+    h: number,
+    padding: number = 10,
+    lineWidth: number = null
+  ) => {
+    for (let k = 0; k <= h && k <= w; k += padding) {
+      addLine(ctx, { x: k, y: 0 }, { x: 0, y: k }, null, lineWidth);
     }
-    for (let k = spacer; k <= h && k <= w; k += spacer) {
-      this.addLine({ x: k, y: h }, { x: h, y: k }, null, lineWidth);
+    for (let k = padding; k <= h && k <= w; k += padding) {
+      addLine(ctx, { x: k, y: h }, { x: h, y: k }, null, lineWidth);
     }
-  }
+  };
 
-  render() {
-    return (
-      <canvas
-        id="mainCanvas"
-        width={this.props.width}
-        height={this.props.height}
-        style={this.props.style}
-      />
-    );
-  }
-}
+  React.useEffect(() => {
+    draw();
+  }, [space, lineWidth, width, height]);
+
+  return <canvas ref={canvasRef} width={width} height={height} />;
+};
 
 export default Canvas;
