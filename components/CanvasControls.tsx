@@ -8,7 +8,7 @@ interface Props {
   space?: number;
   area?: number;
   color?: number;
-  handleChange: (string, number) => {};
+  handleChange: (key: string, val: number) => void;
 }
 
 class CanvasControls extends React.Component<Props> {

@@ -7,8 +7,6 @@ import {
   pushIfTruthy,
 } from "../../utils/polygon";
 import {
-  createQuadrants,
-  createPoly,
   createSquareBounds,
   createInnerSquareBounds,
   generateRandomPointsInsideBounds,
@@ -64,7 +62,8 @@ export const Canvas = ({ width, height, space }: Props) => {
 
       ctx.strokeStyle = "black";
       ctx.lineWidth = 1;
-      ctx.strokeRect(...container);
+      let [x, y, w, h] = container;
+      ctx.strokeRect(x, y, w, h);
 
       // Create the inner square bounds
       const innerSquareBounds = createInnerSquareBounds(ctx, squareBounds);
