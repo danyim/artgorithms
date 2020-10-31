@@ -1,13 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { randomHueColor } from "../../utils/color";
 
 interface Props {
   width: number;
   height: number;
-  lines: number;
-  area: number;
   space: number;
-  style: object;
 }
 
 class Canvas extends React.Component<Props> {
@@ -17,36 +15,9 @@ class Canvas extends React.Component<Props> {
   static defaultProps = {
     width: 500,
     height: 400,
-    style: {},
   };
 
-  static randomHexColor = () => {
-    const hex = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "A", "B", "C", "D", "E", "F"];
-    let result = "#";
-    for (let k = 0; k < 6; k += 1) {
-      result += hex[Math.floor(Math.random() * hex.length)];
-    }
-
-    return result;
-  };
-
-  static randomHueColor = (
-    saturation = { max: 100, min: 0 },
-    luminosity = { max: 100, min: 0 }
-  ) => {
-    const hue = Math.floor(Math.random() * 360);
-    const sat =
-      Math.floor(Math.random() * (saturation.max - saturation.min)) +
-      saturation.min;
-    const lum =
-      Math.floor(Math.random() * (luminosity.max - luminosity.min)) +
-      luminosity.min;
-
-    //console.log(`hsl(${hue}, ${sat}%, ${lum}%)`)
-    return `hsl(${hue}, ${sat}%, ${lum}%)`;
-  };
-
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
 
     this.clearCanvas = this.clearCanvas.bind(this);
@@ -83,7 +54,7 @@ class Canvas extends React.Component<Props> {
     // Draws it out with the given width (not working. draws more than necessary)
     /* for (let k = voffset; k <= h; k += height + vspace) {
       for (let n = hoffset; n <= w; n += width + hspace) {
-        this.fillRect(n, k, width, height, 0, null, Canvas.randomHexColor())
+        this.fillRect(n, k, width, height, 0, null, randomHexColor())
       }
     } */
     for (let k = 0; k < 16; k += 1) {
@@ -95,13 +66,21 @@ class Canvas extends React.Component<Props> {
           height,
           0,
           null,
-          Canvas.randomHueColor({ max: 75, min: 15 }, { max: 75, min: 15 })
+          randomHueColor({ max: 75, min: 15 }, { max: 75, min: 15 })
         );
       }
     }
   }
 
-  fillRect = (x, y, w, h, lineWidth, stokeColor = null, fillColor = null) => {
+  fillRect = (
+    x: number,
+    y: number,
+    w: number,
+    h: number,
+    lineWidth: number,
+    stokeColor: string = "",
+    fillColor: string = ""
+  ) => {
     this.ctx.save();
     this.ctx.translate(x, y);
 
@@ -111,7 +90,15 @@ class Canvas extends React.Component<Props> {
     this.ctx.restore();
   };
 
-  fillRectWithLines = (x, y, w, h, lineWidth, stokeColor, fillColor) => {
+  fillRectWithLines = (
+    x: number,
+    y: number,
+    w: number,
+    h: number,
+    lineWidth: number,
+    stokeColor: string = "",
+    fillColor: string = ""
+  ) => {
     this.ctx.save();
     this.ctx.translate(x, y);
 
@@ -142,14 +129,8 @@ class Canvas extends React.Component<Props> {
   };
 
   render() {
-    return (
-      <canvas
-        id="mainCanvas"
-        width={this.props.width}
-        height={this.props.height}
-        style={this.props.style}
-      />
-    );
+    const { width, height } = this.props;
+    return <canvas id="mainCanvas" width={width} height={height} />;
   }
 }
 

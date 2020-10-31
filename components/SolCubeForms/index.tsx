@@ -4,8 +4,8 @@ import CanvasControls from "../CanvasControls";
 import { Placard } from "../Placard";
 
 interface Props {
-  width: number;
-  height: number;
+  width?: number;
+  height?: number;
 }
 
 export const SolCubeFormsCanvasContainer = ({
