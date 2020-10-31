@@ -11,15 +11,23 @@ interface Props {
 
 export const Farben = ({ width = 1000, height = 450 }: Props) => {
   const [space, setSpace] = React.useState(5);
+  const [size, setSize] = React.useState(1);
 
   const handleChange = (key: string, val: number) => {
-    setSpace(val);
+    switch (key) {
+      case "space":
+        setSpace(val);
+        return;
+      case "size":
+        setSize(val);
+        return;
+    }
   };
 
   return (
     <div>
       <div className="mdl-cell mdl-cell--12-col">
-        <Canvas width={width} height={height} space={space} />
+        <Canvas width={width} height={height} space={space} size={size} />
       </div>
       <div className="mdl-cell mdl-cell--4-col">
         <Placard
@@ -35,8 +43,15 @@ export const Farben = ({ width = 1000, height = 450 }: Props) => {
                 <Slider
                   keyName="space"
                   label="Spacing"
-                  minStepMax={[5, 5, 50]}
+                  minStepMax={[5, 5, 20]}
                   value={space}
+                  handleChange={handleChange}
+                />
+                <Slider
+                  keyName="size"
+                  label="Size"
+                  minStepMax={[1, 1, 10]}
+                  value={size}
                   handleChange={handleChange}
                 />
               </CanvasInputs>

@@ -3,6 +3,10 @@
 exports[`polygon utils createWrappedRow should create a wrapped row 1`] = `
 Array [
   Object {
+    "x": 0,
+    "y": 0,
+  },
+  Object {
     "x": 110,
     "y": 0,
   },
@@ -19,8 +23,8 @@ Array [
     "y": 0,
   },
   Object {
-    "x": 550,
-    "y": 0,
+    "x": 0,
+    "y": 110,
   },
   Object {
     "x": 110,
@@ -39,8 +43,8 @@ Array [
     "y": 110,
   },
   Object {
-    "x": 550,
-    "y": 110,
+    "x": 0,
+    "y": 220,
   },
   Object {
     "x": 110,
@@ -59,8 +63,8 @@ Array [
     "y": 220,
   },
   Object {
-    "x": 550,
-    "y": 220,
+    "x": 0,
+    "y": 330,
   },
   Object {
     "x": 110,
@@ -76,10 +80,6 @@ Array [
   },
   Object {
     "x": 440,
-    "y": 330,
-  },
-  Object {
-    "x": 550,
     "y": 330,
   },
 ]

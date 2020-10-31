@@ -91,22 +91,23 @@ export const createWrappedRow = ({
   // TODO: First position does _not_ start at 0,0 or offsetX,offsetY
 
   const positions: Point[] = [];
-  let x = Math.max(offsetX - (width + padding), 0);
-  let y = Math.max(offsetY - (width + padding), 0);
+  let x = 0 + offsetX;
+  let y = 0 + offsetY;
   let itemsPlaced = 0;
   for (let row = 0; row <= Math.ceil(numItems / numPerLine); row++) {
     for (let col = 0; col < numPerLine; col++) {
       if (itemsPlaced >= numItems) {
         break;
       }
-      x += width + padding;
-      itemsPlaced++;
       positions.push({
         x,
         y,
       });
+
+      x += width + padding;
+      itemsPlaced++;
     }
-    x = Math.max(offsetX - (width + padding), 0);
+    x = offsetX;
     y += height + padding;
   }
 

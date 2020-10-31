@@ -6,9 +6,10 @@ interface Props {
   width: number;
   height: number;
   space: number;
+  size: number;
 }
 
-export const Canvas = ({ width, height, space }: Props) => {
+export const Canvas = ({ width, height, space, size }: Props) => {
   const canvasRef = React.useRef<HTMLCanvasElement>();
 
   const draw = () => {
@@ -21,13 +22,13 @@ export const Canvas = ({ width, height, space }: Props) => {
     const ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, 1500, 500);
 
-    const boxWidth = 55;
-    const boxHeight = 22;
-    const size = 16;
+    const boxWidth = 55 * size;
+    const boxHeight = 22 * size;
+    const numPerRow = 16 / size;
 
     createWrappedRow({
-      numItems: size ** 2,
-      numPerLine: size,
+      numItems: numPerRow ** 2,
+      numPerLine: numPerRow,
       width: boxWidth,
       height: boxHeight,
       padding: space,
@@ -105,7 +106,7 @@ export const Canvas = ({ width, height, space }: Props) => {
 
   React.useEffect(() => {
     draw();
-  }, [space, width, height]);
+  }, [space, width, height, size]);
 
   return <canvas ref={canvasRef} width={width} height={height} />;
 };

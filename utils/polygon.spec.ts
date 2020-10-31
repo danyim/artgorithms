@@ -27,7 +27,7 @@ describe("polygon utils", () => {
       };
       const result = createWrappedRow(input);
       expect(result[0]).toEqual({ x: 0, y: 0 });
-      expect(result[1]).toEqual({ x: 0, y: input.height });
+      expect(result[1]).toEqual({ x: 0, y: input.height + input.padding });
     });
 
     it("should create a wrapped row starting at (100,100)", () => {
