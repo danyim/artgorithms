@@ -3,6 +3,7 @@ import Canvas from "./Canvas";
 import { Placard } from "../Placard";
 import CanvasInputs from "../CanvasInputs";
 import Slider from "../Slider";
+import { Checkbox } from "../Checkbox";
 
 interface Props {
   width?: number;
@@ -10,10 +11,11 @@ interface Props {
 }
 
 export const Farben = ({ width = 1000, height = 450 }: Props) => {
-  const [space, setSpace] = React.useState(5);
-  const [size, setSize] = React.useState(1);
+  const [space, setSpace] = React.useState<number>(5);
+  const [size, setSize] = React.useState<number>(1);
+  const [outline, setOutline] = React.useState<boolean>(false);
 
-  const handleChange = (key: string, val: number) => {
+  const handleChange = (key: string, val: any) => {
     switch (key) {
       case "space":
         setSpace(val);
@@ -21,13 +23,22 @@ export const Farben = ({ width = 1000, height = 450 }: Props) => {
       case "size":
         setSize(val);
         return;
+      case "outline":
+        setOutline(val);
+        return;
     }
   };
 
   return (
     <div>
       <div className="mdl-cell mdl-cell--12-col">
-        <Canvas width={width} height={height} space={space} size={size} />
+        <Canvas
+          width={width}
+          height={height}
+          space={space}
+          size={size}
+          outline={outline}
+        />
       </div>
       <div className="mdl-cell mdl-cell--4-col">
         <Placard
@@ -52,6 +63,12 @@ export const Farben = ({ width = 1000, height = 450 }: Props) => {
                   label="Size"
                   minStepMax={[1, 1, 10]}
                   value={size}
+                  handleChange={handleChange}
+                />
+                <Checkbox
+                  keyName="outline"
+                  label="Outline"
+                  value={outline}
                   handleChange={handleChange}
                 />
               </CanvasInputs>

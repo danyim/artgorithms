@@ -49,7 +49,7 @@ export const CanvasContainer = () => {
                 <Slider
                   keyName="lineWidth"
                   label="Line"
-                  minStepMax={[1, 1, 5]}
+                  minStepMax={[1, 2, 10]}
                   value={lineWidth}
                   handleChange={handleChange}
                 />

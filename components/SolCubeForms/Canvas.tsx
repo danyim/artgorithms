@@ -5,9 +5,17 @@ interface Props {
   width: number;
   height: number;
   space: number;
+  onMouseMove: (e) => void;
+  onMouseOut: (e) => void;
 }
 
-export const Canvas = ({ width, height, space }: Props) => {
+export const Canvas = ({
+  width,
+  height,
+  space,
+  onMouseMove,
+  onMouseOut,
+}: Props) => {
   const canvasRef = React.useRef<HTMLCanvasElement>();
 
   const draw = () => {
@@ -85,7 +93,15 @@ export const Canvas = ({ width, height, space }: Props) => {
     draw();
   }, [space]);
 
-  return <canvas ref={canvasRef} width={width} height={height} />;
+  return (
+    <canvas
+      ref={canvasRef}
+      width={width}
+      height={height}
+      onMouseMove={onMouseMove}
+      onMouseOut={onMouseOut}
+    />
+  );
 };
 
 export default Canvas;

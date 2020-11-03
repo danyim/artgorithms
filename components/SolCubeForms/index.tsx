@@ -13,15 +13,43 @@ export const SolCubeFormsCanvasContainer = ({
   width = 500,
   height = 500,
 }: Props) => {
+  const containerRef = React.useRef<HTMLDivElement>();
   const [space, setSpace] = React.useState(10);
   const handleChange = (key: string, val: number) => {
     setSpace(val);
   };
+  let mouseOut;
+
+  const handleOnMouseMove = (e) => {
+    if (mouseOut) {
+      clearTimeout(mouseOut);
+    }
+    if (containerRef.current) {
+      const boundingBox = containerRef.current.getBoundingClientRect();
+      const clientXCanvas =
+        Math.max(e.clientX - boundingBox.left, 0) / boundingBox.width;
+      const clientYCanvas =
+        Math.max(e.clientY - boundingBox.top, 0) / boundingBox.height;
+      setSpace(Math.floor(clientYCanvas * 50));
+    }
+  };
+
+  const handleOnMouseOut = (e) => {
+    mouseOut = setTimeout(() => {
+      setSpace(10);
+    }, 1500);
+  };
 
   return (
     <div className="mdl-grid">
-      <div className="mdl-cell mdl-cell--8-col">
-        <Canvas width={width} height={height} space={space} />
+      <div ref={containerRef} className="mdl-cell mdl-cell--8-col">
+        <Canvas
+          width={width}
+          height={height}
+          space={space}
+          onMouseMove={handleOnMouseMove}
+          onMouseOut={handleOnMouseOut}
+        />
       </div>
       <div className="mdl-cell mdl-cell--4-col">
         <Placard

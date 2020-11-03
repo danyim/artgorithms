@@ -7,10 +7,15 @@ interface Props {
   height: number;
   space: number;
   size: number;
+  outline: boolean;
 }
 
-export const Canvas = ({ width, height, space, size }: Props) => {
+export const Canvas = ({ width, height, space, size, outline }: Props) => {
   const canvasRef = React.useRef<HTMLCanvasElement>();
+
+  const handleMouseMove = () => {
+    draw();
+  };
 
   const draw = () => {
     const canvas = canvasRef.current;
@@ -22,26 +27,27 @@ export const Canvas = ({ width, height, space, size }: Props) => {
     const ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, 1500, 500);
 
-    const boxWidth = 55 * size;
-    const boxHeight = 22 * size;
-    const numPerRow = 16 / size;
+    const boxWidth = 55;
+    const boxHeight = 22;
+    const numItems = 16 - size + 1;
 
+    const drawFn = outline ? fillRectWithLines : fillRect;
     createWrappedRow({
-      numItems: numPerRow ** 2,
-      numPerLine: numPerRow,
+      numItems: numItems ** 2,
+      numPerLine: numItems,
       width: boxWidth,
       height: boxHeight,
       padding: space,
       offsetX: 0,
       offsetY: 0,
     }).forEach((point) => {
-      fillRect(
+      drawFn(
         ctx,
         point.x,
         point.y,
         boxWidth,
         boxHeight,
-        null,
+        randomHueColor({ max: 75, min: 15 }, { max: 75, min: 15 }),
         randomHueColor({ max: 75, min: 15 }, { max: 75, min: 15 })
       );
     });
@@ -71,7 +77,6 @@ export const Canvas = ({ width, height, space, size }: Props) => {
     y: number,
     w: number,
     h: number,
-    lineWidth: number,
     stokeColor: string = "",
     fillColor: string = ""
   ) => {
@@ -82,7 +87,7 @@ export const Canvas = ({ width, height, space, size }: Props) => {
 
     if (fillColor) ctx.fillStyle = fillColor;
     if (stokeColor) ctx.strokeStyle = stokeColor;
-    ctx.lineWidth = lineWidth;
+    ctx.lineWidth = 1;
 
     // Top
     ctx.moveTo(0, 0);
@@ -106,9 +111,16 @@ export const Canvas = ({ width, height, space, size }: Props) => {
 
   React.useEffect(() => {
     draw();
-  }, [space, width, height, size]);
+  }, [space, width, height, size, outline]);
 
-  return <canvas ref={canvasRef} width={width} height={height} />;
+  return (
+    <canvas
+      ref={canvasRef}
+      width={width}
+      height={height}
+      onMouseMove={handleMouseMove}
+    />
+  );
 };
 
 export default Canvas;
