@@ -2,7 +2,7 @@ import React from "react";
 import debug from "debug";
 import {
   centroid,
-  closestDistToPoint,
+  findClosestDistanceToPoint,
   createWrappedRow,
   Point,
   printPt,
@@ -14,6 +14,7 @@ import {
   generateRandomPointsInsideBounds,
   generateRandomPointsOnBounds,
   isVertexPoint,
+  generateTriangleInsideBounds,
 } from "./util";
 
 const log = debug("canvas");
@@ -40,13 +41,13 @@ export const Canvas = ({ width, height, space }: Props) => {
     ctx.clearRect(0, 0, 500, 500);
 
     // Art params
-    const numSquares = 1; //64;
-    const squareSize = 400;
+    const numSquares = 100;
+    const squareSize = 35;
     const padding = squareSize * 0.2;
 
     const wrappedRowPoints = createWrappedRow({
       numItems: numSquares,
-      numPerLine: 8,
+      numPerLine: Math.sqrt(numSquares),
       width: squareSize,
       height: squareSize,
       padding: padding,
@@ -73,12 +74,13 @@ export const Canvas = ({ width, height, space }: Props) => {
 
       // Create the inner square bounds
       const innerSquareBounds = createInnerSquareBounds(ctx, squareBounds);
-      // Choose 3 random points within the inner square
-      let innerSquarePoints = generateRandomPointsInsideBounds(
+
+      // Create a randomly rotated and scaled isoceles triangle in the center and use its vertices
+      const innerSquarePoints = generateTriangleInsideBounds(
         ctx,
-        innerSquareBounds,
-        3
+        innerSquareBounds
       );
+
       // Chose 6 random points along the edges of the outer box
       const boundaryPoints = generateRandomPointsOnBounds(ctx, squareBounds, 6);
 
@@ -108,7 +110,7 @@ export const Canvas = ({ width, height, space }: Props) => {
         }
 
         // Find the inner square vertex that's closest to the polygon center
-        const closestInnerVertex = closestDistToPoint(
+        const closestInnerVertex = findClosestDistanceToPoint(
           centerPoint,
           innerSquarePoints
         );

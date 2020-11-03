@@ -1,10 +1,13 @@
 import debug from "debug";
 import {
   Bounds,
+  degToRad,
+  getBoundsCenter,
   Point,
   printPt,
   randIntegerRange,
   randRange,
+  rotatePoint,
 } from "../../utils/polygon";
 
 const log = debug("utils");
@@ -62,6 +65,7 @@ export const generateRandomPointsInsideBounds = (
     // Draw the points
     for (let point of points) {
       const { x, y } = point;
+      ctx.strokeStyle = "black";
       ctx.strokeRect(x, y, debugSqSize, debugSqSize);
     }
   }
@@ -69,12 +73,61 @@ export const generateRandomPointsInsideBounds = (
   return points;
 };
 
+/** Creates a random isoceles triangle within a bounds */
+export const generateTriangleInsideBounds = (
+  ctx: CanvasRenderingContext2D,
+  bounds: Bounds
+): Point[] => {
+  const debugSqSize = 5;
+  // Generate n random points
+  const points: Point[] = [];
+  const size = bounds.xMax - bounds.xMin;
+
+  // Find the center
+  const center = getBoundsCenter(bounds);
+
+  ctx.strokeStyle = "blue";
+  // Build a isoceles triangle
+  const baseRadius = randRange(size * 0.2, size * 0.5);
+  const angles = [degToRad(0), degToRad(120), degToRad(240)];
+  angles.forEach((angle, index: number) => {
+    let radius = baseRadius;
+    if (index === 2) {
+      // Generate a new random radius for the last vertex to complete the isoceles
+      radius = randRange(size * 0.4, size * 0.8);
+    }
+    const x = center.x + radius * Math.cos(angle);
+    const y = center.y + radius * Math.sin(angle);
+    if (localStorage.getItem("debugShapes")) {
+      ctx.strokeRect(center.x, center.y, debugSqSize, debugSqSize);
+      ctx.strokeRect(x, y, debugSqSize, debugSqSize);
+    }
+    points.push({ x, y });
+  });
+
+  ctx.strokeStyle = "red";
+  // Rotate the isoceles randomly
+  const randRotateDeg = Math.floor(randRange(0, 360));
+  const rotation = degToRad(randRotateDeg);
+  log("Rotating inner triangle", `${randRotateDeg}°`);
+  const rotatedTriangle = points.map((point) =>
+    rotatePoint(center, point, rotation)
+  );
+
+  if (localStorage.getItem("debugShapes")) {
+    rotatedTriangle.forEach(({ x, y }) => {
+      ctx.strokeRect(x, y, debugSqSize, debugSqSize);
+    });
+  }
+
+  return rotatedTriangle;
+};
+
 export const generateRandomPointsOnBounds = (
   ctx: CanvasRenderingContext2D,
   bounds: Bounds,
   numPoints: number
 ) => {
-  const debugSqSize = 3;
   // The idea of this algorithm is to "flatten" the bounds of the square onto a single line from 0
   // to sum(sides * 4) Assuming it's a square, so len(x) === len(y). We'll call this line the
   // "range"
@@ -86,18 +139,19 @@ export const generateRandomPointsOnBounds = (
   // Generate random points along a straight line
   const randRangePoints: number[] = [];
 
-  log("maxPairDistance", maxPairDistance);
-  log("totalLength", totalLength);
+  log("maxPairDistance", maxPairDistance, "totalLength", totalLength);
   let lastRangePoint = 0;
   // Create pairs of points
   for (let k = 0; k < numPoints / 2; k++) {
+    const polygonSet = [];
     // Start a pair relative to the last recorded point
-    lastRangePoint = lastRangePoint + randIntegerRange(0, sideLength);
-    randRangePoints.push(lastRangePoint);
-    const nextRangePoint =
-      (lastRangePoint +
-        randIntegerRange(maxPairDistance / 2, maxPairDistance)) %
-      totalLength;
+    lastRangePoint =
+      lastRangePoint + randIntegerRange(maxPairDistance / 4, sideLength);
+    polygonSet.push(lastRangePoint);
+    const nextRangePoint = Math.min(
+      lastRangePoint + randIntegerRange(maxPairDistance / 2, maxPairDistance),
+      totalLength
+    );
 
     // Evaluate if we need to include a corner point
     if (
@@ -111,11 +165,12 @@ export const generateRandomPointsOnBounds = (
         getRangeQuartile(nextRangePoint, totalLength),
         totalLength
       );
-      randRangePoints.push(cornerRangeValue);
+      polygonSet.push(cornerRangeValue);
     }
-    randRangePoints.push(nextRangePoint);
+    polygonSet.push(nextRangePoint);
     lastRangePoint = nextRangePoint;
-    log("pair:", randRangePoints.slice(randRangePoints.length - 3));
+    polygonSet.forEach((point) => randRangePoints.push(point));
+    log("polygonSet:", polygonSet);
   }
 
   log("points:", randRangePoints);

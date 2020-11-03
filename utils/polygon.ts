@@ -18,6 +18,33 @@ export interface RectParam {
   h: number;
 }
 
+/** Rotates a point about another */
+export const rotatePoint = (center: Point, point: Point, angle: number) => {
+  let x = point.x;
+  let y = point.y;
+
+  // Translate point back to origin
+  x -= center.x;
+  y -= center.y;
+
+  // Rotate point
+  let xnew = x * Math.cos(angle) - y * Math.sin(angle);
+  let ynew = x * Math.sin(angle) + y * Math.cos(angle);
+
+  // Translate point back:
+  x = xnew + center.x;
+  y = ynew + center.y;
+  return { x, y };
+};
+/** Degrees to radians */
+export const degToRad = (deg: number): number => deg * (Math.PI / 180);
+
+/** Get the center point for a given bound */
+export const getBoundsCenter = (bound: Bounds): Point => ({
+  x: bound.xMin + (bound.xMax - bound.xMin) / 2,
+  y: bound.yMin + (bound.yMax - bound.yMin) / 2,
+});
+
 /** For use in mapping points for console output */
 export const printPt = (pt: Point) => [pt.x, pt.y]; // `(${pt.x},${pt.y})`;
 
@@ -51,7 +78,10 @@ export const dot = (u: Point, v: Point) => u.x * v.x + u.y * v.y;
 export const distance = (a: Point, b: Point) =>
   Math.sqrt((a.x - b.x) ** 2 + (a.y - b.y) ** 2);
 
-export const closestDistToPoint = (point: Point, pointsToPick: Point[]) => {
+export const findClosestDistanceToPoint = (
+  point: Point,
+  pointsToPick: Point[]
+) => {
   let closestDistance: number = undefined;
   let closeastDistanceIndex;
   pointsToPick.forEach((pickPoint, index) => {

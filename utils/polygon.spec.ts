@@ -1,4 +1,4 @@
-import { createWrappedRow } from "./polygon";
+import { createWrappedRow, getBoundsCenter } from "./polygon";
 
 describe("polygon utils", () => {
   describe("createWrappedRow", () => {
@@ -56,6 +56,22 @@ describe("polygon utils", () => {
         offsetY: 0,
       };
       expect(createWrappedRow(input).length).toEqual(input.numItems);
+    });
+  });
+
+  describe("getBoundsCenter", () => {
+    it("should return the center", () => {
+      const input = { xMin: 0, xMax: 10, yMin: 0, yMax: 10 };
+      const expected = { x: 5, y: 5 };
+      const result = getBoundsCenter(input);
+      expect(result).toEqual(expected);
+    });
+
+    it("should return the center with an offset", () => {
+      const input = { xMin: 4, xMax: 50, yMin: 15, yMax: 25 };
+      const expected = { x: 27, y: 20 };
+      const result = getBoundsCenter(input);
+      expect(result).toEqual(expected);
     });
   });
 });
