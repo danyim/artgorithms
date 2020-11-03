@@ -18,6 +18,9 @@ export interface RectParam {
   h: number;
 }
 
+/** For use in mapping points for console output */
+export const printPt = (pt: Point) => [pt.x, pt.y]; // `(${pt.x},${pt.y})`;
+
 /** Random real number in a given range */
 export const randRange = (min: number, max: number) =>
   Math.random() * (max - min) + min;

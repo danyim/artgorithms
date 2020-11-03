@@ -2,9 +2,13 @@ import debug from "debug";
 import {
   Bounds,
   Point,
+  printPt,
   randIntegerRange,
   randRange,
 } from "../../utils/polygon";
+
+const log = debug("utils");
+// const log = console.log;
 
 export const createSquareBounds = (x: number, y: number, length: number) => {
   return {
@@ -26,7 +30,7 @@ export const createInnerSquareBounds = (
     yMax: bounds.yMax - (innerRectFactor * (bounds.yMax - bounds.yMin)) / 2,
   };
 
-  if (localStorage.getItem("debug")) {
+  if (localStorage.getItem("debugShapes")) {
     ctx.fillStyle = "rgba(255,0,0,0.4)";
     ctx.fillRect(
       innerRectBounds.xMin,
@@ -54,7 +58,7 @@ export const generateRandomPointsInsideBounds = (
     });
   }
 
-  if (localStorage.getItem("debug")) {
+  if (localStorage.getItem("debugShapes")) {
     // Draw the points
     for (let point of points) {
       const { x, y } = point;
@@ -82,6 +86,8 @@ export const generateRandomPointsOnBounds = (
   // Generate random points along a straight line
   const randRangePoints: number[] = [];
 
+  log("maxPairDistance", maxPairDistance);
+  log("totalLength", totalLength);
   let lastRangePoint = 0;
   // Create pairs of points
   for (let k = 0; k < numPoints / 2; k++) {
@@ -98,7 +104,7 @@ export const generateRandomPointsOnBounds = (
       getRangeQuartile(lastRangePoint, totalLength) !==
       getRangeQuartile(nextRangePoint, totalLength)
     ) {
-      debug("util")("CORNER: Between", lastRangePoint, "and", nextRangePoint);
+      // log("CORNER: Between", lastRangePoint, "and", nextRangePoint);
       // Given that we know that the two quartiles of the pairs are different, idenitfy which corner
       // need to add and push the appropriate range value to the list
       const cornerRangeValue = getPreviousQuartileRangeValue(
@@ -109,17 +115,36 @@ export const generateRandomPointsOnBounds = (
     }
     randRangePoints.push(nextRangePoint);
     lastRangePoint = nextRangePoint;
-    debug("util")("pair:", randRangePoints.slice(randRangePoints.length - 3));
+    log("pair:", randRangePoints.slice(randRangePoints.length - 3));
   }
 
-  debug("util")(randRangePoints, "out of", totalLength);
-  debug("util")("maxPairDistance", maxPairDistance);
+  log("points:", randRangePoints);
+  const points = translateRangeToPoints(
+    ctx,
+    randRangePoints,
+    sideLength,
+    bounds
+  );
+  log("translated points:", points.map(printPt));
+  log(" ");
+
+  return points;
+};
+
+/** Translates range points into points along the bounds */
+export const translateRangeToPoints = (
+  ctx: CanvasRenderingContext2D,
+  rangePoints: number[],
+  sideLength: number,
+  bounds: Bounds
+): Point[] => {
+  const debugSqSize = 3;
 
   // Translated points in the coordinate system
   const points: Point[] = [];
 
   // Translate the points along the flattened "range" into 2D coordinates
-  for (let point of randRangePoints) {
+  for (let point of rangePoints) {
     let translatedPoint;
     if (point < sideLength) {
       // Top edge
@@ -146,11 +171,11 @@ export const generateRandomPointsOnBounds = (
       // Left edge
       translatedPoint = {
         x: bounds.xMin,
-        y: bounds.yMin + (point - sideLength * 3),
+        y: bounds.yMax - (point - sideLength * 3),
       };
       ctx.strokeStyle = "green";
     }
-    if (localStorage.getItem("debug")) {
+    if (localStorage.getItem("debugShapes")) {
       ctx.strokeRect(
         translatedPoint.x,
         translatedPoint.y,

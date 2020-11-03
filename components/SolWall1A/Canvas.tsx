@@ -40,8 +40,8 @@ export const Canvas = ({ width, height, space, lineWidth }: Props) => {
     const ctx = canvas.getContext("2d");
     clearCanvas(ctx);
 
-    const x = 0;
-    const y = 0;
+    const x = 10;
+    const y = 10;
     const padding = space;
     const size = 120;
     const lineWidth = null;
@@ -71,6 +71,7 @@ export const Canvas = ({ width, height, space, lineWidth }: Props) => {
 
     ctx.save();
     ctx.translate(x, y);
+
     for (let k = 0; k < positions.length; k += 1) {
       let drawFns = [];
       let space = padding;

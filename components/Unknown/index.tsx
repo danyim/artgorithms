@@ -27,13 +27,7 @@ export const UnknownCanvasContainer = () => {
           artistName="Unknown"
           description={() => (
             <>
-              <small>
-                <a href="https://www.sfmoma.org/artwork/FC.474.2">SF MOMA</a>
-                ,&nbsp;
-                <a href="http://www.ideelart.com/module/csblog/post/177-1-sol-lewitt-wall-drawings.html">
-                  IdeelArt
-                </a>
-              </small>
+              <small></small>
               <CanvasInputs>
                 <Slider
                   keyName="space"

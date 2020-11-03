@@ -5,6 +5,7 @@ import {
   closestDistToPoint,
   createWrappedRow,
   Point,
+  printPt,
   pushIfTruthy,
 } from "../../utils/polygon";
 import {
@@ -14,6 +15,9 @@ import {
   generateRandomPointsOnBounds,
   isVertexPoint,
 } from "./util";
+
+const log = debug("canvas");
+// const log = console.log;
 
 interface Props {
   width?: number;
@@ -36,8 +40,8 @@ export const Canvas = ({ width, height, space }: Props) => {
     ctx.clearRect(0, 0, 500, 500);
 
     // Art params
-    const numSquares = 64;
-    const squareSize = 40;
+    const numSquares = 1; //64;
+    const squareSize = 400;
     const padding = squareSize * 0.2;
 
     const wrappedRowPoints = createWrappedRow({
@@ -49,7 +53,7 @@ export const Canvas = ({ width, height, space }: Props) => {
       offsetX: 0,
       offsetY: 0,
     });
-    if (localStorage.getItem("debug")) {
+    if (localStorage.getItem("debugShapes")) {
       wrappedRowPoints.forEach((pt) => {
         ctx.strokeRect(pt.x, pt.y, 5, 5);
       });
@@ -78,9 +82,9 @@ export const Canvas = ({ width, height, space }: Props) => {
       // Chose 6 random points along the edges of the outer box
       const boundaryPoints = generateRandomPointsOnBounds(ctx, squareBounds, 6);
 
-      debug("util")("boundaryPoints", boundaryPoints);
+      log("boundaryPoints", boundaryPoints.map(printPt));
 
-      /** Method 1: Find boundary points until all inner points are taken */
+      /** Find boundary points until all inner points are taken */
       while (innerSquarePoints.length > 0) {
         const polygonVertices: Point[] = [];
         const path = new Path2D();
@@ -95,11 +99,10 @@ export const Canvas = ({ width, height, space }: Props) => {
         ) {
           pushIfTruthy(polygonVertices, boundaryPoints.shift());
         }
-        debug("util")("polygonVertices", polygonVertices);
 
         // Create the centroid
         const centerPoint = centroid(polygonVertices);
-        if (localStorage.getItem("debug")) {
+        if (localStorage.getItem("debugShapes")) {
           ctx.strokeStyle = "green";
           ctx.strokeRect(centerPoint.x, centerPoint.y, 5, 5);
         }
@@ -114,6 +117,8 @@ export const Canvas = ({ width, height, space }: Props) => {
           ({ x, y }: Point) =>
             x !== closestInnerVertex.x && y !== closestInnerVertex.y
         );
+        log("polygonVertices", polygonVertices.map(printPt));
+        log("  ", [closestInnerVertex].map(printPt));
         polygonVertices.push(closestInnerVertex);
 
         // Draw the polygon
