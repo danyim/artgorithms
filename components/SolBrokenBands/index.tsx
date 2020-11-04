@@ -6,33 +6,34 @@ import Slider from "../Slider";
 
 interface Props {}
 
-export const SolCubeFormsCanvasContainer = () => {
-  const [space, setSpace] = React.useState(10);
+export const SolBrokenBandsCanvasContainer = () => {
+  const [saturation, setSaturation] = React.useState(100);
   const handleChange = (key: string, val: number) => {
-    setSpace(val);
+    setSaturation(val);
   };
 
   return (
     <div className="mdl-grid">
       <div className="mdl-cell mdl-cell--8-col">
-        <Canvas width={500} height={500} space={space} />
+        <Canvas width={800} height={200} saturation={saturation} />
       </div>
       <div className="mdl-cell mdl-cell--4-col">
         <Placard
-          title="
-          Art Title"
-          artistName="Unknown"
+          title="Broken Color Bands in Four Directions"
+          artistName="Sol LeWitt"
           description={() => (
             <>
               <small>
-                {/* <a href="https://www.sfmoma.org/artwork/FC.474.2">SF MOMA</a> */}
+                <a href="https://www.sollewittprints.org/artwork/lewitt-raisonne-2005-04/">
+                  Sol LeWitt Prints
+                </a>
               </small>
               <CanvasInputs>
                 <Slider
-                  keyName="space"
-                  label="Spacing"
-                  minStepMax={[5, 5, 50]}
-                  value={space}
+                  keyName="saturation"
+                  label="Saturation"
+                  minStepMax={[0, 1, 10]}
+                  value={saturation}
                   handleChange={handleChange}
                 />
               </CanvasInputs>
