@@ -38,7 +38,7 @@ export const Canvas = ({ width, height, space }: Props) => {
 
   React.useEffect(() => {
     draw();
-  }, [space]);
+  }, [space, width, height]);
   return (
     <>
       <canvas ref={canvasRef} width={width} height={height} />

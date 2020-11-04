@@ -6,7 +6,7 @@ import Slider from "../Slider";
 
 interface Props {}
 
-export const SolCubeFormsCanvasContainer = () => {
+export const TemplateCanvasContainer = () => {
   const [space, setSpace] = React.useState(10);
   const handleChange = (key: string, val: number) => {
     setSpace(val);
