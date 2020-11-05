@@ -1,8 +1,11 @@
 import React from "react";
 import Canvas from "./Canvas";
+import CirclesCanvas from "./CirclesCanvas";
+import { CompositeCanvas1 } from "./CompositeCanvas1";
 import { Placard } from "../Placard";
 import CanvasInputs from "../CanvasInputs";
 import Slider from "../Slider";
+import { CompositeCanvas2 } from "./CompositeCanvas2";
 
 interface Props {}
 
@@ -23,7 +26,10 @@ export const SolColorBandsCanvasContainer = () => {
   return (
     <div className="mdl-grid">
       <div className="mdl-cell mdl-cell--8-col">
-        <Canvas width={500} height={500} size={size} bands={bands} />
+        <Canvas width={250} height={250} size={size} bands={bands} />
+        <CirclesCanvas width={250} height={250} size={size} bands={bands} />
+        <CompositeCanvas1 width={250} height={250} size={size} bands={bands} />
+        <CompositeCanvas2 width={250} height={250} size={size} bands={bands} />
       </div>
       <div className="mdl-cell mdl-cell--4-col">
         <Placard

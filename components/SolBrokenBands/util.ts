@@ -1,5 +1,5 @@
 import debug from "debug";
-import { drawOuterFrame } from "../../utils/art";
+import { drawRatioFrame } from "../../utils/art";
 import { degToRad, getBoundsCenter, randRange } from "../../utils/polygon";
 
 // const log = debug("utils");
@@ -16,7 +16,7 @@ export const drawFrame = (
 ) => {
   ctx.save();
   ctx.translate(xOffset, yOffset);
-  drawOuterFrame(ctx, 0, 0, size, bandSize / size);
+  drawRatioFrame(ctx, 0, 0, size, bandSize / size);
 
   const rectClipPath = new Path2D();
   rectClipPath.rect(
@@ -37,6 +37,7 @@ export const drawFrame = (
   ctx.translate(center.x, center.y);
   ctx.rotate(degToRad(rotationDegrees));
   ctx.translate(-center.x, -center.y);
+  // Need the translation here to account for empty spaces when rotated
   ctx.translate(-bandSize * 3, -bandSize * 3);
   // log("Returning to ", -(center.x), -(center.y));
 
