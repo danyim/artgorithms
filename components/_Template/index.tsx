@@ -19,8 +19,7 @@ export const TemplateCanvasContainer = () => {
       </div>
       <div className="mdl-cell mdl-cell--4-col">
         <Placard
-          title="
-          Art Title"
+          title="Art Title"
           artistName="Unknown"
           description={() => (
             <>

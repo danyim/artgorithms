@@ -9,6 +9,10 @@ interface Props {
 export const Canvas = ({ width, height, space }: Props) => {
   const canvasRef = React.useRef<HTMLCanvasElement>();
 
+  const handleOnMouseMove = () => {
+    draw();
+  };
+
   const draw = () => {
     const canvas = canvasRef.current;
     if (!canvas) {
@@ -39,9 +43,15 @@ export const Canvas = ({ width, height, space }: Props) => {
   React.useEffect(() => {
     draw();
   }, [space, width, height]);
+
   return (
     <>
-      <canvas ref={canvasRef} width={width} height={height} />
+      <canvas
+        ref={canvasRef}
+        width={width}
+        height={height}
+        onMouseMove={handleOnMouseMove}
+      />
       <button onClick={draw}>Redraw</button>
       <button onClick={handleOnClear}>Clear</button>
     </>
