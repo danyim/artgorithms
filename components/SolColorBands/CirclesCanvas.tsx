@@ -68,7 +68,7 @@ export const Canvas = ({ width, height, size, bands }: Props) => {
         height={height}
         onMouseMove={handleOnMouseMove}
       />
-      {localStorage.debug && (
+      {typeof window !== "undefined" && window.localStorage.debug && (
         <>
           <button onClick={draw}>Redraw</button>
           <button onClick={handleOnClear}>Clear</button>

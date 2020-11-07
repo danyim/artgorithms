@@ -11,7 +11,6 @@ import {
 import {
   createSquareBounds,
   createInnerSquareBounds,
-  generateRandomPointsInsideBounds,
   generateRandomPointsOnBounds,
   isVertexPoint,
   generateTriangleInsideBounds,
@@ -159,7 +158,7 @@ export const Canvas = ({ width, height, space }: Props) => {
   return (
     <>
       <canvas ref={canvasRef} width={width} height={height} />
-      {localStorage.debug && (
+      {typeof window !== "undefined" && window.localStorage.debug && (
         <>
           <button onClick={draw}>Redraw</button>
           <button onClick={handleOnClear}>Clear</button>
