@@ -12,6 +12,12 @@ interface Props {}
 export const SolColorBandsCanvasContainer = () => {
   const [size, setSize] = React.useState(10);
   const [bands, setBands] = React.useState(40);
+
+  const handleReset = () => {
+    setSize(10);
+    setBands(40);
+  };
+
   const handleChange = (key: string, val: number) => {
     switch (key) {
       case "bands":
@@ -40,7 +46,7 @@ export const SolColorBandsCanvasContainer = () => {
               <small>
                 {/* <a href="https://www.sfmoma.org/artwork/FC.474.2">SF MOMA</a> */}
               </small>
-              <CanvasInputs>
+              <CanvasInputs onReset={handleReset}>
                 <Slider
                   keyName="bands"
                   label="Bands"

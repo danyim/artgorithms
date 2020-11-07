@@ -15,6 +15,11 @@ export const SolCubeFormsCanvasContainer = ({
 }: Props) => {
   const containerRef = React.useRef<HTMLDivElement>();
   const [space, setSpace] = React.useState(10);
+
+  const handleReset = () => {
+    setSpace(10);
+  };
+
   const handleChange = (key: string, val: number) => {
     setSpace(val);
   };
@@ -61,7 +66,7 @@ export const SolCubeFormsCanvasContainer = ({
               <small>
                 <a href="https://www.sfmoma.org/artwork/FC.317.1-6/">SF MOMA</a>
               </small>
-              <CanvasInputs>
+              <CanvasInputs onReset={handleReset}>
                 <Slider
                   keyName="space"
                   label="Spacing"

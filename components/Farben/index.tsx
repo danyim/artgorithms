@@ -15,6 +15,12 @@ export const Farben = ({ width = 1000, height = 450 }: Props) => {
   const [size, setSize] = React.useState<number>(1);
   const [outline, setOutline] = React.useState<boolean>(false);
 
+  const handleReset = () => {
+    setSpace(5);
+    setSize(1);
+    setOutline(false);
+  };
+
   const handleChange = (key: string, val: any) => {
     switch (key) {
       case "space":
@@ -50,7 +56,7 @@ export const Farben = ({ width = 1000, height = 450 }: Props) => {
                 <a href="https://www.sfmoma.org/artwork/FC.643">SF MOMA</a>
               </small>
 
-              <CanvasInputs>
+              <CanvasInputs onReset={handleReset}>
                 <Slider
                   keyName="space"
                   label="Spacing"

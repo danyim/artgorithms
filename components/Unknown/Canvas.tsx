@@ -159,8 +159,12 @@ export const Canvas = ({ width, height, space }: Props) => {
   return (
     <>
       <canvas ref={canvasRef} width={width} height={height} />
-      <button onClick={draw}>Redraw</button>
-      <button onClick={handleOnClear}>Clear</button>
+      {localStorage.debug && (
+        <>
+          <button onClick={draw}>Redraw</button>
+          <button onClick={handleOnClear}>Clear</button>
+        </>
+      )}
     </>
   );
 };

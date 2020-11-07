@@ -9,6 +9,12 @@ interface Props {}
 export const CanvasContainer = () => {
   const [space, setSpace] = React.useState(10);
   const [lineWidth, setLineWidth] = React.useState(3);
+
+  const handleReset = () => {
+    setSpace(10);
+    setLineWidth(3);
+  };
+
   const handleChange = (key: string, val: number) => {
     switch (key) {
       case "space":
@@ -38,7 +44,7 @@ export const CanvasContainer = () => {
                   IdeelArt
                 </a>
               </small>
-              <CanvasInputs>
+              <CanvasInputs onReset={handleReset}>
                 <Slider
                   keyName="space"
                   label="Spacing"

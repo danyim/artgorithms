@@ -30,7 +30,7 @@ export const CanvasContainer = ({ width = 500, height = 400 }: Props) => {
             <small>
               <a href="https://www.sfmoma.org/artwork/2000.440">SF MOMA</a>
             </small>
-            <CanvasInputs>
+            <CanvasInputs onReset={handleReset}>
               <Slider
                 keyName="area"
                 label="Spacing"

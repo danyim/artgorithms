@@ -8,6 +8,11 @@ interface Props {}
 
 export const SolBrokenBandsCanvasContainer = () => {
   const [saturation, setSaturation] = React.useState(100);
+
+  const handleReset = () => {
+    setSaturation(100);
+  };
+
   const handleChange = (key: string, val: number) => {
     setSaturation(val);
   };
@@ -28,7 +33,7 @@ export const SolBrokenBandsCanvasContainer = () => {
                   Sol LeWitt Prints
                 </a>
               </small>
-              <CanvasInputs>
+              <CanvasInputs onReset={handleReset}>
                 <Slider
                   keyName="saturation"
                   label="Saturation"

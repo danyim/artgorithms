@@ -26,7 +26,7 @@ export const TemplateCanvasContainer = () => {
               <small>
                 {/* <a href="https://www.sfmoma.org/artwork/FC.474.2">SF MOMA</a> */}
               </small>
-              <CanvasInputs>
+              <CanvasInputs onReset={handleReset}>
                 <Slider
                   keyName="space"
                   label="Spacing"

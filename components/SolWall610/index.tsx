@@ -8,6 +8,11 @@ interface Props {}
 
 export const SolWall610CanvasContainer = () => {
   const [colorIndex, setColorIndex] = React.useState(0);
+
+  const handleReset = () => {
+    setColorIndex(0);
+  };
+
   const handleChange = (key: string, val: number) => {
     setColorIndex(val);
   };
@@ -37,7 +42,7 @@ export const SolWall610CanvasContainer = () => {
                   Artsy
                 </a>
               </small>
-              <CanvasInputs>
+              <CanvasInputs onReset={handleReset}>
                 <Slider
                   keyName="colorIndex"
                   label="Color"

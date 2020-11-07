@@ -9,6 +9,12 @@ interface Props {}
 export const SolWall1111CanvasContainer = () => {
   const [bands, setBands] = React.useState(15);
   const [size, setSize] = React.useState(10);
+
+  const handleReset = () => {
+    setBands(15);
+    setSize(10);
+  };
+
   const handleChange = (key: string, val: number) => {
     switch (key) {
       case "bands":
@@ -36,7 +42,7 @@ export const SolWall1111CanvasContainer = () => {
                   Mutualart
                 </a>
               </small>
-              <CanvasInputs>
+              <CanvasInputs onReset={handleReset}>
                 <Slider
                   keyName="size"
                   label="Size"

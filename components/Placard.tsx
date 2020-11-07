@@ -2,12 +2,11 @@ import React from "react";
 import styled from "styled-components";
 
 const Container = styled.div`
-  font-family: Inter;
+  font-family: Inter, sans-serif;
   border: 1px solid black;
-  box-shadow: 10px 10px 0px 0px black;
-  padding: 0.8rem;
+  padding: 1.2rem 1.5rem;
   max-width: ${({ theme }) => theme.breakpoints.small};
-  margin-bottom: 1.5rem;
+  border-radius: 5px;
 
   h4 {
     font: normal 500 1.3rem/2 Abel;

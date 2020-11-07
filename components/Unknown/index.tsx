@@ -12,6 +12,11 @@ interface State {
 
 export const UnknownCanvasContainer = () => {
   const [space, setSpace] = React.useState(10);
+
+  const handleReset = () => {
+    setSpace(10);
+  };
+
   const handleChange = (key: string, val: number) => {
     setSpace(val);
   };
@@ -28,7 +33,7 @@ export const UnknownCanvasContainer = () => {
           description={() => (
             <>
               <small></small>
-              <CanvasInputs>
+              <CanvasInputs onReset={handleReset}>
                 <Slider
                   keyName="space"
                   label="Spacing"
