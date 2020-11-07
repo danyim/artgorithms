@@ -28,12 +28,18 @@ export const Canvas = ({ width, height, bands, size }: Props) => {
 
     // Art params
     const colors = [
-      [189, 40, 56],
-      [235, 79, 56],
-      [77, 40, 109],
-      [36, 99, 154],
-      [55, 129, 43],
-      [249, 205, 75],
+      [229, 204, 88],
+      [182, 93, 40],
+      [125, 151, 57],
+      [88, 103, 178],
+      [184, 95, 41],
+      [132, 159, 67],
+      [239, 214, 97],
+      [165, 64, 46],
+      [107, 89, 174],
+      [149, 171, 91],
+      [113, 121, 186],
+      [241, 218, 103],
     ];
 
     drawConcentricColorCircles(ctx, 250, 250, size, bands, colors);
@@ -61,8 +67,8 @@ export const Canvas = ({ width, height, bands, size }: Props) => {
         height={height}
         onMouseMove={handleOnMouseMove}
       />
-      <button onClick={draw}>Redraw</button>
-      <button onClick={handleOnClear}>Clear</button>
+      {/* <button onClick={draw}>Redraw</button>
+      <button onClick={handleOnClear}>Clear</button> */}
     </>
   );
 };

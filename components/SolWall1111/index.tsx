@@ -32,7 +32,9 @@ export const SolWall1111CanvasContainer = () => {
           description={() => (
             <>
               <small>
-                {/* <a href="https://www.sfmoma.org/artwork/FC.474.2">SF MOMA</a> */}
+                <a href="https://www.mutualart.com/Artwork/WALL-DRAWING--1111-CIRCLE-WITH-BROKEN-BA/22AEC9A56478D66B">
+                  Mutualart
+                </a>
               </small>
               <CanvasInputs>
                 <Slider
