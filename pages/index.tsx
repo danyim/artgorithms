@@ -10,6 +10,7 @@ import { SolBrokenBandsCanvasContainer } from "../components/SolBrokenBands";
 import { SolColorBandsCanvasContainer } from "../components/SolColorBands";
 import { SolWall610CanvasContainer } from "../components/SolWall610";
 import { SolWall1111CanvasContainer } from "../components/SolWall1111";
+import { SolWall370CanvasContainer } from "../components/SolWall370";
 
 export const Home = () => {
   return (
@@ -36,6 +37,7 @@ export const Home = () => {
         <SolColorBandsCanvasContainer />
         <SolWall610CanvasContainer />
         <SolWall1111CanvasContainer />
+        <SolWall370CanvasContainer />
         {/* <SolWall565 width={500} height={500} /> */}
       </main>
     </div>

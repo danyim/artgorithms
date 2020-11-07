@@ -12,16 +12,17 @@ export const drawBands = (
   bandSize: number,
   numBands: number,
   rotation: number,
-  colorArray: number[][]
+  colorArray: number[][],
+  randomizeColor: boolean = true
 ) => {
   ctx.save();
   let size = bandSize * numBands;
-  ctx.translate(x + size / 2, y);
+  ctx.translate(x + size / 2, y + size / 2);
   ctx.rotate(degToRad(rotation));
-  ctx.translate(-(x + size / 2), -y);
-  ctx.translate(-bandSize * 5, -bandSize * 5);
+  ctx.translate(-(x + size / 2), -(y + size / 2));
+  // ctx.translate(-bandSize * 5, -bandSize * 5);
 
-  const randColor = Math.floor(Math.random() * 100);
+  const randColor = randomizeColor ? Math.floor(Math.random() * 100) : 0;
   for (let k = 0; k < numBands; k++) {
     ctx.beginPath();
     ctx.fillRect(x, y, size, bandSize * numBands);
@@ -47,13 +48,13 @@ export const drawConcentricCircles = (
     ctx.beginPath();
     ctx.arc(x, y, radius, 0, 2 * Math.PI);
     const [r, g, b] = colorArray[(k + randColor) % colorArray.length];
-    // const [r, g, b] = colorArray[1];
     radius -= bandSize;
     ctx.fillStyle = `rgb(${r},${g},${b})`;
     ctx.fill();
   }
 };
 
+/** Draw concentric triangles of different colors */
 export const drawConcentricTriangles = (
   ctx: CanvasRenderingContext2D,
   x: number,

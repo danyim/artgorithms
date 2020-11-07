@@ -4,7 +4,7 @@ import { degToRad, randRange } from "../../utils/polygon";
 // const log = debug("utils");
 const log = console.log;
 
-export const drawConcentricColorCircles = (
+export const drawConcentricCircleBands = (
   ctx: CanvasRenderingContext2D,
   x: number,
   y: number,
@@ -15,14 +15,14 @@ export const drawConcentricColorCircles = (
   ctx.save();
 
   for (let k = 0; k < numBands; k++) {
-    drawConcentricColorCircle(ctx, x, y, bandSize * k, bandSize, colorArray);
+    drawConcentricBandedCircle(ctx, x, y, bandSize * k, bandSize, colorArray);
   }
   drawBandedCircle(ctx, x, y, bandSize / 2, colorArray);
 
   ctx.restore();
 };
 
-export const drawConcentricColorCircle = (
+export const drawConcentricBandedCircle = (
   ctx: CanvasRenderingContext2D,
   x: number,
   y: number,

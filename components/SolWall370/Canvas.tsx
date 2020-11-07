@@ -1,18 +1,17 @@
 import React from "react";
-import { drawConcentricCircleBands } from "./util";
+import { drawBands } from "../SolColorBands/util";
 
 interface Props {
   width?: number;
   height?: number;
-  size: number;
-  bands: number;
+  space: number;
 }
 
-export const Canvas = ({ width, height, bands, size }: Props) => {
+export const Canvas = ({ width, height, space }: Props) => {
   const canvasRef = React.useRef<HTMLCanvasElement>();
 
   const handleOnMouseMove = () => {
-    draw();
+    // draw();
   };
 
   const draw = () => {
@@ -27,22 +26,44 @@ export const Canvas = ({ width, height, bands, size }: Props) => {
     ctx.clearRect(0, 0, 500, 500);
 
     // Art params
-    const colors = [
-      [229, 204, 88],
-      [182, 93, 40],
-      [125, 151, 57],
-      [88, 103, 178],
-      [184, 95, 41],
-      [132, 159, 67],
-      [239, 214, 97],
-      [165, 64, 46],
-      [107, 89, 174],
-      [149, 171, 91],
-      [113, 121, 186],
-      [241, 218, 103],
-    ];
+    const bandSize = 14;
 
-    drawConcentricCircleBands(ctx, 250, 250, size, bands, colors);
+    drawBands(
+      ctx,
+      0,
+      0,
+      bandSize,
+      width / 10,
+      0,
+      [
+        [0, 0, 0],
+        [255, 255, 255],
+      ],
+      false
+    );
+
+    const radius = width * 0.4;
+    const numBands = 35;
+    const size = bandSize * numBands;
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(width / 2, height / 2, radius, 0, 2 * Math.PI);
+    ctx.clip();
+    ctx.translate(0, 13);
+    drawBands(
+      ctx,
+      width / 2 - size / 2,
+      height / 2 - size / 2,
+      bandSize,
+      numBands,
+      90,
+      [
+        [0, 0, 0],
+        [255, 255, 255],
+      ],
+      false
+    );
+    ctx.restore();
   };
 
   const handleOnClear = () => {
@@ -57,7 +78,7 @@ export const Canvas = ({ width, height, bands, size }: Props) => {
 
   React.useEffect(() => {
     draw();
-  }, [bands, size, width, height]);
+  }, [space, width, height]);
 
   return (
     <>
