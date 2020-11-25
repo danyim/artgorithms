@@ -8,14 +8,14 @@ const Container = styled.div`
   border-radius: 5px;
 
   h4.title {
-    font: normal 500 1.7rem/1.7rem Abel;
+    font: normal 500 1.7rem/1.7rem "Abel", sans-serif;
     text-transform: uppercase;
     margin: 0;
   }
 
   p.artist-name,
   .year {
-    font: normal 300 1.1rem/1.2rem Inter;
+    font: normal 300 1.1rem/1.2rem Inter, sans-serif;
     letter-spacing: -0.025rem;
   }
 

@@ -8,7 +8,7 @@ const Container = styled.div`
 `;
 
 const Label = styled.label`
-  font: normal 400 0.85rem/1rem Inter;
+  font: normal 400 0.85rem/1rem Inter, sans-serif;
   text-transform: uppercase;
   min-width: 50px;
 `;
