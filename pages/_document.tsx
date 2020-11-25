@@ -41,11 +41,6 @@ export default class MyDocument extends Document {
         <Head>
           <meta charSet="UTF-8" />
           <meta httpEquiv="x-ua-compatible" content="ie=edge" />
-          <link
-            rel="stylesheet"
-            type="css"
-            href="https://fonts.googleapis.com/css2?family=Abel&amp;family=Inter:wght@200,500&amp;display=swap"
-          />
         </Head>
         <body>
           <Main />
