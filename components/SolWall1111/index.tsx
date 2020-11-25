@@ -33,14 +33,14 @@ export const SolWall1111CanvasContainer = () => {
       </div>
       <div className="mdl-cell mdl-cell--4-col">
         <Placard
-          title="Circle with Broken Bands of Color"
+          title="Wall Drawing #1111: Circle with Broken Bands of Color"
           artistName="Sol LeWitt"
           year="2003"
           description={() => (
             <>
               <small>
-                <a href="https://www.mutualart.com/Artwork/WALL-DRAWING--1111-CIRCLE-WITH-BROKEN-BA/22AEC9A56478D66B">
-                  Mutualart
+                <a href="https://www.sothebys.com/en/auctions/ecatalogue/2018/contemporary-curated-n09824/lot.38.html">
+                  Sotheby's
                 </a>
               </small>
               <CanvasInputs onReset={handleReset}>
