@@ -8,8 +8,9 @@ const Container = styled.div`
 
   .reset {
     font: normal 400 0.8rem/1rem Inter, sans-serif;
+    letter-spacing: 0.05rem;
     text-transform: uppercase;
-    margin-top: 30px;
+    margin-top: 0.5rem;
     align-self: flex-end;
     border: none;
     background-color: transparent;

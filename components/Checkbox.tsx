@@ -2,10 +2,14 @@ import React from "react";
 import styled from "styled-components";
 
 const Container = styled.div`
+  display: flex;
+  margin: 0.4rem 0;
+
   label {
-    font: normal 500 0.85rem/1rem "Abel", sans-serif;
+    font: normal 400 0.8rem/1rem Inter, sans-serif;
     text-transform: uppercase;
     display: block;
+    flex-basis: 5rem;
   }
 
   input[type="checkbox"] {
