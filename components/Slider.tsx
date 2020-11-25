@@ -1,50 +1,82 @@
 import React from "react";
+import ReactSlider from "react-slider";
 import styled from "styled-components";
+import TrackSvg from "./slider.svg";
 
 const Container = styled.div`
-  label {
-    font: normal 500 0.85rem/1rem Abel;
-    text-transform: uppercase;
-    display: block;
-  }
+  margin: 0.4rem 0;
+  display: flex;
+  flex-flow: row nowrap;
+`;
 
-  input[type="range"] {
-    width: 100%;
-    cursor: pointer;
+const LabelContainer = styled.div`
+  flex-basis: 7rem;
+`;
 
-    /* Hides the slider so custom styles can be added */
-    background: transparent;
-    border-color: transparent;
-    color: transparent;
+const Label = styled.label`
+  font: normal 400 0.8rem/1rem Inter, sans-serif;
+  letter-spacing: 0.05rem;
+  text-transform: uppercase;
+  min-width: 50px;
+`;
 
-    &::-webkit-slider-thumb {
-      --webkit-appearance: none;
-      border: 1px solid #000000;
-      height: 10px;
-      width: 2px;
-      cursor: pointer;
-      margin-top: -14px; /* You need to specify a margin in Chrome, but in Firefox and IE it is automatic */
-    }
+const SliderContainer = styled.div`
+  flex: 1 1 auto;
+  width: 100%;
 
-    &::-webkit-slider-runnable-track {
-      width: 100%;
-      height: 2px;
-      cursor: pointer;
-      background: white;
-      border-radius: 0;
-      border-top: 1px dashed black;
-      border-color: gray;
-    }
+  // & .slider-track:nth-child(1) {
+  //   background: linear-gradient(
+  //     90deg,
+  //     rgba(255, 255, 255, 0) 0%,
+  //     rgba(255, 255, 255, 1) 100%
+  //   );
+  // }
+`;
 
-    &:focus::-webkit-slider-runnable-track {
-      border-color: black;
-    }
+const StyledSlider = styled(ReactSlider)`
+  width: 100%;
+  height: 20px;
 
-    &:focus {
-      outline: none;
-    }
+  .slider-track {
+    margin-top: 10px;
+    border-bottom: 1px dashed black;
   }
 `;
+
+const StyledTrack = styled.img`
+  top: 0;
+  bottom: 0;
+`;
+
+const StyledPlainTrack = styled.div`
+  top: 0;
+  bottom: 0;
+  background: ${(props) =>
+    props.index === 2 ? "#f00" : props.index === 1 ? "#0f0" : "#ddd"};
+  border-radius: 999px;
+`;
+// const Track = (props, state) => (
+//   // <StyledTrack src={TrackSvg} height="20" />
+//   <StyledPlainTrack />
+// );
+const Track = (props, state) => <StyledTrack {...props} index={state.index} />;
+
+const StyledThumb = styled.div<{ height: number }>`
+  height: ${({ height }) => height}px;
+  line-height: ${({ height }) => height}px;
+  width: 1px;
+  border-right: 1px solid black;
+  top: 0;
+  cursor: grab;
+  transition: 0.2s all ease-out;
+
+  &.thumb-active {
+    outline: 0;
+  }
+`;
+const Thumb = (props, state) => (
+  <StyledThumb height={20} {...props}></StyledThumb>
+);
 
 interface Props {
   keyName: string;
@@ -62,25 +94,36 @@ export const Slider = ({
   handleChange,
 }: Props) => {
   const [min, step, max] = minStepMax;
-  const handleOnInput = (e: React.FormEvent<HTMLInputElement>) => {
-    handleChange(keyName, parseInt((e.target as HTMLInputElement).value, 10));
+  const [position, setPosition] = React.useState(value);
+
+  const handleOnChange = (value: number) => {
+    setPosition(value);
+    handleChange(keyName, value);
   };
 
   return (
     <Container>
-      <label htmlFor={keyName}>
-        {label} <small>{value}</small>
-      </label>
-      <input
-        name={keyName}
-        className="mdl-slider"
-        type="range"
-        value={value}
-        min={min}
-        max={max}
-        step={step}
-        onInput={handleOnInput}
-      />
+      <LabelContainer>
+        <Label htmlFor={keyName}>
+          {label}
+          {/* ({position}) */}
+        </Label>
+      </LabelContainer>
+      <SliderContainer>
+        <div>
+          <StyledSlider
+            thumbActiveClassName="thumb-active"
+            trackClassName="slider-track"
+            defaultValue={value}
+            min={min}
+            max={max}
+            step={step}
+            // renderTrack={Track}
+            renderThumb={Thumb}
+            onChange={handleOnChange}
+          />
+        </div>
+      </SliderContainer>
     </Container>
   );
 };

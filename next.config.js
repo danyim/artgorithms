@@ -1,4 +1,6 @@
-module.exports = {
+const withImages = require("next-images");
+
+module.exports = withImages({
   typescript: {
     // !! WARN !!
     // Dangerously allow production builds to successfully complete even if
@@ -6,4 +8,4 @@ module.exports = {
     // !! WARN !!
     ignoreBuildErrors: true,
   },
-};
+});

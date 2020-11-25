@@ -58,9 +58,9 @@ export const SolCubeFormsCanvasContainer = ({
       </div>
       <div className="mdl-cell mdl-cell--4-col">
         <Placard
-          title="
-          Forms Derived from a Cube in Color"
+          title="Forms Derived from a Cube in Color"
           artistName="Sol LeWitt"
+          year="1985"
           description={() => (
             <>
               <small>

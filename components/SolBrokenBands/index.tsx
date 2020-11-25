@@ -26,6 +26,7 @@ export const SolBrokenBandsCanvasContainer = () => {
         <Placard
           title="Broken Color Bands in Four Directions"
           artistName="Sol LeWitt"
+          year="2005"
           description={() => (
             <>
               <small>

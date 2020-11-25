@@ -25,8 +25,25 @@ a {
   margin: 3rem 0;
 }
 
+.mdl-grid .mdl-cell--8-col canvas {
+  margin-right: 1rem;
+}
+
 .mdl-grid .mdl-cell--4-col {
   display: flex;
   justify-content: flex-end;
   padding-left: 3rem;
+}
+
+h4.placard-title {
+  font: normal 500 1.1rem/1.4rem Inter, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.02rem;
+  margin-bottom: 0.4rem;
+}
+
+p.placard {
+  font: normal 400 1.1rem/1.9rem Inter, sans-serif;
+  letter-spacing: 0.02rem;
+  margin: 0.5rem 0;
 }

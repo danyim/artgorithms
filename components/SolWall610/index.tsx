@@ -35,12 +35,14 @@ export const SolWall610CanvasContainer = () => {
         <Placard
           title="Wall Drawing #610"
           artistName="Sol LeWitt"
+          year="1989"
           description={() => (
             <>
               <small>
                 <a href="https://www.artsy.net/show/yale-university-art-gallery-sol-lewitt-wall-drawings-expanding-a-legacy">
                   Artsy
                 </a>
+                <a href="https://massmoca.org/event/walldrawing610/">MoCA</a>
               </small>
               <CanvasInputs onReset={handleReset}>
                 <Slider

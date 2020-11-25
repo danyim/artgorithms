@@ -41,6 +41,7 @@ export const SolColorBandsCanvasContainer = () => {
         <Placard
           title="Color Bands"
           artistName="Sol LeWitt"
+          year="2000"
           description={() => (
             <>
               <small>

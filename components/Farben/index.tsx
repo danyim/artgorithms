@@ -48,8 +48,9 @@ export const Farben = ({ width = 1000, height = 450 }: Props) => {
       </div>
       <div className="mdl-cell mdl-cell--4-col">
         <Placard
-          title="256 Farben (1974/1984)"
+          title="256 Farben"
           artistName="Gerhard Richter"
+          year="1974"
           description={() => (
             <>
               <small>

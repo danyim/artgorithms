@@ -35,6 +35,7 @@ export const SolWall1111CanvasContainer = () => {
         <Placard
           title="Circle with Broken Bands of Color"
           artistName="Sol LeWitt"
+          year="2003"
           description={() => (
             <>
               <small>

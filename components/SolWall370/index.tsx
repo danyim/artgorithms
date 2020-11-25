@@ -29,6 +29,7 @@ export const SolWall370CanvasContainer = () => {
         <Placard
           title="Wall Drawing #370"
           artistName="Sol LeWitt"
+          year="1982"
           description={() => (
             <>
               <small>
