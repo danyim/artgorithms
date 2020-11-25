@@ -114,7 +114,7 @@ export const Slider = ({
           <StyledSlider
             thumbActiveClassName="thumb-active"
             trackClassName="slider-track"
-            defaultValue={value}
+            value={value}
             min={min}
             max={max}
             step={step}

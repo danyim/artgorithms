@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 const Container = styled.div`
   label {
-    font: normal 500 0.85rem/1rem Abel;
+    font: normal 500 0.85rem/1rem "Abel", sans-serif;
     text-transform: uppercase;
     display: block;
   }

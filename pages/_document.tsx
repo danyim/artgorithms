@@ -1,10 +1,12 @@
 import Document, {
   DocumentContext,
-  Head,
+  Head as NextHead,
   Html,
   Main,
   NextScript,
 } from "next/document";
+import GoogleFonts from "next-google-fonts";
+
 import React from "react";
 import { ServerStyleSheet } from "styled-components";
 
@@ -38,10 +40,11 @@ export default class MyDocument extends Document {
   render() {
     return (
       <Html>
-        <Head>
+        <GoogleFonts href="https://fonts.googleapis.com/css2?family=Abel&family=Inter:wght@400;700&display=swap" />
+        <NextHead>
           <meta charSet="UTF-8" />
           <meta httpEquiv="x-ua-compatible" content="ie=edge" />
-        </Head>
+        </NextHead>
         <body>
           <Main />
           <NextScript />
