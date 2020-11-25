@@ -35,7 +35,7 @@ const Container = styled.div`
 interface Props {
   title: string;
   artistName: string;
-  year?: number | string;
+  year: number | string;
   description: string | (() => JSX.Element);
 }
 
@@ -45,7 +45,7 @@ export const Placard = ({ title, artistName, description, year }: Props) => {
       <h4 className="title">{title}</h4>
       <p className="artist-name">
         {artistName}
-        <span className="year">, {year || 1998}</span>
+        <span className="year">, {year || "—"}</span>
       </p>
       <hr />
       {typeof description === "string" && <p>{description}</p>}
