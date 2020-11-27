@@ -25,8 +25,9 @@ export const CanvasContainer = ({ width = 500, height = 400 }: Props) => {
         <Canvas width={width} height={height} area={area} />
       </div>
       <Placard
-        title="Wall Drawing 565 (1988)"
+        title="Wall Drawing 565"
         artistName="Sol LeWitt"
+        year="1988"
         description={() => (
           <>
             <h5>(WORK IN PROGRESS)</h5>

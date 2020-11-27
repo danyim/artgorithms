@@ -23,10 +23,14 @@ const Container = styled.div`
 
 const ThumbnailList = styled.ul`
   display: flex;
-  flex: row nowrap;
+  flex-flow: row wrap;
   list-style-type: none;
   padding: 0;
   margin: 0;
+  @media only screen and (max-width: ${({ theme }) =>
+      theme.breakpoints.small}) {
+    max-width: 200px;
+  }
 `;
 interface Props {}
 

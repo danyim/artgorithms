@@ -5,7 +5,6 @@ import Document, {
   Main,
   NextScript,
 } from "next/document";
-import GoogleFonts from "next-google-fonts";
 
 import React from "react";
 import { ServerStyleSheet } from "styled-components";
@@ -40,8 +39,11 @@ export default class MyDocument extends Document {
   render() {
     return (
       <Html>
-        <GoogleFonts href="https://fonts.googleapis.com/css2?family=Abel&family=Inter:wght@400;700&display=swap" />
         <NextHead>
+          <link
+            href="https://fonts.googleapis.com/css2?family=Abel&family=Inter:wght@400;700&display=swap"
+            rel="stylesheet"
+          />
           <meta charSet="UTF-8" />
           <meta httpEquiv="x-ua-compatible" content="ie=edge" />
         </NextHead>
