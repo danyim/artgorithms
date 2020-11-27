@@ -29,7 +29,7 @@ export const SolColorBandsCanvasContainer = () => {
     }
   };
 
-  const canvasSize = 200;
+  const canvasSize = 250;
 
   return (
     <div className="mdl-grid">

@@ -8,11 +8,11 @@ interface Props {}
 
 export const SolWall1111CanvasContainer = () => {
   const [bands, setBands] = React.useState(15);
-  const [size, setSize] = React.useState(10);
+  const [size, setSize] = React.useState(15);
 
   const handleReset = () => {
     setBands(15);
-    setSize(10);
+    setSize(15);
   };
 
   const handleChange = (key: string, val: number) => {
@@ -47,7 +47,7 @@ export const SolWall1111CanvasContainer = () => {
                 <Slider
                   keyName="size"
                   label="Size"
-                  minStepMax={[10, 10, 100]}
+                  minStepMax={[15, 5, 100]}
                   value={size}
                   handleChange={handleChange}
                 />

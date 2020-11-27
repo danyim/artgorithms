@@ -20,7 +20,7 @@ export const drawBands = (
   ctx.translate(x + size / 2, y + size / 2);
   ctx.rotate(degToRad(rotation));
   ctx.translate(-(x + size / 2), -(y + size / 2));
-  // ctx.translate(-bandSize * 5, -bandSize * 5);
+  if (rotation === 45) ctx.translate(-size / 4, size / 4);
 
   const randColor = randomizeColor ? Math.floor(Math.random() * 100) : 0;
   for (let k = 0; k < numBands; k++) {
