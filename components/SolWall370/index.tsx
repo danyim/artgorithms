@@ -53,3 +53,5 @@ export const SolWall370CanvasContainer = () => {
     </div>
   );
 };
+
+export default SolWall370CanvasContainer;

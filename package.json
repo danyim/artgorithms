@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "debug": "^4.2.0",
+    "framer-motion": "^2.9.4",
     "next": "latest",
     "next-google-fonts": "^1.2.1",
     "next-images": "^1.6.2",

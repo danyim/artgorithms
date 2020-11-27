@@ -82,3 +82,5 @@ export const SolCubeFormsCanvasContainer = ({
     </div>
   );
 };
+
+export default SolCubeFormsCanvasContainer;

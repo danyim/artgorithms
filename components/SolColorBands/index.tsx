@@ -70,3 +70,5 @@ export const SolColorBandsCanvasContainer = () => {
     </div>
   );
 };
+
+export default SolColorBandsCanvasContainer;

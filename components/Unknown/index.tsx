@@ -49,3 +49,5 @@ export const UnknownCanvasContainer = () => {
     </div>
   );
 };
+
+export default UnknownCanvasContainer;

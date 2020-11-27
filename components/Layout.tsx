@@ -1,10 +1,12 @@
 import Head from "next/head";
-import styles from "../styles/Home.module.css";
+import styles from "@/styles/Home.module.css";
 import React from "react";
-import ThumbGallery from "components/ThumbGallery";
-import Header from "components/Header";
+import ThumbGallery from "./ThumbGallery";
+import { Header } from "./Header";
 
-export const Home = () => {
+interface Props {}
+
+export const Layout: React.FC<Props> = ({ children }) => {
   return (
     <div className={styles.container}>
       <Head>
@@ -14,10 +16,11 @@ export const Home = () => {
 
       <main className={styles.main}>
         <Header />
+        {children}
         <ThumbGallery />
       </main>
     </div>
   );
 };
 
-export default Home;
+export default Layout;

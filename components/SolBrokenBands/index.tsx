@@ -50,3 +50,5 @@ export const SolBrokenBandsCanvasContainer = () => {
     </div>
   );
 };
+
+export default SolBrokenBandsCanvasContainer;
