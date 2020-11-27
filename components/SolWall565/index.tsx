@@ -12,6 +12,9 @@ interface Props {
 export const CanvasContainer = ({ width = 500, height = 400 }: Props) => {
   const [area, setArea] = React.useState(2500);
 
+  const handleReset = () => {
+    setArea(2500);
+  };
   const handleChange = (key: string, val: number) => {
     setArea(val);
   };
