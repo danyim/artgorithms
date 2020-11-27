@@ -27,7 +27,7 @@ const Container = styled.div`
   hr {
     width: 100%;
     height: 0;
-    border: 2px solid black;
+    border-bottom: 4px solid black;
     margin: 1rem 0;
   }
 `;

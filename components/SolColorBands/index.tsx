@@ -29,13 +29,35 @@ export const SolColorBandsCanvasContainer = () => {
     }
   };
 
+  const canvasSize = 200;
+
   return (
     <div className="mdl-grid">
       <div className="mdl-cell mdl-cell--8-col">
-        <Canvas width={250} height={250} size={size} bands={bands} />
-        <CirclesCanvas width={250} height={250} size={size} bands={bands} />
-        <CompositeCanvas1 width={250} height={250} size={size} bands={bands} />
-        <CompositeCanvas2 width={250} height={250} size={size} bands={bands} />
+        <Canvas
+          width={canvasSize}
+          height={canvasSize}
+          size={size}
+          bands={bands}
+        />
+        <CirclesCanvas
+          width={canvasSize}
+          height={canvasSize}
+          size={size}
+          bands={bands}
+        />
+        <CompositeCanvas1
+          width={canvasSize}
+          height={canvasSize}
+          size={size}
+          bands={bands}
+        />
+        <CompositeCanvas2
+          width={canvasSize}
+          height={canvasSize}
+          size={size}
+          bands={bands}
+        />
       </div>
       <div className="mdl-cell mdl-cell--4-col">
         <Placard

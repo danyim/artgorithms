@@ -32,7 +32,7 @@ a {
 .mdl-grid .mdl-cell--4-col {
   display: flex;
   justify-content: flex-end;
-  padding-left: 3rem;
+  padding-left: 2rem;
 }
 
 h4.placard-title {

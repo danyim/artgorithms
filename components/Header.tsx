@@ -10,11 +10,11 @@ export const Header: React.FC<Props> = ({ children }) => {
       <h1>
         <Link href="/">◬ artgorithms ◍</Link>
       </h1>
-      <p>merging algorithms and art</p>{" "}
+      <p>merging algorithms with art</p>{" "}
       {/* <p>
-            every piece depicted here is programmatically generated to match the
-            actual work(s).
-          </p> */}
+        every piece depicted here is programmatically generated to match the
+        actual work(s).
+      </p> */}
     </div>
   );
 };
