@@ -12,6 +12,11 @@ const theme = {
     large: "950px",
   },
 };
+const spring = {
+  type: "spring",
+  damping: 10,
+  stiffness: 100,
+};
 
 export default function App({ Component, pageProps, router }) {
   return (
@@ -20,6 +25,7 @@ export default function App({ Component, pageProps, router }) {
       initial="pageInitial"
       animate="pageAnimate"
       exit="pageExit"
+      transition={spring}
       variants={{
         pageInitial: {
           opacity: 0,
