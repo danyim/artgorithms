@@ -74,8 +74,8 @@ export const Canvas = ({ width, height, space }: Props) => {
       // Create the inner square bounds
       const innerSquareBounds = createInnerSquareBounds(ctx, squareBounds);
 
-      // Create a randomly rotated and scaled isoceles triangle in the center and use its vertices
-      const innerSquarePoints = generateTriangleInsideBounds(
+      // Create a randomly rotated and scaled isosceles triangle in the center and use its vertices
+      let innerSquarePoints = generateTriangleInsideBounds(
         ctx,
         innerSquareBounds
       );

@@ -4,7 +4,7 @@ import React from "react";
 
 interface Props {}
 
-export const Header: React.FC<Props> = ({ children }) => {
+export const Header: React.FC<Props> = () => {
   return (
     <div className={styles.header}>
       <h1>

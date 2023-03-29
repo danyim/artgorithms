@@ -19,7 +19,12 @@ You can start editing the page by modifying `pages/index.js`. The page auto-upda
 
 ## Deploy on Vercel
 
+```bash
+# Run a local build
+npm run build
 ```
+
+```bash
 vercel
 vercel --prod
 ```

@@ -30,6 +30,7 @@ export const UnknownCanvasContainer = () => {
         <Placard
           title="Unknown"
           artistName="Unknown"
+          year="Unknown"
           description={() => (
             <>
               <small></small>

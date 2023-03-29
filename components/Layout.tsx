@@ -1,10 +1,12 @@
 import Head from "next/head";
 import styles from "@/styles/Home.module.css";
-import React from "react";
+import React, { ReactNode } from "react";
 import ThumbGallery from "./ThumbGallery";
 import { Header } from "./Header";
 
-interface Props {}
+interface Props {
+  children: ReactNode;
+}
 
 export const Layout: React.FC<Props> = ({ children }) => {
   return (

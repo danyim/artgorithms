@@ -26,6 +26,7 @@ export const TemplateCanvasContainer = () => {
         <Placard
           title="Art Title"
           artistName="Unknown"
+          year="Unknown"
           description={() => (
             <>
               <small>
