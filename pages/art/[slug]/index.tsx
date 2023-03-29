@@ -5,6 +5,7 @@ import React from "react";
 import { manifest } from "constants/art-manifest";
 import Head from "components/Head";
 import Loader from "components/Loader";
+import Header from "components/Header";
 
 export const Artwork = () => {
   const router = useRouter();
@@ -29,10 +30,7 @@ export const Artwork = () => {
       <Head />
 
       <main className={styles.main}>
-        <div className={styles.header}>
-          <h1>◬ artgorithms ◍</h1>
-          <p>merging algorithms and art</p>
-        </div>
+        <Header />
         <DynamicArtwork />
       </main>
     </div>

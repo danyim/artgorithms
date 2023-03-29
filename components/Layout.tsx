@@ -12,7 +12,6 @@ export const Layout: React.FC<Props> = ({ children }) => {
   return (
     <div className={styles.container}>
       <Head />
-
       <main className={styles.main}>
         <Header />
         {children}
