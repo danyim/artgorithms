@@ -1,7 +1,7 @@
-import Head from "next/head";
 import styles from "@/styles/Home.module.css";
 import React, { ReactNode } from "react";
 import ThumbGallery from "./ThumbGallery";
+import Head from "./Head";
 import { Header } from "./Header";
 
 interface Props {
@@ -11,10 +11,7 @@ interface Props {
 export const Layout: React.FC<Props> = ({ children }) => {
   return (
     <div className={styles.container}>
-      <Head>
-        <title>◬ artgorithms ◍</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <Head />
 
       <main className={styles.main}>
         <Header />

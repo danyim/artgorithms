@@ -8,7 +8,7 @@ export const Header: React.FC<Props> = () => {
   return (
     <div className={styles.header}>
       <h1>
-        <Link href="/">◬ artgorithms ◍</Link>
+        <Link href="/">◬rŧg◍riŧhm§</Link>
       </h1>
       <p>merging algorithms with art</p>{" "}
       {/* <p>

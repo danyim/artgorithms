@@ -1,9 +1,9 @@
 import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
-import Head from "next/head";
 import styles from "@/styles/Home.module.css";
 import React from "react";
 import { manifest } from "constants/art-manifest";
+import Head from "components/Head";
 import Loader from "components/Loader";
 
 export const Artwork = () => {
@@ -26,10 +26,7 @@ export const Artwork = () => {
 
   return (
     <div className={styles.container}>
-      <Head>
-        <title>◬ artgorithms ◍</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <Head />
 
       <main className={styles.main}>
         <div className={styles.header}>

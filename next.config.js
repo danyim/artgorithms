@@ -8,4 +8,7 @@ module.exports = withImages({
     // !! WARN !!
     ignoreBuildErrors: false,
   },
+  experimental: {
+    forceSwcTransforms: true,
+  },
 });
