@@ -27,17 +27,18 @@ const ThumbnailList = styled.ul`
   list-style-type: none;
   padding: 0;
   margin: 0;
+  /*
   @media only screen and (max-width: ${({ theme }) =>
-      theme.breakpoints.small}) {
-    max-width: 200px;
+    theme.breakpoints.small}) {
+    max-width: 1vw;
   }
+  */
 `;
 interface Props {}
 
-export const ThumbGallery = ({}: Props) => {
+export const ThumbGallery: React.FC<Props> = () => {
   return (
     <Container>
-      {/* <button>◅</button> */}
       <ThumbnailList>
         {manifest.artworks.map((artwork) => (
           <Thumbnail
@@ -47,7 +48,6 @@ export const ThumbGallery = ({}: Props) => {
           />
         ))}
       </ThumbnailList>
-      {/* <button>▻</button> */}
     </Container>
   );
 };

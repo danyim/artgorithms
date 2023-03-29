@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Link from "next/link";
 
 const ListItem = styled.li`
-  margin: 2rem 1rem;
+  margin: 2rem 0.75rem;
   height: 100px;
   width: 100px;
   cursor: pointer;
