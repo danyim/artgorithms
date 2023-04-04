@@ -1,7 +1,6 @@
 import React from "react";
-import ReactSlider from "react-slider";
+import ReactSlider from "./ReactSlider";
 import styled from "styled-components";
-import TrackSvg from "./slider.svg";
 
 const Container = styled.div`
   margin: 0.4rem 0;
