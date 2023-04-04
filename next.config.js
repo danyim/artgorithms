@@ -14,5 +14,4 @@ module.exports = withImages({
   compiler: {
     styledComponents: true,
   },
-  swcMinify: true,
 });
