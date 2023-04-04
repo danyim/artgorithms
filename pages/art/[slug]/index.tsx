@@ -1,38 +1,21 @@
 import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
-import styles from "@/styles/Home.module.css";
 import React from "react";
-import {
-  Artwork as ArtworkEnum,
-  manifest,
-  enumManifest,
-  ArtworkMetadata,
-  slugToEnumKey,
-} from "constants/art-manifest";
-import Head from "components/Head";
 import Loader from "components/Loader";
-import Header from "components/Header";
-import Footer from "components/Footer";
+import Layout from "components/Layout";
 
 export const Artwork = () => {
   const router = useRouter();
-  const { slug } = router.query;
+  let { slug } = router.query;
   if (Array.isArray(slug)) {
-    console.log("Slug is an array");
-    return;
-  }
-
-  const enumKey = ArtworkEnum[slugToEnumKey(slug)];
-  const artMetadata: ArtworkMetadata = enumManifest[enumKey];
-  if (!artMetadata) {
-    console.log(`Slug "${slug}" (${enumKey}) not defined in artwork manifest`);
-    return;
+    console.log("Slug is an array, taking the first");
+    slug = slug[0];
   }
 
   const DynamicArtwork = dynamic(
     () => {
-      // Since dynamic imports must be explicitly written, we'll define it here
-      switch (artMetadata.slug) {
+      // Since dynamic imports must be explicitly written, we'll have to define each piece of art we want to display manually:
+      switch (slug) {
         case "wall-1a":
           return import("components/SolWall1A");
         case "broken-bands":
@@ -52,9 +35,7 @@ export const Artwork = () => {
         case "unknown":
           return import("components/Unknown");
       }
-      console.log("inside", artMetadata?.path);
-      // return import(`${artMetadata?.path}`);
-      // return import("components/SolColorBands");
+      return import("components/NotFound");
     },
     {
       loading: Loader,
@@ -62,15 +43,9 @@ export const Artwork = () => {
   );
 
   return (
-    <div className={styles.container}>
-      <Head />
-
-      <main className={styles.main}>
-        <Header />
-        <DynamicArtwork />
-        <Footer />
-      </main>
-    </div>
+    <Layout>
+      <DynamicArtwork />
+    </Layout>
   );
 };
 

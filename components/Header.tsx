@@ -11,11 +11,9 @@ export const Header: React.FC<Props> = () => {
       <h1>
         <Link href="/">{artgorithmsStyled}</Link>
       </h1>
-      <p>merging algorithms with art</p>{" "}
-      {/* <p>
-        every piece depicted here is programmatically generated to match the
-        actual work(s).
-      </p> */}
+      <p>
+        <i>merging algorithms with art</i>
+      </p>
     </div>
   );
 };

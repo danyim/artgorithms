@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 const ListItem = styled.li`
   margin: 2rem 0.75rem;
@@ -36,11 +37,15 @@ interface Props {
   href: string;
 }
 
-export const Thumbnail = ({ href, slug }: Props) => {
+export const Thumbnail: React.FC<Props> = ({ href, slug }) => {
+  const [thumnailPath, setThumnailPath] = useState("");
+
+  useEffect(() => setThumnailPath(`/thumb/${slug}.png`), [slug]);
+
   return (
     <Link href={href}>
       <ListItem title={slug}>
-        <FlexContainer thumbnailPath={`/thumb/${slug}.png`}></FlexContainer>
+        <FlexContainer thumbnailPath={thumnailPath}></FlexContainer>
         <label>{replaceDash(slug)}</label>
       </ListItem>
     </Link>

@@ -1,10 +1,7 @@
-import styled from "styled-components";
 import React from "react";
 
-const Container = styled.div``;
-
 export const Loader = () => {
-  return <Container>Loading...</Container>;
+  return <div>Loading...</div>;
 };
 
 export default Loader;

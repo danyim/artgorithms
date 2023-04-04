@@ -1,7 +1,7 @@
 import Link from "next/link";
 import styled from "styled-components";
 import Thumbnail from "./Thumbnail";
-import { manifest } from "constants/art-manifest";
+import { manifestArray } from "constants/art-manifest";
 const Container = styled.div`
   margin: 2rem 0;
 
@@ -40,7 +40,7 @@ export const ThumbGallery: React.FC<Props> = () => {
   return (
     <Container>
       <ThumbnailList>
-        {manifest.artworks.map((artwork) => (
+        {manifestArray.map((artwork) => (
           <Thumbnail
             key={artwork.slug}
             slug={artwork.slug}
