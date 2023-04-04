@@ -42,7 +42,7 @@ export const SolWall610CanvasContainer = () => {
                 <a href="https://www.artsy.net/show/yale-university-art-gallery-sol-lewitt-wall-drawings-expanding-a-legacy">
                   Artsy
                 </a>
-                <a href="https://massmoca.org/event/walldrawing610/">MoCA</a>
+                ,<a href="https://massmoca.org/event/walldrawing610/">MoCA</a>
               </small>
               <CanvasInputs onReset={handleReset}>
                 <Slider
