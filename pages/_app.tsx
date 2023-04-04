@@ -1,6 +1,20 @@
 import { motion } from "framer-motion";
-import { ThemeProvider } from "styled-components";
+import { createGlobalStyle, ThemeProvider } from "styled-components";
 import "../styles/globals.css";
+
+const GlobalStyle = createGlobalStyle`
+  body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+`;
+
+interface ThemeInterface {
+  colors: {
+    primary: string;
+  };
+}
 
 const theme = {
   colors: {
@@ -38,6 +52,7 @@ export default function App({ Component, pageProps, router }) {
         },
       }}
     >
+      <GlobalStyle />
       <ThemeProvider theme={theme}>
         <Component {...pageProps} />
       </ThemeProvider>

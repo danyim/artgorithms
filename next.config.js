@@ -11,4 +11,7 @@ module.exports = withImages({
   experimental: {
     forceSwcTransforms: true,
   },
+  compiler: {
+    styledComponents: true,
+  },
 });
