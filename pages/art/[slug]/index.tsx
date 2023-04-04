@@ -32,6 +32,8 @@ export const Artwork = () => {
           return import("components/SolWall610");
         case "wall-1111":
           return import("components/SolWall1111");
+        case "double-concentric":
+          return import("components/DoubleConcentric");
         case "unknown":
           return import("components/Unknown");
       }
