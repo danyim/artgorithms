@@ -19,7 +19,7 @@ export const SolWall370CanvasContainer = () => {
   };
 
   return (
-    <div className="container">
+    <div className="mdl-grid">
       <div className="mdl-cell mdl-cell--8-col">
         <Canvas width={300} height={300} space={space} />
         <CanvasSquare width={300} height={300} space={space} />
