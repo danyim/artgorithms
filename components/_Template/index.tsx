@@ -6,11 +6,13 @@ import Slider from "../Slider";
 
 interface Props {}
 
+const DEFAULT_VALUE = 10;
+
 export const TemplateCanvasContainer = () => {
-  const [space, setSpace] = React.useState(10);
+  const [space, setSpace] = React.useState(DEFAULT_VALUE);
 
   const handleReset = () => {
-    setSpace(10);
+    setSpace(DEFAULT_VALUE);
   };
 
   const handleChange = (key: string, val: number) => {
