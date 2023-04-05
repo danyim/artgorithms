@@ -29,6 +29,12 @@ vercel
 vercel --prod
 ```
 
+## Adding New Artwork
+- Decide on slug name
+- Copy `./components/_Template` and change the name of the component
+- Add an entry in `./pages/art/[slug]/index.tsx`
+- Add a 100x100 thumbnail entry into `./public/thumb/[slug].png` (with the slug name)
+
 ## Research
 - [Pentagonal tiling](https://en.wikipedia.org/wiki/Pentagonal_tiling)
 - [Tesselation](https://en.wikipedia.org/wiki/Tessellation)

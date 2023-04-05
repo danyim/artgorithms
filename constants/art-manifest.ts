@@ -11,6 +11,7 @@ export enum Artwork {
   "WALL_610",
   "WALL_1111",
   "UNKNOWN",
+  "DOUBLE_CONCENTRIC",
 }
 
 /**
@@ -30,6 +31,7 @@ export const manifest: Record<Artwork, ArtworkMetadata> = {
   [Artwork.WALL_610]: { slug: "wall-610" },
   [Artwork.WALL_1111]: { slug: "wall-1111" },
   [Artwork.UNKNOWN]: { slug: "unknown" },
+  [Artwork.DOUBLE_CONCENTRIC]: { slug: "double-concentric" },
   // { slug: "wall-565", path: "components/SolWall565" },
 };
 export const manifestArray = Object.values(manifest);

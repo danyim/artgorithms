@@ -6,38 +6,38 @@ import Slider from "../Slider";
 
 interface Props {}
 
-export const TemplateCanvasContainer = () => {
-  const [space, setSpace] = React.useState(10);
+export const DoubleConcentricContainer = () => {
+  const [bands, setBands] = React.useState(12);
 
   const handleReset = () => {
-    setSpace(10);
+    setBands(10);
   };
 
   const handleChange = (key: string, val: number) => {
-    setSpace(val);
+    setBands(val);
   };
 
   return (
     <div className="mdl-grid">
       <div className="mdl-cell mdl-cell--8-col">
-        <Canvas width={500} height={500} space={space} />
+        <Canvas width={500} height={250} bands={bands} />
       </div>
       <div className="mdl-cell mdl-cell--4-col">
         <Placard
-          title="Art Title"
-          artistName="Unknown"
-          year="Unknown"
+          title="Double Concentric: Scramble"
+          artistName="Frank Stella"
+          year="1971"
           description={() => (
             <>
               <small>
-                {/* <a href="https://www.sfmoma.org/artwork/FC.474.2">SF MOMA</a> */}
+                <a href="https://www.sfmoma.org/artwork/FC.311/">SF MOMA</a>
               </small>
               <CanvasInputs onReset={handleReset}>
                 <Slider
-                  keyName="space"
-                  label="Spacing"
-                  minStepMax={[5, 5, 50]}
-                  value={space}
+                  keyName="bands"
+                  label="Bands"
+                  minStepMax={[2, 1, 20]}
+                  value={bands}
                   handleChange={handleChange}
                 />
               </CanvasInputs>
@@ -49,4 +49,4 @@ export const TemplateCanvasContainer = () => {
   );
 };
 
-export default TemplateCanvasContainer;
+export default DoubleConcentricContainer;
