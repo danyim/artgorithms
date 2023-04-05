@@ -6,40 +6,47 @@ import Slider from "../Slider";
 
 interface Props {}
 
-const DEFAULT_VALUE = 10;
+const DEFAULT_VALUE = 2458;
 
 export const TemplateCanvasContainer = () => {
-  const [space, setSpace] = React.useState(DEFAULT_VALUE);
+  const [pattern, setPattern] = React.useState(DEFAULT_VALUE);
 
   const handleReset = () => {
-    setSpace(DEFAULT_VALUE);
+    setPattern(DEFAULT_VALUE);
   };
 
   const handleChange = (key: string, val: number) => {
-    setSpace(val);
+    setPattern(val);
+    console.log("key", key);
   };
 
   return (
     <div className="mdl-grid">
       <div className="mdl-cell mdl-cell--8-col">
-        <Canvas width={500} height={500} space={space} />
+        <Canvas width={384} height={512} pattern={pattern} />
       </div>
       <div className="mdl-cell mdl-cell--4-col">
         <Placard
-          title="Art Title"
-          artistName="Unknown"
-          year="Unknown"
+          title="50/50"
+          artistName="Tauba Auerbach"
+          year="2008"
           description={() => (
             <>
+              <h4 className="placard-title">Instructions</h4>
+              <p className="placard">
+                A repeating pattern of 3x4 squares on a 16x16 grid
+              </p>
               <small>
-                {/* <a href="https://www.sfmoma.org/artwork/FC.474.2">SF MOMA</a> */}
+                <a href="https://taubaauerbach.com/view.php?id=133">
+                  Tauba Auerbach
+                </a>
               </small>
               <CanvasInputs onReset={handleReset}>
                 <Slider
-                  keyName="space"
-                  label="Spacing"
-                  minStepMax={[5, 5, 50]}
-                  value={space}
+                  keyName="pattern"
+                  label="Pattern"
+                  minStepMax={[2, 14, 4095]}
+                  value={pattern}
                   handleChange={handleChange}
                 />
               </CanvasInputs>
