@@ -1,5 +1,4 @@
 import React from "react";
-import { drawFrame } from "utils/art";
 import { checkDraw } from "./util";
 
 interface Props {
@@ -25,19 +24,18 @@ export const Canvas = ({ width, height, pattern }: Props) => {
     const ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, width, height);
 
-    // Art params
-
     /**
      * The original artwork contains a repeating 16x16 grid of this 3x4 pattern:
      *    ◼◻◻
      *    ◼◼◻
      *    ◻◼◼
      *    ◻◼◻
-     * For our algorithm, we'll encode this into a binary string where 1s represent a filled square when reading from left to right and top to bottom:
+     * For our algorithm, we'll encode this into a binary string where 1s represent a filled square when reading from left to right and top to bottom.
+     * So the picture above becomes:
      *    ◼◻◻ ◼◼◻ ◻◼◼ ◻◼◻
      *    100 110 011 010 (binary) or 2458 (decimal)
      *
-     * This means there are 4095 possible combinations (111111111111 in binary) for this 3x4 pattern.
+     * This also means that there are 4095 possible combinations (111111111111 in binary), which will be the maximum input.
      */
 
     const patternNumber = pattern;
@@ -52,21 +50,17 @@ export const Canvas = ({ width, height, pattern }: Props) => {
     const innerWidth = innerColumns * boxSize;
     const innerHeight = innerRows * boxSize;
 
+    // Iterate over rows and columns of the pattern
     for (let k = 0; k < w; k++) {
       for (let j = 0; j < h; j++) {
-        const xOffset = innerWidth * k; // + (innerWidth / 2) * k;
-        const yOffset = innerHeight * j; // + (innerHeight / 2) * j;
-        // drawFrame(ctx, {
-        //   xOffset: boxSize * k + (boxSize / 2) * k,
-        //   yOffset: boxSize * j + (boxSize / 2) * j,
-        //   width: boxSize,
-        //   height: boxSize,
-        //   thickness: 1,
-        // });
+        const xOffset = innerWidth * k;
+        const yOffset = innerHeight * j;
 
         ctx.fillStyle = "black";
+        // Draw the main pattern
         for (let row = 0; row < innerRows; row++) {
           for (let col = 0; col < innerColumns; col++) {
+            // A manual and static alternative to `checkDraw`
             // if (
             //   // ◼◻◻
             //   (row === 0 && col == 1) ||

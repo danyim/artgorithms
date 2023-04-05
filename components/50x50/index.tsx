@@ -17,6 +17,7 @@ export const TemplateCanvasContainer = () => {
 
   const handleChange = (key: string, val: number) => {
     setPattern(val);
+    console.log("key", key);
   };
 
   return (
@@ -31,6 +32,10 @@ export const TemplateCanvasContainer = () => {
           year="2008"
           description={() => (
             <>
+              <h4 className="placard-title">Instructions</h4>
+              <p className="placard">
+                A repeating pattern of 3x4 squares on a 16x16 grid
+              </p>
               <small>
                 <a href="https://taubaauerbach.com/view.php?id=133">
                   Tauba Auerbach
