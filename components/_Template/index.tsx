@@ -48,3 +48,5 @@ export const TemplateCanvasContainer = () => {
     </div>
   );
 };
+
+export default TemplateCanvasContainer;

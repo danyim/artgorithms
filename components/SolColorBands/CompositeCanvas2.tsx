@@ -110,14 +110,13 @@ export const CompositeCanvas2 = ({ width, height, size, bands }: Props) => {
           break;
       }
       ctx.restore();
-      drawFrame(
-        ctx,
-        bound.xMin,
-        bound.yMin,
-        bound.xMax - bound.xMin,
-        bound.yMax - bound.yMin,
-        frameSize
-      );
+      drawFrame(ctx, {
+        xOffset: bound.xMin,
+        yOffset: bound.yMin,
+        width: bound.xMax - bound.xMin,
+        height: bound.yMax - bound.yMin,
+        thickness: frameSize,
+      });
     });
   };
 
