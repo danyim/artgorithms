@@ -9,13 +9,16 @@ import { CompositeCanvas2 } from "./CompositeCanvas2";
 
 interface Props {}
 
+const DEFAULT_SIZE = 10;
+const DEFAULT_BANDS = 40;
+
 export const SolColorBandsCanvasContainer = () => {
-  const [size, setSize] = React.useState(10);
-  const [bands, setBands] = React.useState(40);
+  const [size, setSize] = React.useState(DEFAULT_SIZE);
+  const [bands, setBands] = React.useState(DEFAULT_BANDS);
 
   const handleReset = () => {
-    setSize(10);
-    setBands(40);
+    setSize(DEFAULT_SIZE);
+    setBands(DEFAULT_BANDS);
   };
 
   const handleChange = (key: string, val: number) => {

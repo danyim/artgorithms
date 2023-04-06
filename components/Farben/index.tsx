@@ -10,14 +10,17 @@ interface Props {
   height?: number;
 }
 
+const DEFAULT_SPACE = 5;
+const DEFAULT_SIZE = 1;
+
 export const Farben = ({ width = 1000, height = 450 }: Props) => {
-  const [space, setSpace] = React.useState<number>(5);
-  const [size, setSize] = React.useState<number>(1);
+  const [space, setSpace] = React.useState<number>(DEFAULT_SPACE);
+  const [size, setSize] = React.useState<number>(DEFAULT_SIZE);
   const [outline, setOutline] = React.useState<boolean>(false);
 
   const handleReset = () => {
-    setSpace(5);
-    setSize(1);
+    setSpace(DEFAULT_SPACE);
+    setSize(DEFAULT_SIZE);
     setOutline(false);
   };
 
