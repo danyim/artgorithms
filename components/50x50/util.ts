@@ -1,3 +1,5 @@
+import { getBit } from "../../utils/binary";
+
 /**
  * Checks if a row and column value should be drawn based on the binary form of the `patternNumber`
  */
@@ -22,19 +24,4 @@ export const checkDraw = (
   //   result: getBit(patternNumber, flippedPos),
   // });
   return getBit(patternNumber, flippedPos);
-};
-
-/**
- * Returns the bit value in the nth position of a binary number. Position increments from _right to left_.
- * @param number Binary number
- * @param pos 0-based position in the binary, starts from the right to left
- * @returns
- */
-export const getBit = (number: number, pos: number) => {
-  // console.log(
-  //   `Number:${number}, bin:${number.toString(2)}, pos:${pos}, bit@pos:${
-  //     number.toString(2)[pos]
-  //   }`
-  // );
-  return (number >> pos) % 2 != 0;
 };

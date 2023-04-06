@@ -28,6 +28,8 @@ export const Artwork = () => {
           return import("components/Farben");
         case "wall-370":
           return import("components/SolWall370");
+        // case "wall-565":
+        //   return import("components/SolWall565");
         case "wall-610":
           return import("components/SolWall610");
         case "wall-1111":
@@ -36,6 +38,8 @@ export const Artwork = () => {
           return import("components/DoubleConcentric");
         case "50x50":
           return import("components/50x50");
+        case "labyrinths":
+          return import("components/Labyrinths");
         case "unknown":
           return import("components/Unknown");
       }
