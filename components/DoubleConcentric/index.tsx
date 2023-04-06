@@ -6,11 +6,13 @@ import Slider from "../Slider";
 
 interface Props {}
 
+const DEFAULT_VALUE = 12;
+
 export const DoubleConcentricContainer = () => {
-  const [bands, setBands] = React.useState(12);
+  const [bands, setBands] = React.useState(DEFAULT_VALUE);
 
   const handleReset = () => {
-    setBands(10);
+    setBands(DEFAULT_VALUE);
   };
 
   const handleChange = (key: string, val: number) => {
