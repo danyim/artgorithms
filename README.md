@@ -1,6 +1,6 @@
 # Artgorithms
 
-### https://artgorithms.vercel.com
+### https://artgorithms.vercel.app
 
 Inspired by exhibitions at the SFMOMA and Bret Victor's [Inventing on Principle talk](https://vimeo.com/36579366), this project aims to recreate the artwork in code and alogrithms.
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
