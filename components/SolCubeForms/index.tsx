@@ -9,15 +9,17 @@ interface Props {
   height?: number;
 }
 
+const DEFAULT_VALUE = 10;
+
 export const SolCubeFormsCanvasContainer = ({
   width = 500,
   height = 500,
 }: Props) => {
   const containerRef = React.useRef<HTMLDivElement>();
-  const [space, setSpace] = React.useState(10);
+  const [space, setSpace] = React.useState(DEFAULT_VALUE);
 
   const handleReset = () => {
-    setSpace(10);
+    setSpace(DEFAULT_VALUE);
   };
 
   const handleChange = (key: string, val: number) => {

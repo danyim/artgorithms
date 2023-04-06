@@ -6,11 +6,13 @@ import Slider from "../Slider";
 
 interface Props {}
 
+const DEFAULT_VALUE = 100;
+
 export const SolBrokenBandsCanvasContainer = () => {
-  const [saturation, setSaturation] = React.useState(100);
+  const [saturation, setSaturation] = React.useState(DEFAULT_VALUE);
 
   const handleReset = () => {
-    setSaturation(100);
+    setSaturation(DEFAULT_VALUE);
   };
 
   const handleChange = (key: string, val: number) => {
