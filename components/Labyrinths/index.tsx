@@ -28,7 +28,7 @@ export const TemplateCanvasContainer = () => {
         <Placard
           title="Hermetic One-way Labyrinths"
           artistName="Thomas Laubenberger"
-          year="Unknown"
+          year="2011"
           description={() => (
             <>
               <small>
