@@ -40,13 +40,16 @@ export const ThumbGallery: React.FC<Props> = () => {
   return (
     <Container>
       <ThumbnailList>
-        {manifestArray.map((artwork) => (
-          <Thumbnail
-            key={artwork.slug}
-            slug={artwork.slug}
-            href={`/art/${artwork.slug}`}
-          />
-        ))}
+        {manifestArray
+          // Exclude the test canvas from appearing in the gallery
+          .filter((m) => m.slug !== "test")
+          .map((artwork) => (
+            <Thumbnail
+              key={artwork.slug}
+              slug={artwork.slug}
+              href={`/art/${artwork.slug}`}
+            />
+          ))}
       </ThumbnailList>
     </Container>
   );
