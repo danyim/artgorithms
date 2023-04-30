@@ -1,5 +1,6 @@
-import { CanvasControl } from "components/InteractableCanvas";
+import { CanvasControl } from "types/types";
 import { useCanvasControls } from "./useCanvasControls";
+import { act, renderHook } from "@testing-library/react";
 
 const controls: CanvasControl[] = [
   {
@@ -18,13 +19,16 @@ const controls: CanvasControl[] = [
 
 describe("useCanvasControls", () => {
   it("should get default values", () => {
-    const { get } = useCanvasControls(controls);
-    expect(get("space")).toEqual(controls[0].defaultValue);
+    const { result } = renderHook(() => useCanvasControls(controls));
+    expect(result.current.get("space")).toEqual(controls[0].defaultValue);
   });
+
   it("should set and get values", () => {
     const expected = 777;
-    const { get, set } = useCanvasControls(controls);
-    set("space", expected);
-    expect(get("space")).toEqual(expected);
+    const { result } = renderHook(() => useCanvasControls(controls));
+    act(() => {
+      result.current.set("space", expected);
+    });
+    expect(result.current.get("space")).toEqual(expected);
   });
 });
