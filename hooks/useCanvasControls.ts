@@ -1,5 +1,5 @@
 import React from "react";
-import { CanvasControl } from "components/InteractableCanvas";
+import { CanvasControl } from "types/types";
 
 /** Maximum number of controls this hook can handle */
 const MAX_CONTROLS = 5;

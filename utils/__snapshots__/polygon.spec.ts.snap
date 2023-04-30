@@ -1,84 +1,84 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`polygon utils createWrappedRow should create a wrapped row 1`] = `
-Array [
-  Object {
+[
+  {
     "x": 0,
     "y": 0,
   },
-  Object {
+  {
     "x": 110,
     "y": 0,
   },
-  Object {
+  {
     "x": 220,
     "y": 0,
   },
-  Object {
+  {
     "x": 330,
     "y": 0,
   },
-  Object {
+  {
     "x": 440,
     "y": 0,
   },
-  Object {
+  {
     "x": 0,
     "y": 110,
   },
-  Object {
+  {
     "x": 110,
     "y": 110,
   },
-  Object {
+  {
     "x": 220,
     "y": 110,
   },
-  Object {
+  {
     "x": 330,
     "y": 110,
   },
-  Object {
+  {
     "x": 440,
     "y": 110,
   },
-  Object {
+  {
     "x": 0,
     "y": 220,
   },
-  Object {
+  {
     "x": 110,
     "y": 220,
   },
-  Object {
+  {
     "x": 220,
     "y": 220,
   },
-  Object {
+  {
     "x": 330,
     "y": 220,
   },
-  Object {
+  {
     "x": 440,
     "y": 220,
   },
-  Object {
+  {
     "x": 0,
     "y": 330,
   },
-  Object {
+  {
     "x": 110,
     "y": 330,
   },
-  Object {
+  {
     "x": 220,
     "y": 330,
   },
-  Object {
+  {
     "x": 330,
     "y": 330,
   },
-  Object {
+  {
     "x": 440,
     "y": 330,
   },
