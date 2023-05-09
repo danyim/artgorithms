@@ -4,8 +4,21 @@ import { Point } from "../../utils/polygon";
 const draw = (
   canvas: HTMLCanvasElement,
   clearCanvas: (ctx: CanvasRenderingContext2D) => void,
-  params: { width: number; height: number; space: number; lineWidth: number }
+  params: {
+    width: number;
+    height: number;
+    controlLabels: string[];
+    controlA: number;
+    controlB: number;
+    controlC: number;
+    controlD: number;
+    controlE: number;
+  }
 ): DrawCanvasFn => {
+  // TODO: Would be preferable to have a function that will translate controlX -> field names for
+  // better DX
+  const { controlA: padding, controlB: lineWidth } = params;
+
   if (!canvas) {
     console.error("Could not get ref");
     return;
@@ -16,9 +29,7 @@ const draw = (
 
   const x = 10;
   const y = 10;
-  const padding = params.space;
   const size = 120;
-  const lineWidth = params.lineWidth;
   const color = "black";
 
   // This is the ratio of the horiz/vert sections vs diagonal

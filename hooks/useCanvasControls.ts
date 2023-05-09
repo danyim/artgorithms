@@ -94,6 +94,11 @@ export const useCanvasControls = (controls: CanvasControl[]) => {
     set,
     /** Helper function for handling input changes */
     handleControlChange,
+    controlA,
+    controlB,
+    controlC,
+    controlD,
+    controlE,
   };
 };
 

@@ -4,17 +4,25 @@ import { DrawCanvasFn } from "types/types";
 interface Props {
   width: number;
   height: number;
-  space: number;
-  lineWidth: number;
   drawfn: DrawCanvasFn;
+  controlLabels: string[];
+  controlA: number;
+  controlB: number;
+  controlC: number;
+  controlD: number;
+  controlE: number;
 }
 
 export const CanvasRenderer = ({
   width,
   height,
   drawfn,
-  space,
-  lineWidth,
+  controlLabels,
+  controlA,
+  controlB,
+  controlC,
+  controlD,
+  controlE,
 }: Props) => {
   const canvasRef = React.useRef<HTMLCanvasElement>();
 
@@ -23,8 +31,26 @@ export const CanvasRenderer = ({
   };
 
   React.useEffect(() => {
-    drawfn(canvasRef.current, clearCanvas, { space, lineWidth, width, height });
-  }, [space, lineWidth, width, height]);
+    drawfn(canvasRef.current, clearCanvas, {
+      width,
+      height,
+      controlLabels,
+      controlA,
+      controlB,
+      controlC,
+      controlD,
+      controlE,
+    });
+  }, [
+    controlA,
+    controlB,
+    controlC,
+    controlD,
+    controlE,
+    controlLabels,
+    width,
+    height,
+  ]);
 
   return <canvas ref={canvasRef} width={width} height={height} />;
 };

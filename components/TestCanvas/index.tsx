@@ -1,20 +1,23 @@
 import React from "react";
-import { CanvasControl } from "types/types";
+import { ArtRenderType, CanvasControl } from "types/types";
 import ArtContainer from "components/ArtContainer";
 import { ArtworkMetadata } from "types/types";
-import draw from "./draw";
+import draw from "./art";
 
 const metadata: ArtworkMetadata = {
   title: "Test Canvas",
   artistName: "Self",
   year: 2023,
   description: "Test description for artwork",
+  width: 500,
+  height: 500,
   links: [
     ["SFMOMA 1", "https://www.sfmoma.org/artwork/FC.474.2"],
     ["SFMOMA 2", "https://www.sfmoma.org/artwork/FC.474.2"],
     ["SFMOMA 3", "https://www.sfmoma.org/artwork/FC.474.2"],
   ],
   slug: "",
+  renderType: ArtRenderType.Canvas,
 };
 
 const controls: CanvasControl[] = [
@@ -40,8 +43,6 @@ export const Container = () => {
       artworkMetadata={metadata}
       controls={controls}
       drawfn={draw}
-      width={500}
-      height={500}
     />
   );
 };

@@ -2,8 +2,8 @@ import React from "react";
 import { drawBands } from "../SolColorBands/util";
 
 interface Props {
-  width?: number;
-  height?: number;
+  width: number;
+  height: number;
   space: number;
 }
 

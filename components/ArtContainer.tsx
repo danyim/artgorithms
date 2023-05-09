@@ -7,22 +7,29 @@ import { CanvasControl, DrawCanvasFn } from "types/types";
 import useCanvasControls from "hooks/useCanvasControls";
 import { ArtworkMetadata } from "types/types";
 
+function mapControlLabels(controls: CanvasControl[]): string[] {
+  return controls.map((control) => control.name);
+}
+
 interface Props {
-  width: number;
-  height: number;
   artworkMetadata: ArtworkMetadata;
   controls: CanvasControl[];
   drawfn: DrawCanvasFn;
 }
 
-export const ArtContainer = ({
-  width,
-  height,
-  drawfn,
-  controls,
-  artworkMetadata,
-}: Props) => {
-  const { reset, get, handleControlChange } = useCanvasControls(controls);
+export const ArtContainer = ({ drawfn, controls, artworkMetadata }: Props) => {
+  const {
+    reset,
+    get,
+    handleControlChange,
+    controlA,
+    controlB,
+    controlC,
+    controlD,
+    controlE,
+  } = useCanvasControls(controls);
+  const { width, height } = artworkMetadata;
+  const controlLabels = mapControlLabels(controls);
 
   return (
     <div className="mdl-grid">
@@ -31,8 +38,8 @@ export const ArtContainer = ({
           width={width}
           height={height}
           drawfn={drawfn}
-          space={get("space")}
-          lineWidth={get("lineWidth")}
+          controlLabels={controlLabels}
+          {...{ controlA, controlB, controlC, controlD, controlE }}
         />
         {/* <InteractableCanvas width={500} height={500} /> */}
       </div>
