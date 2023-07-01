@@ -1,6 +1,5 @@
-export interface ArtworkMetadata {
-  slug: string;
-}
+import { ArtworkMetadata } from "../types/types";
+
 export enum Artwork {
   "WALL_1A",
   "BROKEN_BANDS",
@@ -14,13 +13,14 @@ export enum Artwork {
   "DOUBLE_CONCENTRIC",
   "FIFTY_BY_FIFTY",
   "LABYRINTHS",
+  "TEST",
   // "WALL_565",
 }
 
 /**
  * This art "manifest" will dyamically load the canvases in the thumbnail gallery
  */
-export const manifest: Record<Artwork, ArtworkMetadata> = {
+export const manifest: Record<Artwork, Pick<ArtworkMetadata, "slug">> = {
   [Artwork.WALL_1A]: { slug: "wall-1a" },
   [Artwork.BROKEN_BANDS]: {
     slug: "broken-bands",
@@ -37,6 +37,7 @@ export const manifest: Record<Artwork, ArtworkMetadata> = {
   [Artwork.DOUBLE_CONCENTRIC]: { slug: "double-concentric" },
   [Artwork.FIFTY_BY_FIFTY]: { slug: "50x50" },
   [Artwork.LABYRINTHS]: { slug: "labyrinths" },
+  [Artwork.TEST]: { slug: "test" },
   // [Artwork.WALL_565]: { slug: "wall-565" },
 };
 export const manifestArray = Object.values(manifest);

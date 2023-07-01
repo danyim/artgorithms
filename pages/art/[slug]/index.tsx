@@ -42,6 +42,8 @@ export const Artwork = () => {
           return import("components/Labyrinths");
         case "unknown":
           return import("components/Unknown");
+        case "test":
+          return import("components/TestCanvas");
       }
       return import("components/NotFound");
     },
