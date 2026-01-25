@@ -36,7 +36,7 @@ interface Props {
   title: string;
   artistName: string;
   year: number | string;
-  description: string | (() => JSX.Element);
+  description: string | (() => React.ReactNode);
 }
 
 export const Placard = ({ title, artistName, description, year }: Props) => {
