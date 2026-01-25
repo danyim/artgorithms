@@ -82,18 +82,10 @@ const MobileInfoRow = styled.div`
 `;
 
 const MobilePlacard = styled.div`
+  display: flex;
+  flex-direction: column;
   flex: 1;
-
-  h4 {
-    font: normal 500 1.2rem/1.4rem "Abel", sans-serif;
-    text-transform: uppercase;
-    margin: 0 0 0.25rem 0;
-  }
-
-  .artist {
-    font: normal 300 0.9rem/1.1rem Inter, sans-serif;
-    margin: 0;
-  }
+  gap: 0.25rem;
 
   .links {
     margin-top: 0.5rem;
@@ -109,24 +101,31 @@ const MobileControls = styled.div`
   flex: 1;
 `;
 
+const MobileDescription = styled.div`
+  display: none;
+
+  @media (max-width: 768px) {
+    display: block;
+    width: 90vw;
+    margin: 0 auto;
+
+    .description {
+      font: normal 400 0.9rem/1.4rem Inter, sans-serif;
+      margin: 0;
+      color: #444;
+    }
+  }
+`;
+
 const DesktopPlacard = styled.div`
   font-family: Inter, sans-serif;
   padding: 1.2rem 1.5rem;
   width: ${({ theme }) => theme.breakpoints.small};
   border-radius: 5px;
-
-  h4 {
-    font: normal 500 1.7rem/2rem "Abel", sans-serif;
-    text-transform: uppercase;
-    margin: 0;
-  }
-
-  .artist {
-    font: normal 300 1.1rem/1.2rem Inter, sans-serif;
-    letter-spacing: -0.025rem;
-    font-weight: 500;
-    margin: 0.5rem 0;
-  }
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 0.25rem;
 
   hr {
     width: 100%;
@@ -137,7 +136,9 @@ const DesktopPlacard = styled.div`
   }
 
   .description {
-    font: normal 400 1rem/1.7rem Inter, sans-serif;
+    font:
+      normal 400 1rem/1.7rem Inter,
+      sans-serif;
     margin: 0.5rem 0;
   }
 
@@ -184,15 +185,20 @@ export const ArtworkLayout: React.FC<Props> = ({
         {/* Mobile: Placard info on left, controls on right */}
         <MobileInfoRow>
           <MobilePlacard>
-            <h4>{artwork.title}</h4>
-            <p className="artist">
-              {artwork.artistName}, {artwork.year}
+            <p className="artist-name">{artwork.artistName}</p>
+            <p className="artwork-info">
+              <span className="title">{artwork.title}</span>
             </p>
+            <p className="artwork-year">{artwork.year}</p>
             {artwork.links && (
               <div className="links">
                 {artwork.links.map((link) => (
                   <React.Fragment key={link.label}>
-                    <a href={link.url} target="_blank" rel="noopener noreferrer">
+                    <a
+                      href={link.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       {link.label}
                     </a>
                     &nbsp;
@@ -203,22 +209,30 @@ export const ArtworkLayout: React.FC<Props> = ({
           </MobilePlacard>
           <MobileControls>{renderControls()}</MobileControls>
         </MobileInfoRow>
+        <MobileDescription>
+          {artwork.description &&
+            (typeof artwork.description === "string" ? (
+              <p className="description">{artwork.description}</p>
+            ) : (
+              <div className="description">{artwork.description}</div>
+            ))}
+        </MobileDescription>
       </CanvasColumn>
       {/* Desktop: Full placard with controls */}
       <PlacardColumn>
         <DesktopPlacard>
-          <h4>{artwork.title}</h4>
-          <p className="artist">
-            {artwork.artistName}, {artwork.year}
+          <p className="artist-name">{artwork.artistName}</p>
+          <p className="artwork-info">
+            <span className="title">{artwork.title}</span>
           </p>
+          <p className="artwork-year">{artwork.year}</p>
           <hr />
-          {artwork.description && (
-            typeof artwork.description === "string" ? (
+          {artwork.description &&
+            (typeof artwork.description === "string" ? (
               <p className="description">{artwork.description}</p>
             ) : (
               <div className="description">{artwork.description}</div>
-            )
-          )}
+            ))}
           {artwork.links && (
             <div className="links">
               {artwork.links.map((link) => (

@@ -1,6 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 html,
 body {
@@ -72,19 +70,36 @@ a {
   }
 }
 
-h4.placard-title {
-  font:
-    600 0.75rem / 1rem Inter,
-    sans-serif;
-  text-transform: uppercase;
-  letter-spacing: 0rem;
-  margin-bottom: 0.4rem;
+/* Placard typography classes */
+
+.artwork-info {
+  @apply m-0;
+  font-size: 0.9rem;
+}
+.artwork-info .artist-name {
+  @apply font-semibold m-0 text-base;
 }
 
-p.placard {
-  font:
-    normal 800 1rem/1.7rem Inter,
-    sans-serif;
-  letter-spacing: 0.02rem;
-  margin: 0.5rem 0;
+.artwork-info .title {
+  @apply font-semibold text-xl leading-2 uppercase;
+  font-family: Abel, Inter, san-serif;
+}
+
+.artwork-year {
+  @apply font-normal text-xs text-gray-500;
+}
+
+@media (min-width: 769px) {
+  .artwork-info {
+    font-size: 1.1rem;
+    line-height: 1.4rem;
+  }
+}
+
+.placard-title {
+  @apply font-semibold text-xs leading-4 font-sans uppercase tracking-normal mb-1.5;
+}
+
+.placard {
+  @apply font-normal text-sm leading-[1.7rem] font-sans tracking-[0.02rem] my-2;
 }

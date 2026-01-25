@@ -40,17 +40,19 @@ export const Canvas = ({ width, height, space, size, outline }: Props) => {
       padding: space,
       offsetX: 0,
       offsetY: 0,
-    }).forEach((point) => {
-      drawFn(
-        ctx,
-        point.x,
-        point.y,
-        boxWidth,
-        boxHeight,
-        randomHueColor({ max: 75, min: 15 }, { max: 75, min: 15 }),
-        randomHueColor({ max: 75, min: 15 }, { max: 75, min: 15 })
-      );
-    });
+    })
+      .filter((point) => point.x + boxWidth <= width && point.y + boxHeight <= height)
+      .forEach((point) => {
+        drawFn(
+          ctx,
+          point.x,
+          point.y,
+          boxWidth,
+          boxHeight,
+          randomHueColor({ max: 75, min: 15 }, { max: 75, min: 15 }),
+          randomHueColor({ max: 75, min: 15 }, { max: 75, min: 15 })
+        );
+      });
   };
 
   const fillRect = (

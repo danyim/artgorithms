@@ -14,7 +14,8 @@
       "Bash(npm run tsc:*)",
       "Bash(ls:*)",
       "Bash(find:*)",
-      "Bash(xargs sed:*)"
+      "Bash(xargs sed:*)",
+      "Bash(npm run build:*)"
     ]
   }
 }
