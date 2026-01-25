@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx npm-check-updates:*)",
+      "Bash(node:*)",
+      "Bash(nvm ls-remote:*)",
+      "Bash(npm install)",
+      "Bash(npm uninstall:*)",
+      "Bash(npm audit fix:*)",
+      "Bash(npm install:*)"
+    ]
+  }
+}

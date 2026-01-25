@@ -21,13 +21,13 @@ const ListItem = styled.li`
   }
 `;
 
-const FlexContainer = styled.div<{ thumbnailPath: string }>`
+const FlexContainer = styled.div<{ $thumbnailPath: string }>`
   display: flex;
   border-radius: 10px;
   background-color: #c0c0c0;
   width: 100%;
   height: 100%;
-  background-image: ${({ thumbnailPath }) => `url('${thumbnailPath}')`};
+  background-image: ${({ $thumbnailPath }) => `url('${$thumbnailPath}')`};
 `;
 
 const replaceDash = (str: string) => str?.replace("-", " ") ?? str;
@@ -45,7 +45,7 @@ export const Thumbnail: React.FC<Props> = ({ href, slug }) => {
   return (
     <Link href={href}>
       <ListItem title={slug}>
-        <FlexContainer thumbnailPath={thumnailPath}></FlexContainer>
+        <FlexContainer $thumbnailPath={thumnailPath}></FlexContainer>
         <label>{replaceDash(slug)}</label>
       </ListItem>
     </Link>

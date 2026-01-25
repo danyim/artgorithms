@@ -1,6 +1,5 @@
-const withImages = require("next-images");
-
-module.exports = withImages({
+/** @type {import('next').NextConfig} */
+module.exports = {
   typescript: {
     // !! WARN !!
     // Dangerously allow production builds to successfully complete even if
@@ -8,10 +7,8 @@ module.exports = withImages({
     // !! WARN !!
     ignoreBuildErrors: false,
   },
-  experimental: {
-    forceSwcTransforms: true,
-  },
   compiler: {
     styledComponents: true,
   },
-});
+  turbopack: {},
+};
