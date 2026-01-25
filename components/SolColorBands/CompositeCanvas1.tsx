@@ -15,7 +15,7 @@ interface Props {
 }
 
 export const CompositeCanvas1 = ({ width, height, size, bands }: Props) => {
-  const canvasRef = React.useRef<HTMLCanvasElement>();
+  const canvasRef = React.useRef<HTMLCanvasElement>(null);
 
   const handleOnMouseMove = () => {
     draw();

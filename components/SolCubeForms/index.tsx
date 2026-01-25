@@ -15,7 +15,7 @@ export const SolCubeFormsCanvasContainer = ({
   width = 500,
   height = 500,
 }: Props) => {
-  const containerRef = React.useRef<HTMLDivElement>();
+  const containerRef = React.useRef<HTMLDivElement>(null);
   const [space, setSpace] = React.useState(DEFAULT_VALUE);
 
   const handleReset = () => {

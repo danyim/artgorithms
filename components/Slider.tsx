@@ -47,18 +47,18 @@ const StyledTrack = styled.img`
   bottom: 0;
 `;
 
-const StyledPlainTrack = styled.div`
+const StyledPlainTrack = styled.div<{ $index: number }>`
   top: 0;
   bottom: 0;
   background: ${(props) =>
-    props.index === 2 ? "#f00" : props.index === 1 ? "#0f0" : "#ddd"};
+    props.$index === 2 ? "#f00" : props.$index === 1 ? "#0f0" : "#ddd"};
   border-radius: 999px;
 `;
 // const Track = (props, state) => (
 //   // <StyledTrack src={TrackSvg} height="20" />
-//   <StyledPlainTrack />
+//   <StyledPlainTrack $index={state.index} />
 // );
-const Track = (props, state) => <StyledTrack {...props} index={state.index} />;
+const Track = (props, state) => <StyledTrack {...props} />;
 
 const StyledThumb = styled.div<{ height: number }>`
   height: ${({ height }) => height}px;

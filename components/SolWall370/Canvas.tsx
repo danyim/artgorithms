@@ -2,13 +2,13 @@ import React from "react";
 import { drawBands } from "../SolColorBands/util";
 
 interface Props {
-  width?: number;
-  height?: number;
+  width: number;
+  height: number;
   space: number;
 }
 
 export const Canvas = ({ width, height, space }: Props) => {
-  const canvasRef = React.useRef<HTMLCanvasElement>();
+  const canvasRef = React.useRef<HTMLCanvasElement>(null);
 
   const handleOnMouseMove = () => {
     // draw();

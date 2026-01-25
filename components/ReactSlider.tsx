@@ -20,9 +20,9 @@ interface Props {
   snapDragDisabled: boolean;
   invert: boolean;
   marks: boolean | number | number[];
-  renderThumb: React.FC;
-  renderTrack: React.FC;
-  renderMark: React.FC;
+  renderThumb: (props: Record<string, unknown>, state: Record<string, unknown>) => React.ReactNode;
+  renderTrack: (props: Record<string, unknown>, state: Record<string, unknown>) => React.ReactNode;
+  renderMark: (props: Record<string, unknown>) => React.ReactNode;
   onBeforeChange: () => void;
   onChange: () => void;
   onSliderClick: (number) => void;
@@ -951,22 +951,21 @@ class ReactSlider extends React.Component<Props, State> {
     const thumbs = this.renderThumbs(offset);
     const marks = this.props.marks ? this.renderMarks() : null;
 
-    return React.createElement(
-      "div",
-      {
-        ref: (r) => {
+    return (
+      <div
+        ref={(r) => {
           this.slider = r;
           this.resizeElementRef.current = r;
-        },
-        style: { position: "relative" },
-        className:
-          this.props.className + (this.props.disabled ? " disabled" : ""),
-        onMouseDown: this.onSliderMouseDown,
-        onClick: this.onSliderClick,
-      },
-      tracks,
-      thumbs,
-      marks
+        }}
+        style={{ position: "relative" }}
+        className={this.props.className + (this.props.disabled ? " disabled" : "")}
+        onMouseDown={this.onSliderMouseDown}
+        onClick={this.onSliderClick}
+      >
+        {tracks}
+        {thumbs}
+        {marks}
+      </div>
     );
   }
 }

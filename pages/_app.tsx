@@ -27,7 +27,7 @@ const theme = {
   },
 };
 const spring = {
-  type: "spring",
+  type: "spring" as const,
   damping: 10,
   stiffness: 100,
 };

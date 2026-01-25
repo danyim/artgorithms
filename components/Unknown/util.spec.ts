@@ -1,3 +1,4 @@
+import { vi } from "vitest";
 import { printPt } from "../../utils/polygon";
 import {
   createSquareBounds,
@@ -26,7 +27,7 @@ describe("utils", () => {
     const container = createSquareBounds(0, 0, sqSize);
     const ctx = ({
       set strokeStyle(color) {},
-      drawRect: jest.fn(),
+      drawRect: vi.fn(),
     } as unknown) as CanvasRenderingContext2D;
 
     it("should translate the points correctly", () => {

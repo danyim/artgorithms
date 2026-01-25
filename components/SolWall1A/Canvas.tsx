@@ -9,7 +9,7 @@ interface Props {
 }
 
 export const Canvas = ({ width, height, space, lineWidth }: Props) => {
-  const canvasRef = React.useRef<HTMLCanvasElement>();
+  const canvasRef = React.useRef<HTMLCanvasElement>(null);
 
   const addLine = (
     ctx: CanvasRenderingContext2D,
