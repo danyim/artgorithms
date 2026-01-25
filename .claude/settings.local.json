@@ -10,7 +10,8 @@
       "Bash(npm install:*)",
       "Bash(npm ls:*)",
       "Bash(npm test:*)",
-      "Bash(npx vitest run --update)"
+      "Bash(npx vitest run --update)",
+      "Bash(npm run tsc:*)"
     ]
   }
 }

@@ -32,6 +32,7 @@ export type DrawCanvasFn = (
   params: {
     width: number;
     height: number;
+    controlLabels: string[];
     controlA: number;
     controlB: number;
     controlC: number;

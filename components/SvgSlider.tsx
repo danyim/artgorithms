@@ -50,7 +50,7 @@ export const Slider = ({
 }: Props) => {
   const [isLifted, setIsLifted] = React.useState(false);
   const [position, setPosition] = React.useState(75);
-  const containerRef = React.useRef<HTMLDivElement>();
+  const containerRef = React.useRef<HTMLDivElement>(null);
   const [min, step, max] = minStepMax;
   const handleOnInput = (e: React.FormEvent<HTMLInputElement>) => {
     handleChange(keyName, parseInt((e.target as HTMLInputElement).value, 10));
