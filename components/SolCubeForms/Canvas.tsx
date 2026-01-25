@@ -16,7 +16,7 @@ export const Canvas = ({
   onMouseMove,
   onMouseOut,
 }: Props) => {
-  const canvasRef = React.useRef<HTMLCanvasElement>();
+  const canvasRef = React.useRef<HTMLCanvasElement>(null);
 
   const draw = () => {
     const canvas = canvasRef.current;

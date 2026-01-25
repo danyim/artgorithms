@@ -14,7 +14,7 @@ interface Props {
  * @returns
  */
 export const InteractableCanvas = ({ width, height }: Props) => {
-  const canvasRef = React.useRef<HTMLCanvasElement>();
+  const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const mousePosition = useCanvasPosition(canvasRef.current);
 
   const handleOnMouseMove = () => {

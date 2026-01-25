@@ -7,7 +7,10 @@
       "Bash(npm install)",
       "Bash(npm uninstall:*)",
       "Bash(npm audit fix:*)",
-      "Bash(npm install:*)"
+      "Bash(npm install:*)",
+      "Bash(npm ls:*)",
+      "Bash(npm test:*)",
+      "Bash(npx vitest run --update)"
     ]
   }
 }

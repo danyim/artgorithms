@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`polygon utils createWrappedRow should create a wrapped row 1`] = `
+exports[`polygon utils > createWrappedRow > should create a wrapped row 1`] = `
 [
   {
     "x": 0,

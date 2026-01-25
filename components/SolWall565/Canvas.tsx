@@ -36,7 +36,7 @@ interface Props {
 
 const Canvas: React.FC<Props> = (props: Props) => {
   const { width, height } = props;
-  const canvasRef = React.useRef<HTMLCanvasElement>();
+  const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const canvas = canvasRef.current;
   if (!canvas) {
     console.error("Could not get ref");

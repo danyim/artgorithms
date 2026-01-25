@@ -9,7 +9,7 @@ interface Props {
 }
 
 export const Canvas = ({ width, height, bands, size }: Props) => {
-  const canvasRef = React.useRef<HTMLCanvasElement>();
+  const canvasRef = React.useRef<HTMLCanvasElement>(null);
 
   const handleOnMouseMove = () => {
     draw();

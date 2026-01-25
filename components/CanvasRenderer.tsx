@@ -24,7 +24,7 @@ export const CanvasRenderer = ({
   controlD,
   controlE,
 }: Props) => {
-  const canvasRef = React.useRef<HTMLCanvasElement>();
+  const canvasRef = React.useRef<HTMLCanvasElement>(null);
 
   const clearCanvas = (ctx: CanvasRenderingContext2D) => {
     ctx.clearRect(0, 0, width, height);

@@ -26,7 +26,7 @@ interface Props {
 }
 
 export const Canvas = ({ width, height, space }: Props) => {
-  const canvasRef = React.useRef<HTMLCanvasElement>();
+  const canvasRef = React.useRef<HTMLCanvasElement>(null);
 
   const draw = () => {
     const canvas = canvasRef.current;
