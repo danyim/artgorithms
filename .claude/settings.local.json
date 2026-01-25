@@ -11,7 +11,10 @@
       "Bash(npm ls:*)",
       "Bash(npm test:*)",
       "Bash(npx vitest run --update)",
-      "Bash(npm run tsc:*)"
+      "Bash(npm run tsc:*)",
+      "Bash(ls:*)",
+      "Bash(find:*)",
+      "Bash(xargs sed:*)"
     ]
   }
 }

@@ -30,6 +30,12 @@ const Container = styled.div`
     border-bottom: 4px solid black;
     margin: 1rem 0;
   }
+
+  @media (max-width: 768px) {
+    width: 90vw;
+    max-width: 100%;
+    padding: 1rem;
+  }
 `;
 
 interface Props {

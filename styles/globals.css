@@ -29,8 +29,15 @@ a {
   margin: 3rem 0;
 }
 
+.mdl-grid .mdl-cell--8-col {
+  display: flex;
+  justify-content: center;
+}
+
 .mdl-grid .mdl-cell--8-col canvas {
   margin-right: 1rem;
+  max-width: 100%;
+  height: auto;
 }
 
 .mdl-grid .mdl-cell--4-col {
@@ -39,15 +46,45 @@ a {
   padding-left: 2rem;
 }
 
+/* Mobile responsive styles */
+@media (max-width: 768px) {
+  .mdl-grid {
+    flex-direction: column;
+    align-items: center;
+    margin: 1.5rem 0;
+  }
+
+  .mdl-grid .mdl-cell--8-col {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .mdl-grid .mdl-cell--8-col canvas {
+    margin-right: 0;
+    max-width: 90vw;
+  }
+
+  .mdl-grid .mdl-cell--4-col {
+    width: 100%;
+    padding-left: 0;
+    padding-top: 1.5rem;
+    justify-content: center;
+  }
+}
+
 h4.placard-title {
-  font: normal 500 1rem/1.7rem Inter, sans-serif;
+  font:
+    600 0.75rem / 1rem Inter,
+    sans-serif;
   text-transform: uppercase;
-  letter-spacing: 0.02rem;
+  letter-spacing: 0rem;
   margin-bottom: 0.4rem;
 }
 
 p.placard {
-  font: normal 400 1.0rem/1.7rem Inter, sans-serif;
+  font:
+    normal 800 1rem/1.7rem Inter,
+    sans-serif;
   letter-spacing: 0.02rem;
   margin: 0.5rem 0;
 }
