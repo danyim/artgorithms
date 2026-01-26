@@ -96,13 +96,23 @@ export const Canvas = ({
   onReset,
 }: Props) => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
-  const lastUpdateRef = React.useRef<number>(0);
-  const THROTTLE_MS = 50; // Limit updates to ~20fps
+  const debounceRef = React.useRef<NodeJS.Timeout | null>(null);
+  const DEBOUNCE_MS = 200; // Only update URL after user stops moving
+
+  // Local state for immediate visual feedback
+  const [localAmplitude, setLocalAmplitude] = React.useState(amplitude);
+  const [localStretch, setLocalStretch] = React.useState(stretch);
+
+  // Sync local state when props change (e.g., from slider or reset)
+  React.useEffect(() => {
+    setLocalAmplitude(amplitude);
+  }, [amplitude]);
+
+  React.useEffect(() => {
+    setLocalStretch(stretch);
+  }, [stretch]);
 
   const updateFromPosition = (clientX: number, clientY: number) => {
-    const now = Date.now();
-    if (now - lastUpdateRef.current < THROTTLE_MS) return;
-    lastUpdateRef.current = now;
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -113,12 +123,25 @@ export const Canvas = ({
     // Map horizontal position to amplitude
     const normX = Math.max(0, Math.min(1, x / rect.width));
     const newAmplitude = Math.round((AMPLITUDE_MIN + normX * (AMPLITUDE_MAX - AMPLITUDE_MIN)) * 1e5) / 1e5;
-    onAmplitudeChange?.(newAmplitude);
 
     // Map vertical position to stretch (inverted so top = max)
     const normY = Math.max(0, Math.min(1, y / rect.height));
     const newStretch = Math.round((STRETCH_MAX - normY * (STRETCH_MAX - STRETCH_MIN)) * 1e5) / 1e5;
-    onStretchChange?.(newStretch);
+
+    // Update local state immediately for responsive visual feedback
+    setLocalAmplitude(newAmplitude);
+    setLocalStretch(newStretch);
+
+    // Clear previous debounce timer
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
+    }
+
+    // Debounce: only update URL after user stops moving
+    debounceRef.current = setTimeout(() => {
+      onAmplitudeChange?.(newAmplitude);
+      onStretchChange?.(newStretch);
+    }, DEBOUNCE_MS);
   };
 
   const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
@@ -232,23 +255,23 @@ export const Canvas = ({
         // Right wave (main wave)
         const rightWave: WaveParams = {
           baseX: 0.8,
-          amplitude: amplitude,
+          amplitude: localAmplitude,
           frequency: noiseScale,
           phaseOffset: 0,
           peakWidth,
           gradientWidth,
-          stretch,
+          stretch: localStretch,
         };
 
         // Left wave (secondary wave on left edge) - proportionally smaller
         const leftWave: WaveParams = {
           baseX: 0.1,
-          amplitude: amplitude * 0.6,
+          amplitude: localAmplitude * 0.6,
           frequency: noiseScale,
           phaseOffset: 0.1, // Offset to create visual interest
           peakWidth,
           gradientWidth,
-          stretch,
+          stretch: localStretch,
         };
 
         // Calculate color intensity from both waves and take the max
@@ -300,7 +323,7 @@ export const Canvas = ({
 
   React.useEffect(() => {
     draw();
-  }, [gridSize, noiseScale, threshold, amplitude, stretch, width, height]);
+  }, [gridSize, noiseScale, threshold, localAmplitude, localStretch, width, height]);
 
   return (
     <>
