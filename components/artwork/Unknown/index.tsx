@@ -5,7 +5,6 @@ import { Checkbox } from "../../Checkbox";
 
 const DEFAULT_SIZE = 6;
 const DEFAULT_COLOR_MODE = false;
-const DEFAULT_SHRINK_FACTOR = 92;
 const DEFAULT_MIN_COVERAGE = 35;
 const DEFAULT_MIN_ANGLE = 8;
 const DEFAULT_MAX_ANGLE = 88;
@@ -13,7 +12,6 @@ const DEFAULT_MAX_ANGLE = 88;
 export const UnknownCanvasContainer = () => {
   const [size, setSize] = React.useState(DEFAULT_SIZE);
   const [colorMode, setColorMode] = React.useState(DEFAULT_COLOR_MODE);
-  const [shrinkFactor, setShrinkFactor] = React.useState(DEFAULT_SHRINK_FACTOR);
   const [minCoverage, setMinCoverage] = React.useState(DEFAULT_MIN_COVERAGE);
   const [minAngle, setMinAngle] = React.useState(DEFAULT_MIN_ANGLE);
   const [maxAngle, setMaxAngle] = React.useState(DEFAULT_MAX_ANGLE);
@@ -21,7 +19,6 @@ export const UnknownCanvasContainer = () => {
   const handleReset = () => {
     setSize(DEFAULT_SIZE);
     setColorMode(DEFAULT_COLOR_MODE);
-    setShrinkFactor(DEFAULT_SHRINK_FACTOR);
     setMinCoverage(DEFAULT_MIN_COVERAGE);
     setMinAngle(DEFAULT_MIN_ANGLE);
     setMaxAngle(DEFAULT_MAX_ANGLE);
@@ -31,9 +28,6 @@ export const UnknownCanvasContainer = () => {
     switch (key) {
       case "size":
         setSize(val);
-        return;
-      case "shrinkFactor":
-        setShrinkFactor(val);
         return;
       case "minCoverage":
         setMinCoverage(val);
@@ -66,13 +60,6 @@ export const UnknownCanvasContainer = () => {
           label: "Size",
           minStepMax: [2, 1, 12],
           value: size,
-          onChange: handleChange,
-        },
-        {
-          key: "shrinkFactor",
-          label: "Padding",
-          minStepMax: [50, 1, 100],
-          value: shrinkFactor,
           onChange: handleChange,
         },
         {
@@ -112,7 +99,6 @@ export const UnknownCanvasContainer = () => {
         height={500}
         size={size}
         colorMode={colorMode}
-        shrinkFactor={shrinkFactor / 100}
         minCoverage={minCoverage / 100}
         minAngle={minAngle}
         maxAngle={maxAngle}
