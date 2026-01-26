@@ -1,4 +1,4 @@
-import Canvas from "./Canvas";
+import Canvas, { SIZE_MIN, SIZE_MAX, GRID_SIZE_MIN, GRID_SIZE_MAX, CIRCLE_SIZE_MIN, CIRCLE_SIZE_MAX, OFFSET_MIN, OFFSET_MAX } from "./Canvas";
 import ArtworkLayout from "../../ArtworkLayout";
 import { useUrlParams } from "../../../hooks/useUrlParams";
 
@@ -11,7 +11,7 @@ const PARAM_CONFIG = {
 
 type ParamKey = keyof typeof PARAM_CONFIG;
 
-export const MoireCrescentsContainer = () => {
+export const BigFlowerContainer = () => {
   const { values, setValue, reset } = useUrlParams<ParamKey>(PARAM_CONFIG);
 
   const handleChange = (key: string, val: number) => {
@@ -31,28 +31,28 @@ export const MoireCrescentsContainer = () => {
         {
           key: "size",
           label: "Sections",
-          minStepMax: [1, 1, 6],
+          minStepMax: [SIZE_MIN, 1, SIZE_MAX],
           value: values.size as number,
           onChange: handleChange,
         },
         {
           key: "gridSize",
           label: "Grid Density",
-          minStepMax: [20, 2, 40],
+          minStepMax: [GRID_SIZE_MIN, 2, GRID_SIZE_MAX],
           value: values.gridSize as number,
           onChange: handleChange,
         },
         {
           key: "circleSize",
           label: "Circle Size",
-          minStepMax: [3, 1, 12],
+          minStepMax: [CIRCLE_SIZE_MIN, 1, CIRCLE_SIZE_MAX],
           value: values.circleSize as number,
           onChange: handleChange,
         },
         {
           key: "offset",
           label: "Offset",
-          minStepMax: [0, 1, 10],
+          minStepMax: [OFFSET_MIN, 1, OFFSET_MAX],
           value: values.offset as number,
           onChange: handleChange,
         },
@@ -66,10 +66,12 @@ export const MoireCrescentsContainer = () => {
         gridSize={values.gridSize as number}
         circleSize={values.circleSize as number}
         offset={values.offset as number}
+        onCircleSizeChange={(val) => setValue("circleSize", val)}
+        onOffsetChange={(val) => setValue("offset", val)}
         onReset={reset}
       />
     </ArtworkLayout>
   );
 };
 
-export default MoireCrescentsContainer;
+export default BigFlowerContainer;

@@ -1,19 +1,39 @@
 import React from "react";
 import { checkDraw } from "./util";
+import { useCanvasInteraction } from "../../../hooks/useCanvasInteraction";
+
+// Control limits
+export const BOX_SIZE_MIN = 4;
+export const BOX_SIZE_MAX = 16;
+export const PATTERN_MIN = 2;
+export const PATTERN_MAX = 4095;
 
 interface Props {
   width?: number;
   height?: number;
   pattern: number;
+  boxSize: number;
+  onPatternChange?: (value: number) => void;
+  onBoxSizeChange?: (value: number) => void;
   onReset?: () => void;
 }
 
-export const Canvas = ({ width, height, pattern, onReset }: Props) => {
+export const Canvas = ({ width, height, pattern, boxSize, onPatternChange, onBoxSizeChange, onReset }: Props) => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
 
-  const handleOnMouseMove = () => {
-    draw();
-  };
+  const { handlers } = useCanvasInteraction({
+    canvasRef,
+    horizontal: {
+      min: PATTERN_MIN,
+      max: PATTERN_MAX,
+      onChange: onPatternChange,
+    },
+    vertical: {
+      min: BOX_SIZE_MIN,
+      max: BOX_SIZE_MAX,
+      onChange: onBoxSizeChange,
+    },
+  });
 
   const draw = () => {
     const canvas = canvasRef.current;
@@ -39,17 +59,17 @@ export const Canvas = ({ width, height, pattern, onReset }: Props) => {
      * This also means that there are 4095 possible combinations (111111111111 in binary), which will be the maximum input.
      */
 
-    const patternNumber = pattern;
-    const w = 16;
-    const h = 16;
-    // Columns & rows of the pattern to repeat
+    // Columns & rows of the pattern unit
     const innerColumns = 3;
     const innerRows = 4;
-    const boxSize = 8;
 
-    // Derived values
+    // Derived values - size of one pattern unit
     const innerWidth = innerColumns * boxSize;
     const innerHeight = innerRows * boxSize;
+
+    // Calculate how many pattern units fit in the canvas
+    const w = Math.ceil(width / innerWidth);
+    const h = Math.ceil(height / innerHeight);
 
     // Iterate over rows and columns of the pattern
     for (let k = 0; k < w; k++) {
@@ -61,22 +81,7 @@ export const Canvas = ({ width, height, pattern, onReset }: Props) => {
         // Draw the main pattern
         for (let row = 0; row < innerRows; row++) {
           for (let col = 0; col < innerColumns; col++) {
-            // A manual and static alternative to `checkDraw`
-            // if (
-            //   // ◼◻◻
-            //   (row === 0 && col == 1) ||
-            //   (row === 0 && col == 2) ||
-            //   // ◼◼◻
-            //   (row === 1 && col == 2) ||
-            //   // ◻◼◼
-            //   (row === 2 && col == 0) ||
-            //   // ◻◼◻
-            //   (row === 3 && col == 0) ||
-            //   (row === 3 && col == 2)
-            // ) {
-            //   continue;
-            // }
-            if (!checkDraw([row, col], innerColumns, patternNumber)) {
+            if (!checkDraw([row, col], innerColumns, pattern)) {
               continue;
             }
             ctx.fillRect(
@@ -103,7 +108,7 @@ export const Canvas = ({ width, height, pattern, onReset }: Props) => {
 
   React.useEffect(() => {
     draw();
-  }, [pattern, width, height]);
+  }, [pattern, boxSize, width, height]);
 
   const handleDoubleClick = () => {
     onReset?.();
@@ -115,8 +120,10 @@ export const Canvas = ({ width, height, pattern, onReset }: Props) => {
         ref={canvasRef}
         width={width}
         height={height}
-        onMouseMove={handleOnMouseMove}
+        onMouseMove={handlers.onMouseMove}
+        onTouchMove={handlers.onTouchMove}
         onDoubleClick={handleDoubleClick}
+        style={{ touchAction: "none" }}
       />
       {typeof window !== "undefined" && window.localStorage.debug && (
         <>

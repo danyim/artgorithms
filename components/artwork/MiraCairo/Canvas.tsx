@@ -1,4 +1,5 @@
 import React from "react";
+import { useCanvasInteraction } from "../../../hooks/useCanvasInteraction";
 
 interface Props {
   width?: number;
@@ -96,63 +97,22 @@ export const Canvas = ({
   onReset,
 }: Props) => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
-  const debounceRef = React.useRef<NodeJS.Timeout | null>(null);
-  const DEBOUNCE_MS = 200; // Only update URL after user stops moving
 
-  // Local state for immediate visual feedback
-  const [localAmplitude, setLocalAmplitude] = React.useState(amplitude);
-  const [localStretch, setLocalStretch] = React.useState(stretch);
-
-  // Sync local state when props change (e.g., from slider or reset)
-  React.useEffect(() => {
-    setLocalAmplitude(amplitude);
-  }, [amplitude]);
-
-  React.useEffect(() => {
-    setLocalStretch(stretch);
-  }, [stretch]);
-
-  const updateFromPosition = (clientX: number, clientY: number) => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const rect = canvas.getBoundingClientRect();
-    const x = clientX - rect.left;
-    const y = clientY - rect.top;
-
-    // Map horizontal position to amplitude
-    const normX = Math.max(0, Math.min(1, x / rect.width));
-    const newAmplitude = Math.round((AMPLITUDE_MIN + normX * (AMPLITUDE_MAX - AMPLITUDE_MIN)) * 1e5) / 1e5;
-
-    // Map vertical position to stretch (inverted so top = max)
-    const normY = Math.max(0, Math.min(1, y / rect.height));
-    const newStretch = Math.round((STRETCH_MAX - normY * (STRETCH_MAX - STRETCH_MIN)) * 1e5) / 1e5;
-
-    // Update local state immediately for responsive visual feedback
-    setLocalAmplitude(newAmplitude);
-    setLocalStretch(newStretch);
-
-    // Clear previous debounce timer
-    if (debounceRef.current) {
-      clearTimeout(debounceRef.current);
-    }
-
-    // Debounce: only update URL after user stops moving
-    debounceRef.current = setTimeout(() => {
-      onAmplitudeChange?.(newAmplitude);
-      onStretchChange?.(newStretch);
-    }, DEBOUNCE_MS);
-  };
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    updateFromPosition(e.clientX, e.clientY);
-  };
-
-  const handleTouchMove = (e: React.TouchEvent<HTMLCanvasElement>) => {
-    if (e.touches.length > 0) {
-      updateFromPosition(e.touches[0].clientX, e.touches[0].clientY);
-    }
-  };
+  const { handlers } = useCanvasInteraction({
+    canvasRef,
+    horizontal: {
+      min: AMPLITUDE_MIN,
+      max: AMPLITUDE_MAX,
+      decimals: 2,
+      onChange: onAmplitudeChange,
+    },
+    vertical: {
+      min: STRETCH_MIN,
+      max: STRETCH_MAX,
+      decimals: 2,
+      onChange: onStretchChange,
+    },
+  });
 
   const handleDoubleClick = () => {
     onReset?.();
@@ -255,23 +215,23 @@ export const Canvas = ({
         // Right wave (main wave)
         const rightWave: WaveParams = {
           baseX: 0.8,
-          amplitude: localAmplitude,
+          amplitude,
           frequency: noiseScale,
           phaseOffset: 0,
           peakWidth,
           gradientWidth,
-          stretch: localStretch,
+          stretch,
         };
 
         // Left wave (secondary wave on left edge) - proportionally smaller
         const leftWave: WaveParams = {
           baseX: 0.1,
-          amplitude: localAmplitude * 0.6,
+          amplitude: amplitude * 0.6,
           frequency: noiseScale,
           phaseOffset: 0.1, // Offset to create visual interest
           peakWidth,
           gradientWidth,
-          stretch: localStretch,
+          stretch,
         };
 
         // Calculate color intensity from both waves and take the max
@@ -323,7 +283,7 @@ export const Canvas = ({
 
   React.useEffect(() => {
     draw();
-  }, [gridSize, noiseScale, threshold, localAmplitude, localStretch, width, height]);
+  }, [gridSize, noiseScale, threshold, amplitude, stretch, width, height]);
 
   return (
     <>
@@ -331,8 +291,8 @@ export const Canvas = ({
         ref={canvasRef}
         width={width}
         height={height}
-        onMouseMove={handleMouseMove}
-        onTouchMove={handleTouchMove}
+        onMouseMove={handlers.onMouseMove}
+        onTouchMove={handlers.onTouchMove}
         onDoubleClick={handleDoubleClick}
         style={{ touchAction: "none" }}
       />

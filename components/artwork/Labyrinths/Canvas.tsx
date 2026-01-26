@@ -1,21 +1,40 @@
 import React from "react";
 import { getBordersForPattern } from "./util";
 import { drawPartialFrame } from "utils/art";
+import { useCanvasInteraction } from "../../../hooks/useCanvasInteraction";
+
+// Control limits
+export const SIZE_MIN = 2;
+export const SIZE_MAX = 10;
+export const PATTERN_MIN = 0;
+export const PATTERN_MAX = 35;
 
 interface Props {
   width?: number;
   height?: number;
   size: number;
   pattern: number;
+  onSizeChange?: (value: number) => void;
+  onPatternChange?: (value: number) => void;
   onReset?: () => void;
 }
 
-export const Canvas = ({ width, height, size, pattern, onReset }: Props) => {
+export const Canvas = ({ width, height, size, pattern, onSizeChange, onPatternChange, onReset }: Props) => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
 
-  const handleOnMouseMove = () => {
-    draw();
-  };
+  const { handlers } = useCanvasInteraction({
+    canvasRef,
+    horizontal: {
+      min: PATTERN_MIN,
+      max: PATTERN_MAX,
+      onChange: onPatternChange,
+    },
+    vertical: {
+      min: SIZE_MIN,
+      max: SIZE_MAX,
+      onChange: onSizeChange,
+    },
+  });
 
   const draw = () => {
     const canvas = canvasRef.current;
@@ -99,61 +118,6 @@ export const Canvas = ({ width, height, size, pattern, onReset }: Props) => {
       [12, 5, 12, 5, 11, 9, 9, 11, 12, 3, 10, 5, 10, 6, 6, 3],
     ];
 
-    // Utility function to place into a JS REPL to quickly convert the binary into a string of numbers
-    /**
-    copy(
-      `
-    1100 0110 0110 0101
-    1001 1100 0111 1001
-    1001 1010 0101 1001
-    1010 0110 0011 1011
-      `
-        .split("\n")
-        .map((v) => v.trim())
-        .filter((v) => v != "")
-        .join(" ")
-        .split(" ")
-        .map((v) => parseInt(v, 2))
-    );
-     */
-
-    /**
-    Box 1
-    1110 0101 1100 0101
-    1100 0011 1001 1001
-    1001 1110 0011 1001
-    1010 0110 0110 0011
-
-    Box 2
-    1110 0101 1100 0101
-    1100 0011 1011 1001
-    1001 1100 0101 1001
-    1010 0011 1010 0011
-
-    Box 3
-    1100 0101 1100 0101
-    1011 1001 1001 1001
-    1100 0011 1011 1001
-    1010 0110 0110 0011
-
-    Box 4
-    1110 0101 1100 0111
-    1100 0011 1010 0101
-    1001 1100 0101 1001
-    1010 0011 1010 0011
-
-    Box 5
-    1100 0111 1100 0101
-    1010 0110 0011 1001
-    1100 0110 0110 0011
-    1010 0110 0110 0111
-    
-    Box 6
-    1100 0101 1100 0101
-    1011 1001 1001 1011
-    1100 0011 1010 0101
-    1010 0110 0110 0011
-     */
     // Size controls NxN grid
     const innerColumns = 4;
     const innerRows = 4;
@@ -192,15 +156,6 @@ export const Canvas = ({ width, height, size, pattern, onReset }: Props) => {
             });
           }
         }
-
-        // drawFrame(ctx, {
-        //   xOffset,
-        //   yOffset,
-        //   width: patternWidth,
-        //   height: patternHeight,
-        //   thickness: 1,
-        //   fillStyle: "red",
-        // });
       }
     }
   };
@@ -229,8 +184,10 @@ export const Canvas = ({ width, height, size, pattern, onReset }: Props) => {
         ref={canvasRef}
         width={width}
         height={height}
-        onMouseMove={handleOnMouseMove}
+        onMouseMove={handlers.onMouseMove}
+        onTouchMove={handlers.onTouchMove}
         onDoubleClick={handleDoubleClick}
+        style={{ touchAction: "none" }}
       />
       {typeof window !== "undefined" && window.localStorage.debug && (
         <>

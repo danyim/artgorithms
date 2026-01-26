@@ -1,4 +1,4 @@
-import Canvas from "./Canvas";
+import Canvas, { SIZE_MIN, SIZE_MAX, PATTERN_MIN, PATTERN_MAX } from "./Canvas";
 import ArtworkLayout from "../../ArtworkLayout";
 import { useUrlParams } from "../../../hooks/useUrlParams";
 
@@ -33,14 +33,14 @@ export const TemplateCanvasContainer = () => {
         {
           key: "size",
           label: "Size",
-          minStepMax: [2, 1, 10],
+          minStepMax: [SIZE_MIN, 1, SIZE_MAX],
           value: values.size as number,
           onChange: handleChange,
         },
         {
           key: "pattern",
           label: "Pattern",
-          minStepMax: [0, 1, 35],
+          minStepMax: [PATTERN_MIN, 1, PATTERN_MAX],
           value: values.pattern as number,
           onChange: handleChange,
         },
@@ -52,6 +52,8 @@ export const TemplateCanvasContainer = () => {
         height={500}
         size={values.size as number}
         pattern={values.pattern as number}
+        onSizeChange={(val) => setValue("size", val)}
+        onPatternChange={(val) => setValue("pattern", val)}
         onReset={reset}
       />
     </ArtworkLayout>

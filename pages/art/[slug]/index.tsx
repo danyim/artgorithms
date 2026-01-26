@@ -90,8 +90,8 @@ export const Artwork = () => {
           return import("components/artwork/50x50");
         case "labyrinths":
           return import("components/artwork/Labyrinths");
-        case "moire-crescents":
-          return import("components/artwork/MoireCrescents");
+        case "big-flower":
+          return import("components/artwork/BigFlower");
         case "mira-cairo":
           return import("components/artwork/MiraCairo");
         // case "flowing-ribbons":
