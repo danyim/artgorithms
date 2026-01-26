@@ -188,9 +188,11 @@ const calculatePolygonArea = (vertices: Point[]): number => {
 };
 
 /** Calculate total coverage ratio of polygons within bounds */
-const calculateCoverageRatio = (polygons: Point[][], bounds: Bounds): number => {
-  const boundsArea =
-    (bounds.xMax - bounds.xMin) * (bounds.yMax - bounds.yMin);
+const calculateCoverageRatio = (
+  polygons: Point[][],
+  bounds: Bounds,
+): number => {
+  const boundsArea = (bounds.xMax - bounds.xMin) * (bounds.yMax - bounds.yMin);
   const totalPolygonArea = polygons.reduce(
     (sum, poly) => sum + calculatePolygonArea(poly),
     0,
@@ -221,18 +223,27 @@ const validatePolygonAngles = (
   return true;
 };
 
-// Color palette for color mode (warm, earthy tones with pops of color)
+// Color palette for color mode (inspired by colorful textile grid)
 const COLOR_PALETTE = [
-  "#E8D5B7", // Soft cream
-  "#D4A574", // Warm terracotta
-  "#7D9B76", // Soft sage green
-  "#C9A87C", // Golden sand
-  "#8B7355", // Warm brown
-  "#B8D4E3", // Soft sky blue
-  "#E6B89C", // Peach
-  "#9CAFA4", // Sea foam
-  "#D4C4A8", // Warm beige
-  "#C7B198", // Camel
+  "#B0C29E",
+  "#BCDDD7",
+  "#F1D0E4",
+  "#E1CBF1",
+  "#FCF8EB",
+  // "#D4C94A", // Chartreuse yellow
+  // "#3AADB8", // Teal
+  // "#C75B2A", // Burnt orange
+  // "#E8B4C8", // Pink
+  // "#7B8BA6", // Slate blue
+  // "#6B5344", // Chocolate brown
+  // "#1E3A5F", // Navy blue
+  // "#C42034", // Crimson red
+  // "#F5E6C8", // Cream
+  // "#2D5A5A", // Dark teal
+  // "#E07B54", // Coral
+  // "#8FA07A", // Sage green
+  // "#4A1C2A", // Burgundy
+  // "#E8D06A", // Pale yellow
 ];
 
 /** Shuffle array and return first n elements (Fisher-Yates) */
@@ -432,7 +443,16 @@ export const Canvas = ({
 
   React.useEffect(() => {
     draw();
-  }, [size, width, height, colorMode, shrinkFactor, minCoverage, minAngle, maxAngle]);
+  }, [
+    size,
+    width,
+    height,
+    colorMode,
+    shrinkFactor,
+    minCoverage,
+    minAngle,
+    maxAngle,
+  ]);
   return (
     <>
       <canvas ref={canvasRef} width={width} height={height} />
