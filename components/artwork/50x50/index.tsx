@@ -22,14 +22,10 @@ export const TemplateCanvasContainer = () => {
         title: "50/50",
         artistName: "Tauba Auerbach",
         year: "2008",
-        description: (
-          <>
-            <h4 className="placard-title">Instructions</h4>
-            <p className="placard">
-              A repeating pattern of 3x4 squares on a 16x16 grid
-            </p>
-          </>
-        ),
+        instructions:
+          "Fill a grid with black and white squares according to a binary pattern. Each unique pattern creates a different visual rhythm through the balance of positive and negative space.",
+        description:
+          "A meditation on binary systems and visual perception, where black and white squares are arranged according to mathematical patterns. The work explores how simple rules generate complex visual textures, bridging computation and aesthetics.",
         links: [
           {
             label: "Tauba Auerbach",

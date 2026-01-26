@@ -11,7 +11,9 @@ export const drawConcentricCircleBands = (
   bandSize: number,
   numBands: number,
   colorArray: number[][],
-  maxRadius?: number
+  maxRadius?: number,
+  fragmentation: number = 25,
+  colorOffset: number = 0
 ) => {
   ctx.save();
 
@@ -21,9 +23,9 @@ export const drawConcentricCircleBands = (
     if (maxRadius && bandRadius + bandSize / 2 > maxRadius) {
       continue;
     }
-    drawConcentricBandedCircle(ctx, x, y, bandRadius, bandSize, colorArray);
+    drawConcentricBandedCircle(ctx, x, y, bandRadius, bandSize, colorArray, fragmentation, colorOffset);
   }
-  drawBandedCircle(ctx, x, y, bandSize / 2, colorArray);
+  drawBandedCircle(ctx, x, y, bandSize / 2, colorArray, fragmentation, colorOffset);
 
   ctx.restore();
 };
@@ -34,12 +36,15 @@ export const drawConcentricBandedCircle = (
   y: number,
   radius: number,
   bandSize: number,
-  colorArray: number[][]
+  colorArray: number[][],
+  fragmentation: number = 25,
+  colorOffset: number = 0
 ) => {
   const randColor = Math.floor(Math.random() * 100);
 
-  const minArcLength = 20;
-  const maxArcLength = 30;
+  // Fragmentation controls arc segment size (lower = more fragments)
+  const minArcLength = Math.max(5, fragmentation - 5);
+  const maxArcLength = fragmentation + 5;
 
   // Random start offset so that each circle has a different origin
   const startDegOffset = randRange(0, 360);
@@ -63,7 +68,7 @@ export const drawConcentricBandedCircle = (
       degToRad(startDegOffset) + degToRad(prevDeg),
       degToRad(startDegOffset) + degToRad(currentDeg)
     );
-    const [r, g, b] = colorArray[(index + randColor) % colorArray.length];
+    const [r, g, b] = colorArray[(index + randColor + colorOffset) % colorArray.length];
     ctx.lineWidth = bandSize;
     ctx.strokeStyle = `rgb(${r},${g},${b})`;
     ctx.stroke();
@@ -79,12 +84,15 @@ export const drawBandedCircle = (
   x: number,
   y: number,
   radius: number,
-  colorArray: number[][]
+  colorArray: number[][],
+  fragmentation: number = 25,
+  colorOffset: number = 0
 ) => {
   const randColor = Math.floor(Math.random() * 100);
 
-  const minArcLength = 10;
-  const maxArcLength = 15;
+  // Center circle uses smaller fragmentation range
+  const minArcLength = Math.max(3, Math.floor(fragmentation / 2) - 3);
+  const maxArcLength = Math.floor(fragmentation / 2) + 3;
 
   // Random start offset so that each circle has a different origin
   const startDegOffset = randRange(0, 360);
@@ -108,7 +116,7 @@ export const drawBandedCircle = (
       degToRad(startDegOffset) + degToRad(prevDeg),
       degToRad(startDegOffset) + degToRad(currentDeg)
     );
-    const [r, g, b] = colorArray[(index + randColor) % colorArray.length];
+    const [r, g, b] = colorArray[(index + randColor + colorOffset) % colorArray.length];
     ctx.fillStyle = `rgb(${r},${g},${b})`;
     ctx.fill();
     index++;

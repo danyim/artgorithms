@@ -1,5 +1,6 @@
 import React from "react";
 import debug from "debug";
+import { useCanvasInteraction } from "../../../hooks/useCanvasInteraction";
 import {
   Bounds,
   createWrappedRow,
@@ -12,6 +13,11 @@ import {
   generateRandomPointsOnBounds,
   generatePolygonInsideBounds,
 } from "./util";
+
+export const SIZE_MIN = 2;
+export const SIZE_MAX = 12;
+export const COVERAGE_MIN = 10;
+export const COVERAGE_MAX = 80;
 
 type Edge = "top" | "right" | "bottom" | "left";
 

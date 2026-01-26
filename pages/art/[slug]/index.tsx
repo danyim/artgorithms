@@ -5,10 +5,8 @@ import Loader from "components/Loader";
 import Layout from "components/Layout";
 import { manifestArray } from "constants/art-manifest";
 
-// Filter out test/unknown from navigation
-const navigableArtworks = manifestArray.filter(
-  (m) => m.slug !== "test" && m.slug !== "unknown"
-);
+// Filter out test from navigation
+const navigableArtworks = manifestArray.filter((m) => m.slug !== "test");
 
 export const Artwork = () => {
   const router = useRouter();
@@ -51,9 +49,9 @@ export const Artwork = () => {
         return;
       }
 
-      if (e.key === "ArrowLeft") {
+      if (e.key === "ArrowLeft" || e.key === "a") {
         navigateToArtwork("prev");
-      } else if (e.key === "ArrowRight") {
+      } else if (e.key === "ArrowRight" || e.key === "d") {
         navigateToArtwork("next");
       }
     };
@@ -96,7 +94,7 @@ export const Artwork = () => {
           return import("components/artwork/MiraCairo");
         // case "flowing-ribbons":
         //   return import("components/artwork/FlowingRibbons");
-        case "unknown":
+        case "recursive-triangles":
           return import("components/artwork/Unknown");
       }
       return import("components/NotFound");

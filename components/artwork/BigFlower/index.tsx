@@ -24,6 +24,8 @@ export const BigFlowerContainer = () => {
         title: "Big Flower",
         artistName: "Lisbet Friis",
         year: "2012",
+        instructions:
+          "Draw a grid of circles. Overlay a second grid of circles with a slight offset. The intersection of overlapping circles creates crescent shapes that form a floral moiré pattern.",
         description:
           "A moiré pattern created by overlapping circles with slight offsets, producing crescent moon shapes that radiate from multiple focal points.",
       }}

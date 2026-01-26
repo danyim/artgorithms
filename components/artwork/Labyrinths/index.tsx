@@ -22,6 +22,10 @@ export const TemplateCanvasContainer = () => {
         title: "Hermetic One-way Labyrinths",
         artistName: "Thomas Laubenberger",
         year: "2011",
+        instructions:
+          "Divide a square into a grid. In each cell, draw a quarter-circle arc connecting two adjacent edges. Alternate arc directions following a predetermined pattern to create maze-like paths.",
+        description:
+          "A grid of quarter-circle arcs that connect to form continuous, flowing labyrinth patterns.",
         links: [
           {
             label: "Thomas Laubenberger",

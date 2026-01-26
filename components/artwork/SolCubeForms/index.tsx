@@ -51,6 +51,10 @@ export const SolCubeFormsCanvasContainer = ({
         title: "Forms Derived from a Cube in Color",
         artistName: "Sol LeWitt",
         year: "1985",
+        instructions:
+          "Derive geometric forms from a cube by showing different combinations of its visible faces. Render each form in flat colors representing the three visible planes of a cube.",
+        description:
+          "A series of isometric cube forms showing various combinations of top, left, and right faces in contrasting colors.",
         links: [
           { label: "SF MOMA", url: "https://www.sfmoma.org/artwork/FC.317.1-6/" },
         ],

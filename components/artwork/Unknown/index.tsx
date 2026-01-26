@@ -27,9 +27,13 @@ export const UnknownCanvasContainer = () => {
   return (
     <ArtworkLayout
       artwork={{
-        title: "Unknown",
+        title: "Recursive Triangles",
         artistName: "Unknown",
         year: "Unknown",
+        instructions:
+          "Recursively subdivide triangles within a square. At each level, determine whether to continue subdividing based on coverage thresholds and angle constraints.",
+        description:
+          "A fractal composition of nested triangles that divide and multiply across the canvas. The recursive algorithm creates an organic texture reminiscent of shattered glass or crystalline structures, where mathematical precision yields surprisingly natural forms.",
       }}
       controls={[
         {

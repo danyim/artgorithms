@@ -21,8 +21,10 @@ export const FlowingRibbonsContainer = () => {
         title: "Flowing Ribbons",
         artistName: "Unknown",
         year: "c. 1970s",
+        instructions:
+          "Draw sinusoidal wave ribbons across the canvas. Fill each ribbon with concentric bands of color that shift through the spectrum from edge to edge.",
         description:
-          "A 70s-inspired pattern of flowing, wave-like ribbons with concentric color bands creating a psychedelic gradient effect.",
+          "Flowing wave-like ribbons with concentric color bands create a psychedelic gradient effect inspired by 1970s graphic design.",
       }}
       controls={[
         {

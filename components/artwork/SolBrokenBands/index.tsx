@@ -22,6 +22,10 @@ export const SolBrokenBandsCanvasContainer = () => {
         title: "Broken Color Bands in Four Directions",
         artistName: "Sol LeWitt",
         year: "2005",
+        instructions:
+          "Four rectangles, each with parallel color bands in a different direction: horizontal, vertical, and two diagonals. Bands are segmented with shifting colors.",
+        description:
+          "Four panels present parallel bands of color oriented in different directions. The fragmentation into segments of shifting hues creates a staccato rhythm of chromatic variation.",
         links: [
           {
             label: "Sol LeWitt Prints",

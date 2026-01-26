@@ -1,4 +1,4 @@
-import Canvas from "./Canvas";
+import Canvas, { SIZE_MIN, SIZE_MAX } from "./Canvas";
 import CirclesCanvas from "./CirclesCanvas";
 import { CompositeCanvas1 } from "./CompositeCanvas1";
 import { CompositeCanvas2 } from "./CompositeCanvas2";
@@ -26,22 +26,26 @@ export const SolColorBandsCanvasContainer = () => {
         title: "Color Bands",
         artistName: "Sol LeWitt",
         year: "2000",
+        instructions:
+          "Parallel bands of color in four variations: straight horizontal, concentric circles, diagonal within a circle, and radiating from corners.",
+        description:
+          "Four variations on the theme of parallel color bands demonstrate how a single concept transforms across different geometric contexts. Horizontal stripes, concentric circles, diagonal sweeps, and corner radiations each produce distinct optical effects while maintaining underlying unity.",
       }}
       controls={[
         {
           key: "size",
           label: "Stroke",
-          minStepMax: [3, 1, 50],
+          minStepMax: [SIZE_MIN, 1, SIZE_MAX],
           value: values.size as number,
           onChange: handleChange,
         },
       ]}
       onReset={reset}
     >
-      <Canvas width={canvasSize} height={canvasSize} size={values.size as number} onReset={reset} />
-      <CirclesCanvas width={canvasSize} height={canvasSize} size={values.size as number} />
-      <CompositeCanvas1 width={canvasSize} height={canvasSize} size={values.size as number} />
-      <CompositeCanvas2 width={canvasSize} height={canvasSize} size={values.size as number} />
+      <Canvas width={canvasSize} height={canvasSize} size={values.size as number} onSizeChange={(val) => setValue("size", val)} onReset={reset} />
+      <CirclesCanvas width={canvasSize} height={canvasSize} size={values.size as number} onSizeChange={(val) => setValue("size", val)} />
+      <CompositeCanvas1 width={canvasSize} height={canvasSize} size={values.size as number} onSizeChange={(val) => setValue("size", val)} />
+      <CompositeCanvas2 width={canvasSize} height={canvasSize} size={values.size as number} onSizeChange={(val) => setValue("size", val)} />
     </ArtworkLayout>
   );
 };
