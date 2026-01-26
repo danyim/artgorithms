@@ -90,6 +90,12 @@ export const Artwork = () => {
           return import("components/artwork/50x50");
         case "labyrinths":
           return import("components/artwork/Labyrinths");
+        case "moire-crescents":
+          return import("components/artwork/MoireCrescents");
+        case "mira-cairo":
+          return import("components/artwork/MiraCairo");
+        // case "flowing-ribbons":
+        //   return import("components/artwork/FlowingRibbons");
         case "unknown":
           return import("components/artwork/Unknown");
       }
