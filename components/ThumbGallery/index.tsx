@@ -1,5 +1,6 @@
 import Link from "next/link";
 import styled from "styled-components";
+import { useRouter } from "next/router";
 import Thumbnail from "./Thumbnail";
 import { manifestArray } from "constants/art-manifest";
 const Container = styled.div`
@@ -41,6 +42,9 @@ const ThumbnailList = styled.ul`
 interface Props {}
 
 export const ThumbGallery: React.FC<Props> = () => {
+  const router = useRouter();
+  const currentSlug = router.query.slug as string | undefined;
+
   return (
     <Container>
       <ThumbnailList>
@@ -52,6 +56,7 @@ export const ThumbGallery: React.FC<Props> = () => {
               key={artwork.slug}
               slug={artwork.slug}
               href={`/art/${artwork.slug}`}
+              isActive={artwork.slug === currentSlug}
             />
           ))}
       </ThumbnailList>
