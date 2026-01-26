@@ -96,8 +96,13 @@ export const Canvas = ({
   onReset,
 }: Props) => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
+  const lastUpdateRef = React.useRef<number>(0);
+  const THROTTLE_MS = 50; // Limit updates to ~20fps
 
   const updateFromPosition = (clientX: number, clientY: number) => {
+    const now = Date.now();
+    if (now - lastUpdateRef.current < THROTTLE_MS) return;
+    lastUpdateRef.current = now;
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -122,7 +127,6 @@ export const Canvas = ({
 
   const handleTouchMove = (e: React.TouchEvent<HTMLCanvasElement>) => {
     if (e.touches.length > 0) {
-      e.preventDefault();
       updateFromPosition(e.touches[0].clientX, e.touches[0].clientY);
     }
   };
