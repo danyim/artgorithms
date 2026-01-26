@@ -66,6 +66,7 @@ export const MoireCrescentsContainer = () => {
         gridSize={values.gridSize as number}
         circleSize={values.circleSize as number}
         offset={values.offset as number}
+        onReset={reset}
       />
     </ArtworkLayout>
   );

@@ -9,9 +9,10 @@ interface Props {
   size: number;
   saturation: number;
   outline: boolean;
+  onReset?: () => void;
 }
 
-export const Canvas = ({ width, height, space, size, saturation, outline }: Props) => {
+export const Canvas = ({ width, height, space, size, saturation, outline, onReset }: Props) => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
 
   const handleMouseMove = () => {
@@ -131,12 +132,17 @@ export const Canvas = ({ width, height, space, size, saturation, outline }: Prop
     draw();
   }, [space, width, height, size, saturation, outline]);
 
+  const handleDoubleClick = () => {
+    onReset?.();
+  };
+
   return (
     <canvas
       ref={canvasRef}
       width={width}
       height={height}
       onMouseMove={handleMouseMove}
+      onDoubleClick={handleDoubleClick}
     />
   );
 };

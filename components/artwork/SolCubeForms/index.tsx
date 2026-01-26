@@ -73,6 +73,7 @@ export const SolCubeFormsCanvasContainer = ({
           space={values.space as number}
           onMouseMove={handleOnMouseMove}
           onMouseOut={handleOnMouseOut}
+          onReset={reset}
         />
       </div>
     </ArtworkLayout>

@@ -52,6 +52,7 @@ export const SolBrokenBandsCanvasContainer = () => {
         height={200}
         saturation={values.saturation as number}
         bands={values.bands as number}
+        onReset={reset}
       />
     </ArtworkLayout>
   );

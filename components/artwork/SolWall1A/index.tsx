@@ -67,6 +67,7 @@ export const CanvasContainer = () => {
         height={500}
         space={values.space as number}
         lineWidth={values.lineWidth as number}
+        onReset={reset}
       />
     </ArtworkLayout>
   );

@@ -78,6 +78,7 @@ export const Farben = ({ width = 1000, height = 450 }: Props) => {
         size={values.size as number}
         saturation={values.saturation as number}
         outline={values.outline as boolean}
+        onReset={reset}
       />
     </ArtworkLayout>
   );

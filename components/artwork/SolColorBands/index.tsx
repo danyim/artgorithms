@@ -38,7 +38,7 @@ export const SolColorBandsCanvasContainer = () => {
       ]}
       onReset={reset}
     >
-      <Canvas width={canvasSize} height={canvasSize} size={values.size as number} />
+      <Canvas width={canvasSize} height={canvasSize} size={values.size as number} onReset={reset} />
       <CirclesCanvas width={canvasSize} height={canvasSize} size={values.size as number} />
       <CompositeCanvas1 width={canvasSize} height={canvasSize} size={values.size as number} />
       <CompositeCanvas2 width={canvasSize} height={canvasSize} size={values.size as number} />

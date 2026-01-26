@@ -6,6 +6,7 @@ interface Props {
   colorIndex: number;
   steps: number;
   handleOnMouseMove: () => void;
+  onReset?: () => void;
 }
 
 export const Canvas = ({
@@ -14,6 +15,7 @@ export const Canvas = ({
   colorIndex,
   steps,
   handleOnMouseMove,
+  onReset,
 }: Props) => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
 
@@ -129,6 +131,10 @@ export const Canvas = ({
     draw();
   }, [colorIndex, steps, width, height]);
 
+  const handleDoubleClick = () => {
+    onReset?.();
+  };
+
   return (
     <>
       <canvas
@@ -136,6 +142,7 @@ export const Canvas = ({
         width={width}
         height={height}
         onMouseMove={handleOnMouseMove}
+        onDoubleClick={handleDoubleClick}
       />
       {typeof window !== "undefined" && window.localStorage.debug && (
         <>

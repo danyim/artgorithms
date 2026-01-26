@@ -79,6 +79,7 @@ export const UnknownCanvasContainer = () => {
         minCoverage={(values.minCoverage as number) / 100}
         minAngle={values.minAngle as number}
         maxAngle={values.maxAngle as number}
+        onReset={reset}
       />
     </ArtworkLayout>
   );

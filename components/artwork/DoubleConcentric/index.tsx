@@ -36,7 +36,7 @@ export const DoubleConcentricContainer = () => {
       ]}
       onReset={reset}
     >
-      <Canvas width={500} height={250} bands={values.bands as number} />
+      <Canvas width={500} height={250} bands={values.bands as number} onReset={reset} />
     </ArtworkLayout>
   );
 };

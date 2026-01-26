@@ -265,6 +265,7 @@ interface Props {
   minCoverage?: number;
   minAngle?: number;
   maxAngle?: number;
+  onReset?: () => void;
 }
 
 export const Canvas = ({
@@ -276,6 +277,7 @@ export const Canvas = ({
   minCoverage = 0.35,
   minAngle = 8,
   maxAngle = 88,
+  onReset,
 }: Props) => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
 
@@ -453,9 +455,14 @@ export const Canvas = ({
     minAngle,
     maxAngle,
   ]);
+
+  const handleDoubleClick = () => {
+    onReset?.();
+  };
+
   return (
     <>
-      <canvas ref={canvasRef} width={width} height={height} />
+      <canvas ref={canvasRef} width={width} height={height} onDoubleClick={handleDoubleClick} />
       {typeof window !== "undefined" && window.localStorage.debug && (
         <>
           <button onClick={draw}>Redraw</button>

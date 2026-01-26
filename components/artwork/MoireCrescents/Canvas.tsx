@@ -7,6 +7,7 @@ interface Props {
   gridSize: number; // total circles across canvas
   circleSize: number;
   offset: number;
+  onReset?: () => void;
 }
 
 export const Canvas = ({
@@ -16,6 +17,7 @@ export const Canvas = ({
   gridSize,
   circleSize,
   offset,
+  onReset,
 }: Props) => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
 
@@ -129,9 +131,13 @@ export const Canvas = ({
     draw();
   }, [size, gridSize, circleSize, offset, width, height]);
 
+  const handleDoubleClick = () => {
+    onReset?.();
+  };
+
   return (
     <>
-      <canvas ref={canvasRef} width={width} height={height} />
+      <canvas ref={canvasRef} width={width} height={height} onDoubleClick={handleDoubleClick} />
       {typeof window !== "undefined" && window.localStorage.debug && (
         <>
           <button onClick={draw}>Redraw</button>

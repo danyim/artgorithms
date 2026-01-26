@@ -5,9 +5,10 @@ interface Props {
   width?: number;
   height?: number;
   pattern: number;
+  onReset?: () => void;
 }
 
-export const Canvas = ({ width, height, pattern }: Props) => {
+export const Canvas = ({ width, height, pattern, onReset }: Props) => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
 
   const handleOnMouseMove = () => {
@@ -104,6 +105,10 @@ export const Canvas = ({ width, height, pattern }: Props) => {
     draw();
   }, [pattern, width, height]);
 
+  const handleDoubleClick = () => {
+    onReset?.();
+  };
+
   return (
     <>
       <canvas
@@ -111,6 +116,7 @@ export const Canvas = ({ width, height, pattern }: Props) => {
         width={width}
         height={height}
         onMouseMove={handleOnMouseMove}
+        onDoubleClick={handleDoubleClick}
       />
       {typeof window !== "undefined" && window.localStorage.debug && (
         <>

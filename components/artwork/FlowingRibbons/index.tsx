@@ -39,6 +39,7 @@ export const FlowingRibbonsContainer = () => {
         width={500}
         height={500}
         bandCount={values.bandCount as number}
+        onReset={reset}
       />
     </ArtworkLayout>
   );

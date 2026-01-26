@@ -58,6 +58,7 @@ export const SolWall610CanvasContainer = () => {
         colorIndex={values.colorIndex as number}
         steps={values.steps as number}
         handleOnMouseMove={handleOnMouseMove}
+        onReset={reset}
       />
     </ArtworkLayout>
   );

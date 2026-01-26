@@ -52,6 +52,7 @@ export const TemplateCanvasContainer = () => {
         height={500}
         size={values.size as number}
         pattern={values.pattern as number}
+        onReset={reset}
       />
     </ArtworkLayout>
   );

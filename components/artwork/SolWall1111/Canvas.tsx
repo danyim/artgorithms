@@ -6,9 +6,10 @@ interface Props {
   height?: number;
   size: number;
   bands: number;
+  onReset?: () => void;
 }
 
-export const Canvas = ({ width, height, bands, size }: Props) => {
+export const Canvas = ({ width, height, bands, size, onReset }: Props) => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
 
   const handleOnMouseMove = () => {
@@ -64,6 +65,10 @@ export const Canvas = ({ width, height, bands, size }: Props) => {
     draw();
   }, [bands, size, width, height]);
 
+  const handleDoubleClick = () => {
+    onReset?.();
+  };
+
   return (
     <>
       <canvas
@@ -71,6 +76,7 @@ export const Canvas = ({ width, height, bands, size }: Props) => {
         width={width}
         height={height}
         onMouseMove={handleOnMouseMove}
+        onDoubleClick={handleDoubleClick}
       />
       {typeof window !== "undefined" && window.localStorage.debug && (
         <>

@@ -6,9 +6,10 @@ interface Props {
   height: number;
   space: number;
   lineWidth: number;
+  onReset?: () => void;
 }
 
-export const Canvas = ({ width, height, space, lineWidth }: Props) => {
+export const Canvas = ({ width, height, space, lineWidth, onReset }: Props) => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
 
   const addLine = (
@@ -190,7 +191,11 @@ export const Canvas = ({ width, height, space, lineWidth }: Props) => {
     draw();
   }, [space, lineWidth, width, height]);
 
-  return <canvas ref={canvasRef} width={width} height={height} />;
+  const handleDoubleClick = () => {
+    onReset?.();
+  };
+
+  return <canvas ref={canvasRef} width={width} height={height} onDoubleClick={handleDoubleClick} />;
 };
 
 export default Canvas;

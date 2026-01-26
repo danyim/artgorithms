@@ -52,6 +52,7 @@ export const SolWall1111CanvasContainer = () => {
         height={500}
         bands={values.bands as number}
         size={values.size as number}
+        onReset={reset}
       />
     </ArtworkLayout>
   );

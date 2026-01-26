@@ -41,7 +41,7 @@ export const SolWall370CanvasContainer = () => {
       ]}
       onReset={reset}
     >
-      <Canvas width={300} height={300} space={values.space as number} />
+      <Canvas width={300} height={300} space={values.space as number} onReset={reset} />
       <CanvasSquare width={300} height={300} space={values.space as number} />
       <CanvasX width={300} height={300} space={values.space as number} />
     </ArtworkLayout>
