@@ -1,18 +1,20 @@
-import React from "react";
 import Canvas from "./Canvas";
 import CanvasSquare from "./CanvasSquare";
 import CanvasX from "./CanvasX";
 import ArtworkLayout from "../../ArtworkLayout";
+import { useUrlParams } from "../../../hooks/useUrlParams";
+
+const PARAM_CONFIG = {
+  space: { key: "sp", type: "number" as const, default: 10 },
+};
+
+type ParamKey = keyof typeof PARAM_CONFIG;
 
 export const SolWall370CanvasContainer = () => {
-  const [space, setSpace] = React.useState(10);
-
-  const handleReset = () => {
-    setSpace(10);
-  };
+  const { values, setValue, reset } = useUrlParams<ParamKey>(PARAM_CONFIG);
 
   const handleChange = (key: string, val: number) => {
-    setSpace(val);
+    setValue(key as ParamKey, val);
   };
 
   return (
@@ -33,15 +35,15 @@ export const SolWall370CanvasContainer = () => {
           key: "space",
           label: "Spacing",
           minStepMax: [5, 5, 50],
-          value: space,
+          value: values.space as number,
           onChange: handleChange,
         },
       ]}
-      onReset={handleReset}
+      onReset={reset}
     >
-      <Canvas width={300} height={300} space={space} />
-      <CanvasSquare width={300} height={300} space={space} />
-      <CanvasX width={300} height={300} space={space} />
+      <Canvas width={300} height={300} space={values.space as number} />
+      <CanvasSquare width={300} height={300} space={values.space as number} />
+      <CanvasX width={300} height={300} space={values.space as number} />
     </ArtworkLayout>
   );
 };

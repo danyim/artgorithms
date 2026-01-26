@@ -1,48 +1,31 @@
-import React from "react";
 import Canvas from "./Canvas";
 import ArtworkLayout from "../../ArtworkLayout";
 import { Checkbox } from "../../Checkbox";
+import { useUrlParams } from "../../../hooks/useUrlParams";
 
 interface Props {
   width?: number;
   height?: number;
 }
 
-const DEFAULT_SPACE = 5;
-const DEFAULT_SIZE = 16;
-const DEFAULT_SATURATION = 75;
+const PARAM_CONFIG = {
+  space: { key: "sp", type: "number" as const, default: 5 },
+  size: { key: "sz", type: "number" as const, default: 16 },
+  saturation: { key: "sat", type: "number" as const, default: 75 },
+  outline: { key: "ol", type: "boolean" as const, default: false },
+};
+
+type ParamKey = keyof typeof PARAM_CONFIG;
 
 export const Farben = ({ width = 1000, height = 450 }: Props) => {
-  const [space, setSpace] = React.useState<number>(DEFAULT_SPACE);
-  const [size, setSize] = React.useState<number>(DEFAULT_SIZE);
-  const [saturation, setSaturation] = React.useState<number>(DEFAULT_SATURATION);
-  const [outline, setOutline] = React.useState<boolean>(false);
-
-  const handleReset = () => {
-    setSpace(DEFAULT_SPACE);
-    setSize(DEFAULT_SIZE);
-    setSaturation(DEFAULT_SATURATION);
-    setOutline(false);
-  };
+  const { values, setValue, reset } = useUrlParams<ParamKey>(PARAM_CONFIG);
 
   const handleChange = (key: string, val: number) => {
-    switch (key) {
-      case "space":
-        setSpace(val);
-        return;
-      case "size":
-        setSize(val);
-        return;
-      case "saturation":
-        setSaturation(val);
-        return;
-    }
+    setValue(key as ParamKey, val);
   };
 
   const handleCheckboxChange = (key: string, val: boolean) => {
-    if (key === "outline") {
-      setOutline(val);
-    }
+    setValue(key as ParamKey, val);
   };
 
   return (
@@ -60,21 +43,21 @@ export const Farben = ({ width = 1000, height = 450 }: Props) => {
           key: "space",
           label: "Spacing",
           minStepMax: [5, 5, 20],
-          value: space,
+          value: values.space as number,
           onChange: handleChange,
         },
         {
           key: "size",
           label: "Columns",
           minStepMax: [4, 1, 16],
-          value: size,
+          value: values.size as number,
           onChange: handleChange,
         },
         {
           key: "saturation",
           label: "Saturation",
           minStepMax: [15, 5, 100],
-          value: saturation,
+          value: values.saturation as number,
           onChange: handleChange,
         },
       ]}
@@ -82,19 +65,19 @@ export const Farben = ({ width = 1000, height = 450 }: Props) => {
         <Checkbox
           keyName="outline"
           label="Outline"
-          value={outline}
+          value={values.outline as boolean}
           handleChange={handleCheckboxChange}
         />
       }
-      onReset={handleReset}
+      onReset={reset}
     >
       <Canvas
         width={width}
         height={height}
-        space={space}
-        size={size}
-        saturation={saturation}
-        outline={outline}
+        space={values.space as number}
+        size={values.size as number}
+        saturation={values.saturation as number}
+        outline={values.outline as boolean}
       />
     </ArtworkLayout>
   );

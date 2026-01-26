@@ -221,18 +221,18 @@ const validatePolygonAngles = (
   return true;
 };
 
-// Color palette for color mode (muted, desaturated tones)
+// Color palette for color mode (warm, earthy tones with pops of color)
 const COLOR_PALETTE = [
-  "#A8A39D", // Warm gray
-  "#C4B7A6", // Taupe
-  "#9B8E7E", // Stone
-  "#8B9A8B", // Muted sage
-  "#A39B8B", // Greige
-  "#B8AFA7", // Ash
-  "#9A9590", // Pewter
-  "#A6A29E", // Silver sage
-  "#8E8680", // Driftwood
-  "#B5B0A9", // Mushroom
+  "#E8D5B7", // Soft cream
+  "#D4A574", // Warm terracotta
+  "#7D9B76", // Soft sage green
+  "#C9A87C", // Golden sand
+  "#8B7355", // Warm brown
+  "#B8D4E3", // Soft sky blue
+  "#E6B89C", // Peach
+  "#9CAFA4", // Sea foam
+  "#D4C4A8", // Warm beige
+  "#C7B198", // Camel
 ];
 
 /** Shuffle array and return first n elements (Fisher-Yates) */

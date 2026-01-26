@@ -1,23 +1,21 @@
-import React from "react";
 import Canvas from "./Canvas";
 import CirclesCanvas from "./CirclesCanvas";
 import { CompositeCanvas1 } from "./CompositeCanvas1";
 import { CompositeCanvas2 } from "./CompositeCanvas2";
 import ArtworkLayout from "../../ArtworkLayout";
+import { useUrlParams } from "../../../hooks/useUrlParams";
 
-const DEFAULT_SIZE = 10;
+const PARAM_CONFIG = {
+  size: { key: "sz", type: "number" as const, default: 10 },
+};
+
+type ParamKey = keyof typeof PARAM_CONFIG;
 
 export const SolColorBandsCanvasContainer = () => {
-  const [size, setSize] = React.useState(DEFAULT_SIZE);
-
-  const handleReset = () => {
-    setSize(DEFAULT_SIZE);
-  };
+  const { values, setValue, reset } = useUrlParams<ParamKey>(PARAM_CONFIG);
 
   const handleChange = (key: string, val: number) => {
-    if (key === "size") {
-      setSize(val);
-    }
+    setValue(key as ParamKey, val);
   };
 
   const canvasSize = 250;
@@ -34,16 +32,16 @@ export const SolColorBandsCanvasContainer = () => {
           key: "size",
           label: "Stroke",
           minStepMax: [3, 1, 50],
-          value: size,
+          value: values.size as number,
           onChange: handleChange,
         },
       ]}
-      onReset={handleReset}
+      onReset={reset}
     >
-      <Canvas width={canvasSize} height={canvasSize} size={size} />
-      <CirclesCanvas width={canvasSize} height={canvasSize} size={size} />
-      <CompositeCanvas1 width={canvasSize} height={canvasSize} size={size} />
-      <CompositeCanvas2 width={canvasSize} height={canvasSize} size={size} />
+      <Canvas width={canvasSize} height={canvasSize} size={values.size as number} />
+      <CirclesCanvas width={canvasSize} height={canvasSize} size={values.size as number} />
+      <CompositeCanvas1 width={canvasSize} height={canvasSize} size={values.size as number} />
+      <CompositeCanvas2 width={canvasSize} height={canvasSize} size={values.size as number} />
     </ArtworkLayout>
   );
 };

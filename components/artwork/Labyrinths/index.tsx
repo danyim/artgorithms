@@ -1,28 +1,19 @@
-import React from "react";
 import Canvas from "./Canvas";
 import ArtworkLayout from "../../ArtworkLayout";
+import { useUrlParams } from "../../../hooks/useUrlParams";
 
-const DEFAULT_SIZE = 6;
-const DEFAULT_PATTERN = 0;
+const PARAM_CONFIG = {
+  size: { key: "sz", type: "number" as const, default: 6 },
+  pattern: { key: "pt", type: "number" as const, default: 0 },
+};
+
+type ParamKey = keyof typeof PARAM_CONFIG;
 
 export const TemplateCanvasContainer = () => {
-  const [size, setSize] = React.useState(DEFAULT_SIZE);
-  const [pattern, setPattern] = React.useState(DEFAULT_PATTERN);
-
-  const handleReset = () => {
-    setSize(DEFAULT_SIZE);
-    setPattern(DEFAULT_PATTERN);
-  };
+  const { values, setValue, reset } = useUrlParams<ParamKey>(PARAM_CONFIG);
 
   const handleChange = (key: string, val: number) => {
-    switch (key) {
-      case "size":
-        setSize(val);
-        return;
-      case "pattern":
-        setPattern(val);
-        return;
-    }
+    setValue(key as ParamKey, val);
   };
 
   return (
@@ -43,20 +34,25 @@ export const TemplateCanvasContainer = () => {
           key: "size",
           label: "Size",
           minStepMax: [2, 1, 10],
-          value: size,
+          value: values.size as number,
           onChange: handleChange,
         },
         {
           key: "pattern",
           label: "Pattern",
           minStepMax: [0, 1, 35],
-          value: pattern,
+          value: values.pattern as number,
           onChange: handleChange,
         },
       ]}
-      onReset={handleReset}
+      onReset={reset}
     >
-      <Canvas width={500} height={500} size={size} pattern={pattern} />
+      <Canvas
+        width={500}
+        height={500}
+        size={values.size as number}
+        pattern={values.pattern as number}
+      />
     </ArtworkLayout>
   );
 };

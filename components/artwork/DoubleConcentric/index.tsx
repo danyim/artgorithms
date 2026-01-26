@@ -1,18 +1,18 @@
-import React from "react";
 import Canvas from "./Canvas";
 import ArtworkLayout from "../../ArtworkLayout";
+import { useUrlParams } from "../../../hooks/useUrlParams";
 
-const DEFAULT_VALUE = 12;
+const PARAM_CONFIG = {
+  bands: { key: "b", type: "number" as const, default: 12 },
+};
+
+type ParamKey = keyof typeof PARAM_CONFIG;
 
 export const DoubleConcentricContainer = () => {
-  const [bands, setBands] = React.useState(DEFAULT_VALUE);
-
-  const handleReset = () => {
-    setBands(DEFAULT_VALUE);
-  };
+  const { values, setValue, reset } = useUrlParams<ParamKey>(PARAM_CONFIG);
 
   const handleChange = (key: string, val: number) => {
-    setBands(val);
+    setValue(key as ParamKey, val);
   };
 
   return (
@@ -30,13 +30,13 @@ export const DoubleConcentricContainer = () => {
           key: "bands",
           label: "Bands",
           minStepMax: [2, 1, 20],
-          value: bands,
+          value: values.bands as number,
           onChange: handleChange,
         },
       ]}
-      onReset={handleReset}
+      onReset={reset}
     >
-      <Canvas width={500} height={250} bands={bands} />
+      <Canvas width={500} height={250} bands={values.bands as number} />
     </ArtworkLayout>
   );
 };

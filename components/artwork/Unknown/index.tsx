@@ -1,50 +1,27 @@
-import React from "react";
 import Canvas from "./Canvas";
 import ArtworkLayout from "../../ArtworkLayout";
 import { Checkbox } from "../../Checkbox";
+import { useUrlParams } from "../../../hooks/useUrlParams";
 
-const DEFAULT_SIZE = 6;
-const DEFAULT_COLOR_MODE = false;
-const DEFAULT_MIN_COVERAGE = 35;
-const DEFAULT_MIN_ANGLE = 8;
-const DEFAULT_MAX_ANGLE = 88;
+const PARAM_CONFIG = {
+  size: { key: "sz", type: "number" as const, default: 6 },
+  colorMode: { key: "cm", type: "boolean" as const, default: false },
+  minCoverage: { key: "mc", type: "number" as const, default: 35 },
+  minAngle: { key: "ma", type: "number" as const, default: 8 },
+  maxAngle: { key: "xa", type: "number" as const, default: 88 },
+};
+
+type ParamKey = keyof typeof PARAM_CONFIG;
 
 export const UnknownCanvasContainer = () => {
-  const [size, setSize] = React.useState(DEFAULT_SIZE);
-  const [colorMode, setColorMode] = React.useState(DEFAULT_COLOR_MODE);
-  const [minCoverage, setMinCoverage] = React.useState(DEFAULT_MIN_COVERAGE);
-  const [minAngle, setMinAngle] = React.useState(DEFAULT_MIN_ANGLE);
-  const [maxAngle, setMaxAngle] = React.useState(DEFAULT_MAX_ANGLE);
-
-  const handleReset = () => {
-    setSize(DEFAULT_SIZE);
-    setColorMode(DEFAULT_COLOR_MODE);
-    setMinCoverage(DEFAULT_MIN_COVERAGE);
-    setMinAngle(DEFAULT_MIN_ANGLE);
-    setMaxAngle(DEFAULT_MAX_ANGLE);
-  };
+  const { values, setValue, reset } = useUrlParams<ParamKey>(PARAM_CONFIG);
 
   const handleChange = (key: string, val: number) => {
-    switch (key) {
-      case "size":
-        setSize(val);
-        return;
-      case "minCoverage":
-        setMinCoverage(val);
-        return;
-      case "minAngle":
-        setMinAngle(val);
-        return;
-      case "maxAngle":
-        setMaxAngle(val);
-        return;
-    }
+    setValue(key as ParamKey, val);
   };
 
   const handleCheckboxChange = (key: string, val: boolean) => {
-    if (key === "colorMode") {
-      setColorMode(val);
-    }
+    setValue(key as ParamKey, val);
   };
 
   return (
@@ -59,28 +36,28 @@ export const UnknownCanvasContainer = () => {
           key: "size",
           label: "Size",
           minStepMax: [2, 1, 12],
-          value: size,
+          value: values.size as number,
           onChange: handleChange,
         },
         {
           key: "minCoverage",
           label: "Min Coverage",
           minStepMax: [10, 5, 80],
-          value: minCoverage,
+          value: values.minCoverage as number,
           onChange: handleChange,
         },
         {
           key: "minAngle",
           label: "Min Angle",
           minStepMax: [5, 1, 45],
-          value: minAngle,
+          value: values.minAngle as number,
           onChange: handleChange,
         },
         {
           key: "maxAngle",
           label: "Max Angle",
           minStepMax: [45, 1, 120],
-          value: maxAngle,
+          value: values.maxAngle as number,
           onChange: handleChange,
         },
       ]}
@@ -88,20 +65,20 @@ export const UnknownCanvasContainer = () => {
         <Checkbox
           keyName="colorMode"
           label="Color"
-          value={colorMode}
+          value={values.colorMode as boolean}
           handleChange={handleCheckboxChange}
         />
       }
-      onReset={handleReset}
+      onReset={reset}
     >
       <Canvas
         width={500}
         height={500}
-        size={size}
-        colorMode={colorMode}
-        minCoverage={minCoverage / 100}
-        minAngle={minAngle}
-        maxAngle={maxAngle}
+        size={values.size as number}
+        colorMode={values.colorMode as boolean}
+        minCoverage={(values.minCoverage as number) / 100}
+        minAngle={values.minAngle as number}
+        maxAngle={values.maxAngle as number}
       />
     </ArtworkLayout>
   );

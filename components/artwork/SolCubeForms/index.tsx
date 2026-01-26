@@ -1,30 +1,31 @@
 import React from "react";
 import Canvas from "./Canvas";
 import ArtworkLayout from "../../ArtworkLayout";
+import { useUrlParams } from "../../../hooks/useUrlParams";
 
 interface Props {
   width?: number;
   height?: number;
 }
 
-const DEFAULT_VALUE = 10;
+const PARAM_CONFIG = {
+  space: { key: "sp", type: "number" as const, default: 10 },
+};
+
+type ParamKey = keyof typeof PARAM_CONFIG;
 
 export const SolCubeFormsCanvasContainer = ({
   width = 500,
   height = 500,
 }: Props) => {
   const containerRef = React.useRef<HTMLDivElement>(null);
-  const [space, setSpace] = React.useState(DEFAULT_VALUE);
-
-  const handleReset = () => {
-    setSpace(DEFAULT_VALUE);
-  };
-
-  const handleChange = (key: string, val: number) => {
-    setSpace(val);
-  };
+  const { values, setValue, reset } = useUrlParams<ParamKey>(PARAM_CONFIG);
 
   let mouseOut: ReturnType<typeof setTimeout> | undefined;
+
+  const handleChange = (key: string, val: number) => {
+    setValue(key as ParamKey, val);
+  };
 
   const handleOnMouseMove = (e: React.MouseEvent) => {
     if (mouseOut) {
@@ -34,13 +35,13 @@ export const SolCubeFormsCanvasContainer = ({
       const boundingBox = containerRef.current.getBoundingClientRect();
       const clientYCanvas =
         Math.max(e.clientY - boundingBox.top, 0) / boundingBox.height;
-      setSpace(Math.floor(clientYCanvas * 50));
+      setValue("space", Math.floor(clientYCanvas * 50));
     }
   };
 
   const handleOnMouseOut = () => {
     mouseOut = setTimeout(() => {
-      setSpace(10);
+      setValue("space", PARAM_CONFIG.space.default);
     }, 1500);
   };
 
@@ -59,17 +60,17 @@ export const SolCubeFormsCanvasContainer = ({
           key: "space",
           label: "Spacing",
           minStepMax: [5, 5, 50],
-          value: space,
+          value: values.space as number,
           onChange: handleChange,
         },
       ]}
-      onReset={handleReset}
+      onReset={reset}
     >
       <div ref={containerRef}>
         <Canvas
           width={width}
           height={height}
-          space={space}
+          space={values.space as number}
           onMouseMove={handleOnMouseMove}
           onMouseOut={handleOnMouseOut}
         />
