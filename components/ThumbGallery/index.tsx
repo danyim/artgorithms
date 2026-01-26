@@ -4,9 +4,9 @@ import Thumbnail from "./Thumbnail";
 import { manifestArray } from "constants/art-manifest";
 const Container = styled.div`
   margin: 2rem 0;
-
   display: flex;
   flex-flow: row nowrap;
+  width: 100%;
 
   button {
     display: inline-block;
@@ -17,7 +17,11 @@ const Container = styled.div`
     border: none;
     outline-color: #aaa;
   }
-  button:first-child {
+
+  @media (max-width: 768px) {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 0 1rem;
   }
 `;
 
@@ -27,12 +31,12 @@ const ThumbnailList = styled.ul`
   list-style-type: none;
   padding: 0;
   margin: 0;
-  /*
-  @media only screen and (max-width: ${({ theme }) =>
-    theme.breakpoints.small}) {
-    max-width: 1vw;
+  justify-content: center;
+
+  @media (max-width: 768px) {
+    flex-flow: row nowrap;
+    justify-content: flex-start;
   }
-  */
 `;
 interface Props {}
 

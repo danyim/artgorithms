@@ -58,7 +58,10 @@ const StyledPlainTrack = styled.div<{ $index: number }>`
 //   // <StyledTrack src={TrackSvg} height="20" />
 //   <StyledPlainTrack $index={state.index} />
 // );
-const Track = (props, state) => <StyledTrack {...props} />;
+const Track = (props: Record<string, unknown>) => {
+  const { key, ...rest } = props;
+  return <StyledTrack key={key as React.Key} {...rest} />;
+};
 
 const StyledThumb = styled.div<{ height: number }>`
   height: ${({ height }) => height}px;
@@ -73,9 +76,10 @@ const StyledThumb = styled.div<{ height: number }>`
     outline: 0;
   }
 `;
-const Thumb = (props, state) => (
-  <StyledThumb height={20} {...props}></StyledThumb>
-);
+const Thumb = (props: Record<string, unknown>) => {
+  const { key, ...rest } = props;
+  return <StyledThumb key={key as React.Key} height={20} {...rest} />;
+};
 
 interface Props {
   keyName: string;

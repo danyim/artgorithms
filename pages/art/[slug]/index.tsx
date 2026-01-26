@@ -17,33 +17,31 @@ export const Artwork = () => {
       // Since dynamic imports must be explicitly written, we'll have to define each piece of art we want to display manually:
       switch (slug) {
         case "wall-1a":
-          return import("components/SolWall1A");
+          return import("components/artwork/SolWall1A");
         case "broken-bands":
-          return import("components/SolBrokenBands");
+          return import("components/artwork/SolBrokenBands");
         case "color-bands":
-          return import("components/SolColorBands");
+          return import("components/artwork/SolColorBands");
         case "cube-forms":
-          return import("components/SolCubeForms");
+          return import("components/artwork/SolCubeForms");
         case "farben":
-          return import("components/Farben");
+          return import("components/artwork/Farben");
         case "wall-370":
-          return import("components/SolWall370");
+          return import("components/artwork/SolWall370");
         // case "wall-565":
-        //   return import("components/SolWall565");
+        //   return import("components/artwork/SolWall565");
         case "wall-610":
-          return import("components/SolWall610");
+          return import("components/artwork/SolWall610");
         case "wall-1111":
-          return import("components/SolWall1111");
+          return import("components/artwork/SolWall1111");
         case "double-concentric":
-          return import("components/DoubleConcentric");
+          return import("components/artwork/DoubleConcentric");
         case "50x50":
-          return import("components/50x50");
+          return import("components/artwork/50x50");
         case "labyrinths":
-          return import("components/Labyrinths");
+          return import("components/artwork/Labyrinths");
         case "unknown":
-          return import("components/Unknown");
-        case "test":
-          return import("components/TestCanvas");
+          return import("components/artwork/Unknown");
       }
       return import("components/NotFound");
     },

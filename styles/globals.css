@@ -1,6 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 html,
 body {
@@ -29,8 +27,15 @@ a {
   margin: 3rem 0;
 }
 
+.mdl-grid .mdl-cell--8-col {
+  display: flex;
+  justify-content: center;
+}
+
 .mdl-grid .mdl-cell--8-col canvas {
   margin-right: 1rem;
+  max-width: 100%;
+  height: auto;
 }
 
 .mdl-grid .mdl-cell--4-col {
@@ -39,15 +44,62 @@ a {
   padding-left: 2rem;
 }
 
-h4.placard-title {
-  font: normal 500 1rem/1.7rem Inter, sans-serif;
-  text-transform: uppercase;
-  letter-spacing: 0.02rem;
-  margin-bottom: 0.4rem;
+/* Mobile responsive styles */
+@media (max-width: 768px) {
+  .mdl-grid {
+    flex-direction: column;
+    align-items: center;
+    margin: 1.5rem 0;
+  }
+
+  .mdl-grid .mdl-cell--8-col {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .mdl-grid .mdl-cell--8-col canvas {
+    margin-right: 0;
+    max-width: 90vw;
+  }
+
+  .mdl-grid .mdl-cell--4-col {
+    width: 100%;
+    padding-left: 0;
+    padding-top: 1.5rem;
+    justify-content: center;
+  }
 }
 
-p.placard {
-  font: normal 400 1.0rem/1.7rem Inter, sans-serif;
-  letter-spacing: 0.02rem;
-  margin: 0.5rem 0;
+/* Placard typography classes */
+
+.artwork-info {
+  @apply m-0;
+  font-size: 0.9rem;
+}
+.artwork-info .artist-name {
+  @apply font-semibold m-0 text-base;
+}
+
+.artwork-info .title {
+  @apply font-semibold text-xl leading-2 uppercase;
+  font-family: Abel, Inter, san-serif;
+}
+
+.artwork-year {
+  @apply font-normal text-xs text-gray-500;
+}
+
+@media (min-width: 769px) {
+  .artwork-info {
+    font-size: 1.1rem;
+    line-height: 1.4rem;
+  }
+}
+
+.placard-title {
+  @apply font-semibold text-xs leading-4 font-sans uppercase tracking-normal mb-1.5;
+}
+
+.placard {
+  @apply font-normal text-sm leading-[1.7rem] font-sans tracking-[0.02rem] my-2;
 }

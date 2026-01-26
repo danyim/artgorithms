@@ -7,6 +7,7 @@ const ListItem = styled.li`
   height: 100px;
   width: 100px;
   cursor: pointer;
+  flex-shrink: 0;
 
   & > label {
     width: 100px;
@@ -19,6 +20,18 @@ const ListItem = styled.li`
     pointer-events: none;
     margin: 1rem 0;
   }
+
+  @media (max-width: 768px) {
+    height: auto;
+    width: 80px;
+    margin: 0.5rem;
+
+    & > label {
+      width: 80px;
+      font-size: 0.65rem;
+      margin: 0.5rem 0;
+    }
+  }
 `;
 
 const FlexContainer = styled.div<{ $thumbnailPath: string }>`
@@ -26,8 +39,13 @@ const FlexContainer = styled.div<{ $thumbnailPath: string }>`
   border-radius: 10px;
   background-color: #c0c0c0;
   width: 100%;
-  height: 100%;
+  height: 100px;
   background-image: ${({ $thumbnailPath }) => `url('${$thumbnailPath}')`};
+  background-size: cover;
+
+  @media (max-width: 768px) {
+    height: 80px;
+  }
 `;
 
 const replaceDash = (str: string) => str?.replace("-", " ") ?? str;

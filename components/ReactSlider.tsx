@@ -161,9 +161,18 @@ class ReactSlider extends React.Component<Props, State> {
     snapDragDisabled: false,
     invert: false,
     marks: [],
-    renderThumb: (props) => <div {...props} />,
-    renderTrack: (props) => <div {...props} />,
-    renderMark: (props) => <span {...props} />,
+    renderThumb: (props) => {
+      const { key, ...rest } = props;
+      return <div key={key as React.Key} {...rest} />;
+    },
+    renderTrack: (props) => {
+      const { key, ...rest } = props;
+      return <div key={key as React.Key} {...rest} />;
+    },
+    renderMark: (props) => {
+      const { key, ...rest } = props;
+      return <span key={key as React.Key} {...rest} />;
+    },
   };
 
   resizeObserver: ResizeObserver | null;
@@ -309,6 +318,9 @@ class ReactSlider extends React.Component<Props, State> {
       return;
     }
 
+    // Prevent page scrolling when dragging the slider
+    e.preventDefault();
+
     const diffPosition = this.getDiffPosition(position[0]);
     const newValue = this.getValueFromPosition(diffPosition);
 
@@ -391,6 +403,28 @@ class ReactSlider extends React.Component<Props, State> {
       );
       this.props.onSliderClick(valueAtPos);
     }
+  };
+
+  onSliderTouchStart = (e: TouchEvent) => {
+    // do nothing if disabled or multi-touch
+    if (this.props.disabled || e.touches.length > 1) {
+      return;
+    }
+
+    // Prevent controlled updates from happening while touch is moving
+    this.setState({ pending: true });
+
+    if (!this.props.snapDragDisabled) {
+      const position = this.getTouchPosition(e);
+      this.startPosition = position;
+      this.isScrolling = undefined;
+      this.forceValueFromPosition(position[0], (i: number) => {
+        this.start(i, position[0]);
+        addHandlers(this.getTouchEventMap());
+      });
+    }
+
+    stopPropagation(e);
   };
 
   getValue() {
@@ -961,6 +995,7 @@ class ReactSlider extends React.Component<Props, State> {
         className={this.props.className + (this.props.disabled ? " disabled" : "")}
         onMouseDown={this.onSliderMouseDown}
         onClick={this.onSliderClick}
+        onTouchStart={this.onSliderTouchStart as unknown as React.TouchEventHandler}
       >
         {tracks}
         {thumbs}
