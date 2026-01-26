@@ -1,20 +1,23 @@
-import React from "react";
 import Canvas from "./Canvas";
 import ArtworkLayout from "../../ArtworkLayout";
+import { useUrlParams } from "../../../hooks/useUrlParams";
+
+const PARAM_CONFIG = {
+  colorIndex: { key: "ci", type: "number" as const, default: 0 },
+  steps: { key: "st", type: "number" as const, default: 4 },
+};
+
+type ParamKey = keyof typeof PARAM_CONFIG;
 
 export const SolWall610CanvasContainer = () => {
-  const [colorIndex, setColorIndex] = React.useState(0);
-
-  const handleReset = () => {
-    setColorIndex(0);
-  };
+  const { values, setValue, reset } = useUrlParams<ParamKey>(PARAM_CONFIG);
 
   const handleChange = (key: string, val: number) => {
-    setColorIndex(val);
+    setValue(key as ParamKey, val);
   };
 
   const handleOnMouseMove = () => {
-    setColorIndex((colorIndex + 1) % 10);
+    setValue("colorIndex", ((values.colorIndex as number) + 1) % 10);
   };
 
   return (
@@ -36,16 +39,24 @@ export const SolWall610CanvasContainer = () => {
           key: "colorIndex",
           label: "Color",
           minStepMax: [0, 1, 10],
-          value: colorIndex,
+          value: values.colorIndex as number,
+          onChange: handleChange,
+        },
+        {
+          key: "steps",
+          label: "Steps",
+          minStepMax: [2, 1, 8],
+          value: values.steps as number,
           onChange: handleChange,
         },
       ]}
-      onReset={handleReset}
+      onReset={reset}
     >
       <Canvas
         width={500}
         height={500}
-        colorIndex={colorIndex}
+        colorIndex={values.colorIndex as number}
+        steps={values.steps as number}
         handleOnMouseMove={handleOnMouseMove}
       />
     </ArtworkLayout>

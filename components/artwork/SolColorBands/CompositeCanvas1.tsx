@@ -11,10 +11,9 @@ interface Props {
   width?: number;
   height?: number;
   size: number;
-  bands: number;
 }
 
-export const CompositeCanvas1 = ({ width, height, size, bands }: Props) => {
+export const CompositeCanvas1 = ({ width, height, size }: Props) => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
 
   const handleOnMouseMove = () => {
@@ -35,20 +34,6 @@ export const CompositeCanvas1 = ({ width, height, size, bands }: Props) => {
     // Art params
 
     const colors = [
-      // [31, 100, 189],
-      // [237, 214, 90],
-      // [205, 84, 50],
-      // [74, 73, 156],
-      // [99, 153, 49],
-      // [165, 165, 165],
-      // [34, 105, 193],
-      // [173, 49, 44],
-      // [240, 218, 93],
-      // [34, 105, 193],
-      // [170, 170, 170],
-      // [209, 90, 54],
-      // [78, 76, 160],
-      // [32, 32, 32],
       [248, 201, 69],
       [176, 35, 34],
       [50, 118, 39],
@@ -56,6 +41,10 @@ export const CompositeCanvas1 = ({ width, height, size, bands }: Props) => {
       [27, 86, 156],
       [62, 42, 97],
     ];
+
+    // Calculate how many bands needed to fill the canvas (use diagonal + buffer for full coverage)
+    const diagonal = Math.sqrt(width * width + height * height);
+    const bands = Math.ceil(diagonal / size) + 2;
 
     const frameSize = 5;
     const topBounds: Bounds = {
@@ -136,7 +125,7 @@ export const CompositeCanvas1 = ({ width, height, size, bands }: Props) => {
 
   React.useEffect(() => {
     draw();
-  }, [bands, size, width, height]);
+  }, [size, width, height]);
   return (
     <>
       <canvas

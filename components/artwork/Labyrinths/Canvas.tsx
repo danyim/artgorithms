@@ -5,10 +5,11 @@ import { drawPartialFrame } from "utils/art";
 interface Props {
   width?: number;
   height?: number;
+  size: number;
   pattern: number;
 }
 
-export const Canvas = ({ width, height, pattern }: Props) => {
+export const Canvas = ({ width, height, size, pattern }: Props) => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
 
   const handleOnMouseMove = () => {
@@ -152,25 +153,26 @@ export const Canvas = ({ width, height, pattern }: Props) => {
     1100 0011 1010 0101
     1010 0110 0110 0011
      */
-    const size = 6; // NxN array
-    const boxSize = 12;
-    const spacing = boxSize * 2;
-    // Columns & rows of the pattern to repeat
+    // Size controls NxN grid
     const innerColumns = 4;
     const innerRows = 4;
+    const spacing = 24;
+    // Calculate boxSize to fit within canvas
+    const totalSpacing = spacing * (size - 1);
+    const availableSpace = Math.min(width, height) - totalSpacing;
+    const patternSize = availableSpace / size;
+    const boxSize = patternSize / innerColumns;
 
     // Derived values
     const patternWidth = innerColumns * boxSize;
     const patternHeight = innerRows * boxSize;
-
-    const offset = pattern;
 
     // Iterate over rows and columns of the pattern
     for (let k = 0; k < size; k++) {
       for (let j = 0; j < size; j++) {
         const xOffset = patternWidth * k + spacing * k;
         const yOffset = patternHeight * j + spacing * j;
-        const patternIndex = (j * size + k + offset) % patternArray.length;
+        const patternIndex = (j * size + k + pattern) % patternArray.length;
         // Draw the main pattern
         for (let row = 0; row < innerRows; row++) {
           for (let col = 0; col < innerColumns; col++) {
@@ -209,12 +211,12 @@ export const Canvas = ({ width, height, pattern }: Props) => {
       return;
     }
     const ctx = canvas.getContext("2d");
-    ctx.clearRect(0, 0, 500, 500);
+    ctx.clearRect(0, 0, width, height);
   };
 
   React.useEffect(() => {
     draw();
-  }, [pattern, width, height]);
+  }, [size, pattern, width, height]);
 
   return (
     <>

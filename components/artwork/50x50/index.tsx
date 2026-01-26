@@ -1,18 +1,18 @@
-import React from "react";
 import Canvas from "./Canvas";
 import ArtworkLayout from "../../ArtworkLayout";
+import { useUrlParams } from "../../../hooks/useUrlParams";
 
-const DEFAULT_VALUE = 2458;
+const PARAM_CONFIG = {
+  pattern: { key: "pt", type: "number" as const, default: 2458 },
+};
+
+type ParamKey = keyof typeof PARAM_CONFIG;
 
 export const TemplateCanvasContainer = () => {
-  const [pattern, setPattern] = React.useState(DEFAULT_VALUE);
-
-  const handleReset = () => {
-    setPattern(DEFAULT_VALUE);
-  };
+  const { values, setValue, reset } = useUrlParams<ParamKey>(PARAM_CONFIG);
 
   const handleChange = (key: string, val: number) => {
-    setPattern(val);
+    setValue(key as ParamKey, val);
   };
 
   return (
@@ -41,13 +41,13 @@ export const TemplateCanvasContainer = () => {
           key: "pattern",
           label: "Pattern",
           minStepMax: [2, 14, 4095],
-          value: pattern,
+          value: values.pattern as number,
           onChange: handleChange,
         },
       ]}
-      onReset={handleReset}
+      onReset={reset}
     >
-      <Canvas width={384} height={512} pattern={pattern} />
+      <Canvas width={384} height={512} pattern={values.pattern as number} />
     </ArtworkLayout>
   );
 };

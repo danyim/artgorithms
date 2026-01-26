@@ -1,8 +1,14 @@
 import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
-import React from "react";
+import React, { useEffect, useCallback } from "react";
 import Loader from "components/Loader";
 import Layout from "components/Layout";
+import { manifestArray } from "constants/art-manifest";
+
+// Filter out test/unknown from navigation
+const navigableArtworks = manifestArray.filter(
+  (m) => m.slug !== "test" && m.slug !== "unknown"
+);
 
 export const Artwork = () => {
   const router = useRouter();
@@ -11,6 +17,50 @@ export const Artwork = () => {
     console.log("Slug is an array, taking the first");
     slug = slug[0];
   }
+
+  const navigateToArtwork = useCallback(
+    (direction: "prev" | "next") => {
+      const currentIndex = navigableArtworks.findIndex((m) => m.slug === slug);
+      if (currentIndex === -1) return;
+
+      let newIndex: number;
+      if (direction === "prev") {
+        newIndex =
+          currentIndex === 0
+            ? navigableArtworks.length - 1
+            : currentIndex - 1;
+      } else {
+        newIndex =
+          currentIndex === navigableArtworks.length - 1
+            ? 0
+            : currentIndex + 1;
+      }
+
+      router.push(`/art/${navigableArtworks[newIndex].slug}`);
+    },
+    [slug, router]
+  );
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Don't navigate if user is typing in an input
+      if (
+        e.target instanceof HTMLInputElement ||
+        e.target instanceof HTMLTextAreaElement
+      ) {
+        return;
+      }
+
+      if (e.key === "ArrowLeft") {
+        navigateToArtwork("prev");
+      } else if (e.key === "ArrowRight") {
+        navigateToArtwork("next");
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [navigateToArtwork]);
 
   const DynamicArtwork = dynamic(
     () => {

@@ -7,12 +7,17 @@ const Container = styled.div`
   display: flex;
   flex-flow: column nowrap;
 
-  .reset {
+  .actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 0.5rem;
+  }
+
+  .actions button {
     font: normal 400 0.8rem/1rem Inter, sans-serif;
     letter-spacing: 0.05rem;
     text-transform: uppercase;
-    margin-top: 0.5rem;
-    align-self: flex-end;
     border: none;
     background-color: transparent;
     cursor: pointer;
@@ -22,16 +27,20 @@ const Container = styled.div`
 interface Props {
   children?: React.ReactNode;
   onReset: () => void;
+  onRandom?: () => void;
 }
 
-export const CanvasInputs = ({ children, onReset }: Props) => {
+export const CanvasInputs = ({ children, onReset, onRandom }: Props) => {
   return (
     <Container>
       <h4 className="placard-title">Controls</h4>
       {children}
-      <button className="reset" onClick={onReset}>
-        Reset
-      </button>
+      <div className="actions">
+        {onRandom && (
+          <button onClick={onRandom}>Random</button>
+        )}
+        <button onClick={onReset}>Reset</button>
+      </div>
     </Container>
   );
 };

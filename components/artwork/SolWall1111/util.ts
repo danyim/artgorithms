@@ -10,12 +10,18 @@ export const drawConcentricCircleBands = (
   y: number,
   bandSize: number,
   numBands: number,
-  colorArray: number[][]
+  colorArray: number[][],
+  maxRadius?: number
 ) => {
   ctx.save();
 
   for (let k = 0; k < numBands; k++) {
-    drawConcentricBandedCircle(ctx, x, y, bandSize * k, bandSize, colorArray);
+    const bandRadius = bandSize * k;
+    // Skip bands that would extend past the max radius (including stroke width)
+    if (maxRadius && bandRadius + bandSize / 2 > maxRadius) {
+      continue;
+    }
+    drawConcentricBandedCircle(ctx, x, y, bandRadius, bandSize, colorArray);
   }
   drawBandedCircle(ctx, x, y, bandSize / 2, colorArray);
 

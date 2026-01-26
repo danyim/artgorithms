@@ -1,25 +1,19 @@
-import React from "react";
 import Canvas from "./Canvas";
 import ArtworkLayout from "../../ArtworkLayout";
+import { useUrlParams } from "../../../hooks/useUrlParams";
+
+const PARAM_CONFIG = {
+  space: { key: "sp", type: "number" as const, default: 10 },
+  lineWidth: { key: "lw", type: "number" as const, default: 3 },
+};
+
+type ParamKey = keyof typeof PARAM_CONFIG;
 
 export const CanvasContainer = () => {
-  const [space, setSpace] = React.useState(10);
-  const [lineWidth, setLineWidth] = React.useState(3);
-
-  const handleReset = () => {
-    setSpace(10);
-    setLineWidth(3);
-  };
+  const { values, setValue, reset } = useUrlParams<ParamKey>(PARAM_CONFIG);
 
   const handleChange = (key: string, val: number) => {
-    switch (key) {
-      case "space":
-        setSpace(val);
-        return;
-      case "lineWidth":
-        setLineWidth(val);
-        return;
-    }
+    setValue(key as ParamKey, val);
   };
 
   return (
@@ -55,20 +49,25 @@ export const CanvasContainer = () => {
           key: "space",
           label: "Spacing",
           minStepMax: [5, 5, 50],
-          value: space,
+          value: values.space as number,
           onChange: handleChange,
         },
         {
           key: "lineWidth",
           label: "Thickness",
           minStepMax: [1, 2, 11],
-          value: lineWidth,
+          value: values.lineWidth as number,
           onChange: handleChange,
         },
       ]}
-      onReset={handleReset}
+      onReset={reset}
     >
-      <Canvas width={500} height={500} space={space} lineWidth={lineWidth} />
+      <Canvas
+        width={500}
+        height={500}
+        space={values.space as number}
+        lineWidth={values.lineWidth as number}
+      />
     </ArtworkLayout>
   );
 };

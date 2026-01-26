@@ -1,18 +1,19 @@
-import React from "react";
 import Canvas from "./Canvas";
 import ArtworkLayout from "../../ArtworkLayout";
+import { useUrlParams } from "../../../hooks/useUrlParams";
 
-const DEFAULT_VALUE = 100;
+const PARAM_CONFIG = {
+  saturation: { key: "sat", type: "number" as const, default: 10 },
+  bands: { key: "b", type: "number" as const, default: 16 },
+};
+
+type ParamKey = keyof typeof PARAM_CONFIG;
 
 export const SolBrokenBandsCanvasContainer = () => {
-  const [saturation, setSaturation] = React.useState(DEFAULT_VALUE);
-
-  const handleReset = () => {
-    setSaturation(DEFAULT_VALUE);
-  };
+  const { values, setValue, reset } = useUrlParams<ParamKey>(PARAM_CONFIG);
 
   const handleChange = (key: string, val: number) => {
-    setSaturation(val);
+    setValue(key as ParamKey, val);
   };
 
   return (
@@ -33,13 +34,25 @@ export const SolBrokenBandsCanvasContainer = () => {
           key: "saturation",
           label: "Saturation",
           minStepMax: [0, 1, 10],
-          value: saturation,
+          value: values.saturation as number,
+          onChange: handleChange,
+        },
+        {
+          key: "bands",
+          label: "Bands",
+          minStepMax: [4, 1, 32],
+          value: values.bands as number,
           onChange: handleChange,
         },
       ]}
-      onReset={handleReset}
+      onReset={reset}
     >
-      <Canvas width={800} height={200} saturation={saturation} />
+      <Canvas
+        width={800}
+        height={200}
+        saturation={values.saturation as number}
+        bands={values.bands as number}
+      />
     </ArtworkLayout>
   );
 };

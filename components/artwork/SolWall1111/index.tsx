@@ -1,25 +1,19 @@
-import React from "react";
 import Canvas from "./Canvas";
 import ArtworkLayout from "../../ArtworkLayout";
+import { useUrlParams } from "../../../hooks/useUrlParams";
+
+const PARAM_CONFIG = {
+  size: { key: "sz", type: "number" as const, default: 15 },
+  bands: { key: "b", type: "number" as const, default: 15 },
+};
+
+type ParamKey = keyof typeof PARAM_CONFIG;
 
 export const SolWall1111CanvasContainer = () => {
-  const [bands, setBands] = React.useState(15);
-  const [size, setSize] = React.useState(15);
-
-  const handleReset = () => {
-    setBands(15);
-    setSize(15);
-  };
+  const { values, setValue, reset } = useUrlParams<ParamKey>(PARAM_CONFIG);
 
   const handleChange = (key: string, val: number) => {
-    switch (key) {
-      case "bands":
-        setBands(val);
-        break;
-      case "size":
-        setSize(val);
-        break;
-    }
+    setValue(key as ParamKey, val);
   };
 
   return (
@@ -38,22 +32,27 @@ export const SolWall1111CanvasContainer = () => {
       controls={[
         {
           key: "size",
-          label: "Size",
-          minStepMax: [15, 5, 100],
-          value: size,
+          label: "Stroke",
+          minStepMax: [5, 5, 100],
+          value: values.size as number,
           onChange: handleChange,
         },
         {
           key: "bands",
           label: "Bands",
-          minStepMax: [10, 5, 35],
-          value: bands,
+          minStepMax: [3, 1, 35],
+          value: values.bands as number,
           onChange: handleChange,
         },
       ]}
-      onReset={handleReset}
+      onReset={reset}
     >
-      <Canvas width={500} height={500} bands={bands} size={size} />
+      <Canvas
+        width={500}
+        height={500}
+        bands={values.bands as number}
+        size={values.size as number}
+      />
     </ArtworkLayout>
   );
 };

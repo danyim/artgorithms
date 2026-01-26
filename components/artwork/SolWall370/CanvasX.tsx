@@ -23,17 +23,20 @@ export const Canvas = ({ width, height, space }: Props) => {
 
     const ctx = canvas.getContext("2d");
 
-    ctx.clearRect(0, 0, 500, 500);
+    ctx.clearRect(0, 0, width, height);
 
     // Art params
-    const bandSize = 14;
+    const bandSize = space;
+
+    // Calculate bands needed to fill the canvas
+    const backgroundBands = Math.ceil(height / bandSize) + 2;
 
     drawBands(
       ctx,
       0,
       0,
       bandSize,
-      width / 10,
+      backgroundBands,
       0,
       [
         [0, 0, 0],
@@ -42,10 +45,11 @@ export const Canvas = ({ width, height, space }: Props) => {
       false
     );
 
-    const numBands = 35;
+    // Calculate bands needed to fill the X shape
+    const clipSize = width * 0.7;
+    const numBands = Math.ceil(clipSize / bandSize) + 2;
     const size = bandSize * numBands;
     ctx.save();
-    const clipSize = width * 0.7;
     const clipX = width / 2 - clipSize / 2;
     const clipY = height / 2 - clipSize / 2;
 
@@ -86,7 +90,7 @@ export const Canvas = ({ width, height, space }: Props) => {
       return;
     }
     const ctx = canvas.getContext("2d");
-    ctx.clearRect(0, 0, 500, 500);
+    ctx.clearRect(0, 0, width, height);
   };
 
   React.useEffect(() => {

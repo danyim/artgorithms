@@ -4,6 +4,7 @@ interface Props {
   width?: number;
   height?: number;
   colorIndex: number;
+  steps: number;
   handleOnMouseMove: () => void;
 }
 
@@ -11,6 +12,7 @@ export const Canvas = ({
   width,
   height,
   colorIndex,
+  steps,
   handleOnMouseMove,
 }: Props) => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
@@ -42,12 +44,17 @@ export const Canvas = ({
     const staircaseColor = "rgb(204,91,77)";
 
     ctx.save();
-    ctx.translate(50, 120);
-    // Staircase
-    const staircaseWidth = 80;
-    const staircaseHeight = staircaseWidth * 4;
-    const numSteps = 4;
-    for (let k = 0; k < numSteps; k++) {
+    // Staircase - adjust width based on number of steps to fit canvas
+    const staircaseWidth = 320 / steps;
+    const staircaseHeight = staircaseWidth * steps;
+    // Total extent includes the side stairs that extend by one staircaseWidth
+    const totalWidth = (steps + 1) * staircaseWidth;
+    const totalHeight = (steps + 1) * staircaseWidth; // Same due to isometric view
+    // Center the staircase on the canvas
+    const offsetX = (width - totalWidth) / 2;
+    const offsetY = (height - totalHeight) / 2 + staircaseWidth; // +staircaseWidth accounts for top stairs above y=0
+    ctx.translate(offsetX, offsetY);
+    for (let k = 0; k < steps; k++) {
       ctx.fillStyle = staircaseColor;
       ctx.fillRect(
         k * staircaseWidth,
@@ -120,7 +127,7 @@ export const Canvas = ({
 
   React.useEffect(() => {
     draw();
-  }, [colorIndex, width, height]);
+  }, [colorIndex, steps, width, height]);
 
   return (
     <>

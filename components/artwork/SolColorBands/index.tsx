@@ -1,31 +1,21 @@
-import React from "react";
 import Canvas from "./Canvas";
 import CirclesCanvas from "./CirclesCanvas";
 import { CompositeCanvas1 } from "./CompositeCanvas1";
 import { CompositeCanvas2 } from "./CompositeCanvas2";
 import ArtworkLayout from "../../ArtworkLayout";
+import { useUrlParams } from "../../../hooks/useUrlParams";
 
-const DEFAULT_SIZE = 10;
-const DEFAULT_BANDS = 40;
+const PARAM_CONFIG = {
+  size: { key: "sz", type: "number" as const, default: 10 },
+};
+
+type ParamKey = keyof typeof PARAM_CONFIG;
 
 export const SolColorBandsCanvasContainer = () => {
-  const [size, setSize] = React.useState(DEFAULT_SIZE);
-  const [bands, setBands] = React.useState(DEFAULT_BANDS);
-
-  const handleReset = () => {
-    setSize(DEFAULT_SIZE);
-    setBands(DEFAULT_BANDS);
-  };
+  const { values, setValue, reset } = useUrlParams<ParamKey>(PARAM_CONFIG);
 
   const handleChange = (key: string, val: number) => {
-    switch (key) {
-      case "bands":
-        setBands(val);
-        break;
-      case "size":
-        setSize(val);
-        break;
-    }
+    setValue(key as ParamKey, val);
   };
 
   const canvasSize = 250;
@@ -39,26 +29,19 @@ export const SolColorBandsCanvasContainer = () => {
       }}
       controls={[
         {
-          key: "bands",
-          label: "Bands",
-          minStepMax: [5, 5, 80],
-          value: bands,
-          onChange: handleChange,
-        },
-        {
           key: "size",
-          label: "Size",
-          minStepMax: [1, 2, 50],
-          value: size,
+          label: "Stroke",
+          minStepMax: [3, 1, 50],
+          value: values.size as number,
           onChange: handleChange,
         },
       ]}
-      onReset={handleReset}
+      onReset={reset}
     >
-      <Canvas width={canvasSize} height={canvasSize} size={size} bands={bands} />
-      <CirclesCanvas width={canvasSize} height={canvasSize} size={size} bands={bands} />
-      <CompositeCanvas1 width={canvasSize} height={canvasSize} size={size} bands={bands} />
-      <CompositeCanvas2 width={canvasSize} height={canvasSize} size={size} bands={bands} />
+      <Canvas width={canvasSize} height={canvasSize} size={values.size as number} />
+      <CirclesCanvas width={canvasSize} height={canvasSize} size={values.size as number} />
+      <CompositeCanvas1 width={canvasSize} height={canvasSize} size={values.size as number} />
+      <CompositeCanvas2 width={canvasSize} height={canvasSize} size={values.size as number} />
     </ArtworkLayout>
   );
 };
