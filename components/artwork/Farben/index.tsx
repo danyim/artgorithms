@@ -18,7 +18,8 @@ const PARAM_CONFIG = {
 type ParamKey = keyof typeof PARAM_CONFIG;
 
 export const Farben = ({ width = 1000, height = 450 }: Props) => {
-  const { values, setValue, reset } = useUrlParams<ParamKey>(PARAM_CONFIG);
+  const { values, setValue, reset, locked, toggleLock } =
+    useUrlParams<ParamKey>(PARAM_CONFIG);
 
   const handleChange = (key: string, val: number) => {
     setValue(key as ParamKey, val);
@@ -26,6 +27,10 @@ export const Farben = ({ width = 1000, height = 450 }: Props) => {
 
   const handleCheckboxChange = (key: string, val: boolean) => {
     setValue(key as ParamKey, val);
+  };
+
+  const handleToggleLock = (key: string) => {
+    toggleLock(key as ParamKey);
   };
 
   return (
@@ -49,6 +54,9 @@ export const Farben = ({ width = 1000, height = 450 }: Props) => {
           minStepMax: [SIZE_MIN, 1, SIZE_MAX],
           value: values.size as number,
           onChange: handleChange,
+          mouseAxis: "horizontal",
+          locked: locked.size,
+          onToggleLock: handleToggleLock,
         },
         {
           key: "space",
@@ -56,6 +64,9 @@ export const Farben = ({ width = 1000, height = 450 }: Props) => {
           minStepMax: [SPACE_MIN, 1, SPACE_MAX],
           value: values.space as number,
           onChange: handleChange,
+          mouseAxis: "vertical",
+          locked: locked.space,
+          onToggleLock: handleToggleLock,
         },
         {
           key: "saturation",
@@ -63,6 +74,8 @@ export const Farben = ({ width = 1000, height = 450 }: Props) => {
           minStepMax: [15, 5, 100],
           value: values.saturation as number,
           onChange: handleChange,
+          locked: locked.saturation,
+          onToggleLock: handleToggleLock,
         },
       ]}
       customControls={
@@ -82,8 +95,8 @@ export const Farben = ({ width = 1000, height = 450 }: Props) => {
         size={values.size as number}
         saturation={values.saturation as number}
         outline={values.outline as boolean}
-        onSizeChange={(val) => setValue("size", val)}
-        onSpaceChange={(val) => setValue("space", val)}
+        onSizeChange={locked.size ? undefined : (val) => setValue("size", val)}
+        onSpaceChange={locked.space ? undefined : (val) => setValue("space", val)}
         onReset={reset}
       />
     </ArtworkLayout>

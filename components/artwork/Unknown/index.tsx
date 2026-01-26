@@ -14,7 +14,8 @@ const PARAM_CONFIG = {
 type ParamKey = keyof typeof PARAM_CONFIG;
 
 export const UnknownCanvasContainer = () => {
-  const { values, setValue, reset } = useUrlParams<ParamKey>(PARAM_CONFIG);
+  const { values, setValue, reset, locked, toggleLock } =
+    useUrlParams<ParamKey>(PARAM_CONFIG);
 
   const handleChange = (key: string, val: number) => {
     setValue(key as ParamKey, val);
@@ -22,6 +23,10 @@ export const UnknownCanvasContainer = () => {
 
   const handleCheckboxChange = (key: string, val: boolean) => {
     setValue(key as ParamKey, val);
+  };
+
+  const handleToggleLock = (key: string) => {
+    toggleLock(key as ParamKey);
   };
 
   return (
@@ -33,7 +38,7 @@ export const UnknownCanvasContainer = () => {
         instructions:
           "Recursively subdivide triangles within a square. At each level, determine whether to continue subdividing based on coverage thresholds and angle constraints.",
         description:
-          "A fractal composition of nested triangles that divide and multiply across the canvas. The recursive algorithm creates an organic texture reminiscent of shattered glass or crystalline structures, where mathematical precision yields surprisingly natural forms.",
+          "Nested triangles recursively subdivide across the canvas, creating textures reminiscent of shattered glass or crystalline structures.",
       }}
       controls={[
         {
@@ -42,6 +47,9 @@ export const UnknownCanvasContainer = () => {
           minStepMax: [SIZE_MIN, 1, SIZE_MAX],
           value: values.size as number,
           onChange: handleChange,
+          mouseAxis: "vertical",
+          locked: locked.size,
+          onToggleLock: handleToggleLock,
         },
         {
           key: "minCoverage",
@@ -49,6 +57,9 @@ export const UnknownCanvasContainer = () => {
           minStepMax: [COVERAGE_MIN, 5, COVERAGE_MAX],
           value: values.minCoverage as number,
           onChange: handleChange,
+          mouseAxis: "horizontal",
+          locked: locked.minCoverage,
+          onToggleLock: handleToggleLock,
         },
         {
           key: "minAngle",
@@ -56,6 +67,8 @@ export const UnknownCanvasContainer = () => {
           minStepMax: [5, 1, 45],
           value: values.minAngle as number,
           onChange: handleChange,
+          locked: locked.minAngle,
+          onToggleLock: handleToggleLock,
         },
         {
           key: "maxAngle",
@@ -63,6 +76,8 @@ export const UnknownCanvasContainer = () => {
           minStepMax: [45, 1, 120],
           value: values.maxAngle as number,
           onChange: handleChange,
+          locked: locked.maxAngle,
+          onToggleLock: handleToggleLock,
         },
       ]}
       customControls={
@@ -83,8 +98,8 @@ export const UnknownCanvasContainer = () => {
         minCoverage={(values.minCoverage as number) / 100}
         minAngle={values.minAngle as number}
         maxAngle={values.maxAngle as number}
-        onSizeChange={(val) => setValue("size", val)}
-        onMinCoverageChange={(val) => setValue("minCoverage", val)}
+        onSizeChange={locked.size ? undefined : (val) => setValue("size", val)}
+        onMinCoverageChange={locked.minCoverage ? undefined : (val) => setValue("minCoverage", val)}
         onReset={reset}
       />
     </ArtworkLayout>

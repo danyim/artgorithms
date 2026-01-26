@@ -35,31 +35,43 @@ export function useCanvasInteraction({
       const x = clientX - rect.left;
       const y = clientY - rect.top;
 
+      const normX = Math.max(0, Math.min(1, x / rect.width));
+      const normY = Math.max(0, Math.min(1, y / rect.height));
+
       // Helper to round to specified decimals
       const roundTo = (value: number, decimals: number = 0) => {
         const factor = Math.pow(10, decimals);
         return Math.round(value * factor) / factor;
       };
 
+      const horizontalActive = horizontal?.onChange != null;
+      const verticalActive = vertical?.onChange != null;
+
       // Map horizontal position
-      if (horizontal) {
-        const normX = Math.max(0, Math.min(1, x / rect.width));
+      if (horizontal && horizontalActive) {
+        // If vertical is locked, horizontal responds to both axes (diagonal)
+        const norm = !verticalActive
+          ? (normX + (1 - normY)) / 2
+          : normX;
         const range = horizontal.max - horizontal.min;
         const rawValue = horizontal.inverted
-          ? horizontal.max - normX * range
-          : horizontal.min + normX * range;
+          ? horizontal.max - norm * range
+          : horizontal.min + norm * range;
         const newValue = roundTo(rawValue, horizontal.decimals);
         horizontal.onChange?.(newValue);
       }
 
       // Map vertical position
-      if (vertical) {
-        const normY = Math.max(0, Math.min(1, y / rect.height));
+      if (vertical && verticalActive) {
+        // If horizontal is locked, vertical responds to both axes (diagonal)
+        const norm = !horizontalActive
+          ? (normY + (1 - normX)) / 2
+          : normY;
         const range = vertical.max - vertical.min;
         // Vertical is inverted by default (top = max feels natural)
         const rawValue = vertical.inverted === false
-          ? vertical.min + normY * range
-          : vertical.max - normY * range;
+          ? vertical.min + norm * range
+          : vertical.max - norm * range;
         const newValue = roundTo(rawValue, vertical.decimals);
         vertical.onChange?.(newValue);
       }

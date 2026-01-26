@@ -12,10 +12,15 @@ const PARAM_CONFIG = {
 type ParamKey = keyof typeof PARAM_CONFIG;
 
 export const SolWall370CanvasContainer = () => {
-  const { values, setValue, reset } = useUrlParams<ParamKey>(PARAM_CONFIG);
+  const { values, setValue, reset, locked, toggleLock } =
+    useUrlParams<ParamKey>(PARAM_CONFIG);
 
   const handleChange = (key: string, val: number) => {
     setValue(key as ParamKey, val);
+  };
+
+  const handleToggleLock = (key: string) => {
+    toggleLock(key as ParamKey);
   };
 
   return (
@@ -42,6 +47,9 @@ export const SolWall370CanvasContainer = () => {
           minStepMax: [SPACE_MIN, 5, SPACE_MAX],
           value: values.space as number,
           onChange: handleChange,
+          mouseAxis: "horizontal",
+          locked: locked.space,
+          onToggleLock: handleToggleLock,
         },
         {
           key: "rotation",
@@ -49,6 +57,9 @@ export const SolWall370CanvasContainer = () => {
           minStepMax: [ROTATION_MIN, 22.5, ROTATION_MAX],
           value: values.rotation as number,
           onChange: handleChange,
+          mouseAxis: "vertical",
+          locked: locked.rotation,
+          onToggleLock: handleToggleLock,
         },
       ]}
       onReset={reset}
@@ -58,8 +69,8 @@ export const SolWall370CanvasContainer = () => {
         height={300}
         space={values.space as number}
         rotation={values.rotation as number}
-        onSpaceChange={(val) => setValue("space", val)}
-        onRotationChange={(val) => setValue("rotation", val)}
+        onSpaceChange={locked.space ? undefined : (val) => setValue("space", val)}
+        onRotationChange={locked.rotation ? undefined : (val) => setValue("rotation", val)}
         onReset={reset}
       />
       <CanvasSquare width={300} height={300} space={values.space as number} rotation={values.rotation as number} />

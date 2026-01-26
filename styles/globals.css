@@ -10,6 +10,22 @@ body {
 
 body {
   font-size: 100%;
+  background-color: #fafafa;
+  background-image:
+    /* Large scale fractal-like circles */
+    radial-gradient(ellipse at 20% 30%, rgba(0, 0, 0, 0.04) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(0, 0, 0, 0.035) 0%, transparent 45%),
+    radial-gradient(ellipse at 60% 80%, rgba(0, 0, 0, 0.045) 0%, transparent 55%),
+    radial-gradient(ellipse at 10% 90%, rgba(0, 0, 0, 0.035) 0%, transparent 40%),
+    /* Medium scale */
+    radial-gradient(circle at 35% 55%, rgba(0, 0, 0, 0.025) 0%, transparent 30%),
+    radial-gradient(circle at 75% 65%, rgba(0, 0, 0, 0.03) 0%, transparent 35%),
+    radial-gradient(circle at 50% 15%, rgba(0, 0, 0, 0.025) 0%, transparent 25%),
+    /* Small scale details */
+    radial-gradient(circle at 25% 75%, rgba(0, 0, 0, 0.02) 0%, transparent 20%),
+    radial-gradient(circle at 85% 45%, rgba(0, 0, 0, 0.02) 0%, transparent 18%),
+    radial-gradient(circle at 45% 35%, rgba(0, 0, 0, 0.015) 0%, transparent 15%);
+  background-attachment: fixed;
 }
 
 a {

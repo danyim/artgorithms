@@ -12,10 +12,15 @@ const PARAM_CONFIG = {
 type ParamKey = keyof typeof PARAM_CONFIG;
 
 export const SolColorBandsCanvasContainer = () => {
-  const { values, setValue, reset } = useUrlParams<ParamKey>(PARAM_CONFIG);
+  const { values, setValue, reset, locked, toggleLock } =
+    useUrlParams<ParamKey>(PARAM_CONFIG);
 
   const handleChange = (key: string, val: number) => {
     setValue(key as ParamKey, val);
+  };
+
+  const handleToggleLock = (key: string) => {
+    toggleLock(key as ParamKey);
   };
 
   const canvasSize = 250;
@@ -29,7 +34,7 @@ export const SolColorBandsCanvasContainer = () => {
         instructions:
           "Parallel bands of color in four variations: straight horizontal, concentric circles, diagonal within a circle, and radiating from corners.",
         description:
-          "Four variations on the theme of parallel color bands demonstrate how a single concept transforms across different geometric contexts. Horizontal stripes, concentric circles, diagonal sweeps, and corner radiations each produce distinct optical effects while maintaining underlying unity.",
+          "Four variations on parallel color bands: horizontal stripes, concentric circles, diagonal sweeps, and corner radiations.",
       }}
       controls={[
         {
@@ -38,14 +43,17 @@ export const SolColorBandsCanvasContainer = () => {
           minStepMax: [SIZE_MIN, 1, SIZE_MAX],
           value: values.size as number,
           onChange: handleChange,
+          mouseAxis: "horizontal",
+          locked: locked.size,
+          onToggleLock: handleToggleLock,
         },
       ]}
       onReset={reset}
     >
-      <Canvas width={canvasSize} height={canvasSize} size={values.size as number} onSizeChange={(val) => setValue("size", val)} onReset={reset} />
-      <CirclesCanvas width={canvasSize} height={canvasSize} size={values.size as number} onSizeChange={(val) => setValue("size", val)} />
-      <CompositeCanvas1 width={canvasSize} height={canvasSize} size={values.size as number} onSizeChange={(val) => setValue("size", val)} />
-      <CompositeCanvas2 width={canvasSize} height={canvasSize} size={values.size as number} onSizeChange={(val) => setValue("size", val)} />
+      <Canvas width={canvasSize} height={canvasSize} size={values.size as number} onSizeChange={locked.size ? undefined : (val) => setValue("size", val)} onReset={reset} />
+      <CirclesCanvas width={canvasSize} height={canvasSize} size={values.size as number} onSizeChange={locked.size ? undefined : (val) => setValue("size", val)} />
+      <CompositeCanvas1 width={canvasSize} height={canvasSize} size={values.size as number} onSizeChange={locked.size ? undefined : (val) => setValue("size", val)} />
+      <CompositeCanvas2 width={canvasSize} height={canvasSize} size={values.size as number} onSizeChange={locked.size ? undefined : (val) => setValue("size", val)} />
     </ArtworkLayout>
   );
 };

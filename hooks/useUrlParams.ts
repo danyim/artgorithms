@@ -12,11 +12,16 @@ type ParamConfigs<T extends string> = Record<T, ParamConfig>;
 
 type ParamValues<T extends string> = Record<T, number | boolean>;
 
+type LockedState<T extends string> = Record<T, boolean>;
+
 interface UseUrlParamsReturn<T extends string> {
   values: ParamValues<T>;
   setValue: (key: T, value: number | boolean) => void;
   reset: () => void;
   initialized: boolean;
+  locked: LockedState<T>;
+  toggleLock: (key: T) => void;
+  isLocked: (key: T) => boolean;
 }
 
 export function useUrlParams<T extends string>(
@@ -31,7 +36,17 @@ export function useUrlParams<T extends string>(
     return defaults;
   }, [configs]);
 
+  // Build initial lock state (all unlocked)
+  const getDefaultLocks = useCallback((): LockedState<T> => {
+    const locks = {} as LockedState<T>;
+    for (const controlKey of Object.keys(configs) as T[]) {
+      locks[controlKey] = false;
+    }
+    return locks;
+  }, [configs]);
+
   const [values, setValues] = useState<ParamValues<T>>(getDefaults);
+  const [locked, setLocked] = useState<LockedState<T>>(getDefaultLocks);
   const [initialized, setInitialized] = useState(false);
   const debounceRef = useRef<NodeJS.Timeout | null>(null);
   const DEBOUNCE_MS = 200;
@@ -41,25 +56,33 @@ export function useUrlParams<T extends string>(
     if (typeof window === "undefined") return;
     const params = new URLSearchParams(window.location.search);
     const newValues = { ...getDefaults() };
+    const newLocks = { ...getDefaultLocks() };
 
     for (const controlKey of Object.keys(configs) as T[]) {
       const config = configs[controlKey];
       const paramValue = params.get(config.key);
 
       if (paramValue !== null) {
+        // Check for "L" suffix indicating locked state
+        const isLocked = paramValue.endsWith("L");
+        const cleanValue = isLocked ? paramValue.slice(0, -1) : paramValue;
+
         if (config.type === "number") {
-          newValues[controlKey] = Number(paramValue);
+          newValues[controlKey] = Number(cleanValue);
         } else if (config.type === "boolean") {
-          newValues[controlKey] = paramValue === "1";
+          newValues[controlKey] = cleanValue === "1";
         }
+
+        newLocks[controlKey] = isLocked;
       }
     }
 
     setValues(newValues);
+    setLocked(newLocks);
     setInitialized(true);
-  }, [configs, getDefaults]);
+  }, [configs, getDefaults, getDefaultLocks]);
 
-  // Update URL params when values change (debounced to prevent crashes from rapid updates)
+  // Update URL params when values or locks change (debounced to prevent crashes from rapid updates)
   useEffect(() => {
     if (!initialized || typeof window === "undefined") return;
 
@@ -74,13 +97,15 @@ export function useUrlParams<T extends string>(
       for (const controlKey of Object.keys(configs) as T[]) {
         const config = configs[controlKey];
         const currentValue = values[controlKey];
+        const isLocked = locked[controlKey];
+        const suffix = isLocked ? "L" : "";
 
-        // Only add params that differ from defaults
-        if (currentValue !== config.default) {
+        // Add params that differ from defaults OR are locked
+        if (currentValue !== config.default || isLocked) {
           if (config.type === "boolean") {
-            params.set(config.key, currentValue ? "1" : "0");
+            params.set(config.key, (currentValue ? "1" : "0") + suffix);
           } else {
-            params.set(config.key, String(currentValue));
+            params.set(config.key, String(currentValue) + suffix);
           }
         }
       }
@@ -98,7 +123,7 @@ export function useUrlParams<T extends string>(
         clearTimeout(debounceRef.current);
       }
     };
-  }, [initialized, values, configs]);
+  }, [initialized, values, locked, configs]);
 
   const setValue = useCallback((key: T, value: number | boolean) => {
     setValues((prev) => ({ ...prev, [key]: value }));
@@ -106,7 +131,19 @@ export function useUrlParams<T extends string>(
 
   const reset = useCallback(() => {
     setValues(getDefaults());
-  }, [getDefaults]);
+    setLocked(getDefaultLocks());
+  }, [getDefaults, getDefaultLocks]);
 
-  return { values, setValue, reset, initialized };
+  const toggleLock = useCallback((key: T) => {
+    setLocked((prev) => ({ ...prev, [key]: !prev[key] }));
+  }, []);
+
+  const isLocked = useCallback(
+    (key: T) => {
+      return locked[key] ?? false;
+    },
+    [locked]
+  );
+
+  return { values, setValue, reset, initialized, locked, toggleLock, isLocked };
 }

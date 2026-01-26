@@ -20,10 +20,15 @@ const PARAM_CONFIG = {
 type ParamKey = keyof typeof PARAM_CONFIG;
 
 export const MiraCairoContainer = () => {
-  const { values, setValue, reset } = useUrlParams<ParamKey>(PARAM_CONFIG);
+  const { values, setValue, reset, locked, toggleLock } =
+    useUrlParams<ParamKey>(PARAM_CONFIG);
 
   const handleChange = (key: string, val: number) => {
     setValue(key as ParamKey, val);
+  };
+
+  const handleToggleLock = (key: string) => {
+    toggleLock(key as ParamKey);
   };
 
   return (
@@ -44,6 +49,8 @@ export const MiraCairoContainer = () => {
           minStepMax: [40, 5, 100],
           value: values.gridSize as number,
           onChange: handleChange,
+          locked: locked.gridSize,
+          onToggleLock: handleToggleLock,
         },
         {
           key: "noiseScale",
@@ -51,6 +58,8 @@ export const MiraCairoContainer = () => {
           minStepMax: [2, 0.5, 8],
           value: values.noiseScale as number,
           onChange: handleChange,
+          locked: locked.noiseScale,
+          onToggleLock: handleToggleLock,
         },
         {
           key: "threshold",
@@ -58,6 +67,8 @@ export const MiraCairoContainer = () => {
           minStepMax: [THRESHOLD_MIN, 0.05, THRESHOLD_MAX],
           value: values.threshold as number,
           onChange: handleChange,
+          locked: locked.threshold,
+          onToggleLock: handleToggleLock,
         },
         {
           key: "amplitude",
@@ -65,6 +76,9 @@ export const MiraCairoContainer = () => {
           minStepMax: [AMPLITUDE_MIN, 0.01, AMPLITUDE_MAX],
           value: values.amplitude as number,
           onChange: handleChange,
+          mouseAxis: "horizontal",
+          locked: locked.amplitude,
+          onToggleLock: handleToggleLock,
         },
         {
           key: "stretch",
@@ -72,6 +86,9 @@ export const MiraCairoContainer = () => {
           minStepMax: [STRETCH_MIN, 0.02, STRETCH_MAX],
           value: values.stretch as number,
           onChange: handleChange,
+          mouseAxis: "vertical",
+          locked: locked.stretch,
+          onToggleLock: handleToggleLock,
         },
       ]}
       onReset={reset}
@@ -84,8 +101,8 @@ export const MiraCairoContainer = () => {
         threshold={values.threshold as number}
         amplitude={values.amplitude as number}
         stretch={values.stretch as number}
-        onAmplitudeChange={(val) => setValue("amplitude", val)}
-        onStretchChange={(val) => setValue("stretch", val)}
+        onAmplitudeChange={locked.amplitude ? undefined : (val) => setValue("amplitude", val)}
+        onStretchChange={locked.stretch ? undefined : (val) => setValue("stretch", val)}
         onReset={reset}
       />
     </ArtworkLayout>

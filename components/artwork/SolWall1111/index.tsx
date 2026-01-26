@@ -17,10 +17,15 @@ const PARAM_CONFIG = {
 type ParamKey = keyof typeof PARAM_CONFIG;
 
 export const SolWall1111CanvasContainer = () => {
-  const { values, setValue, reset } = useUrlParams<ParamKey>(PARAM_CONFIG);
+  const { values, setValue, reset, locked, toggleLock } =
+    useUrlParams<ParamKey>(PARAM_CONFIG);
 
   const handleChange = (key: string, val: number) => {
     setValue(key as ParamKey, val);
+  };
+
+  const handleToggleLock = (key: string) => {
+    toggleLock(key as ParamKey);
   };
 
   return (
@@ -47,6 +52,9 @@ export const SolWall1111CanvasContainer = () => {
           minStepMax: [FRAGMENTATION_MIN, 5, FRAGMENTATION_MAX],
           value: values.fragmentation as number,
           onChange: handleChange,
+          mouseAxis: "horizontal",
+          locked: locked.fragmentation,
+          onToggleLock: handleToggleLock,
         },
         {
           key: "colorOffset",
@@ -54,6 +62,9 @@ export const SolWall1111CanvasContainer = () => {
           minStepMax: [COLOR_OFFSET_MIN, 1, COLOR_OFFSET_MAX],
           value: values.colorOffset as number,
           onChange: handleChange,
+          mouseAxis: "vertical",
+          locked: locked.colorOffset,
+          onToggleLock: handleToggleLock,
         },
         {
           key: "size",
@@ -61,6 +72,8 @@ export const SolWall1111CanvasContainer = () => {
           minStepMax: [5, 5, 100],
           value: values.size as number,
           onChange: handleChange,
+          locked: locked.size,
+          onToggleLock: handleToggleLock,
         },
         {
           key: "bands",
@@ -68,6 +81,8 @@ export const SolWall1111CanvasContainer = () => {
           minStepMax: [3, 1, 35],
           value: values.bands as number,
           onChange: handleChange,
+          locked: locked.bands,
+          onToggleLock: handleToggleLock,
         },
       ]}
       onReset={reset}
@@ -79,8 +94,8 @@ export const SolWall1111CanvasContainer = () => {
         size={values.size as number}
         fragmentation={values.fragmentation as number}
         colorOffset={values.colorOffset as number}
-        onFragmentationChange={(val) => setValue("fragmentation", val)}
-        onColorOffsetChange={(val) => setValue("colorOffset", val)}
+        onFragmentationChange={locked.fragmentation ? undefined : (val) => setValue("fragmentation", val)}
+        onColorOffsetChange={locked.colorOffset ? undefined : (val) => setValue("colorOffset", val)}
         onReset={reset}
       />
     </ArtworkLayout>
