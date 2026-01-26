@@ -1,4 +1,4 @@
-import Canvas from "./Canvas";
+import Canvas, { SIZE_MIN, SIZE_MAX, PATTERN_MIN, PATTERN_MAX } from "./Canvas";
 import ArtworkLayout from "../../ArtworkLayout";
 import { useUrlParams } from "../../../hooks/useUrlParams";
 
@@ -22,6 +22,10 @@ export const TemplateCanvasContainer = () => {
         title: "Hermetic One-way Labyrinths",
         artistName: "Thomas Laubenberger",
         year: "2011",
+        instructions:
+          "Divide a square into a grid. In each cell, draw a quarter-circle arc connecting two adjacent edges. Alternate arc directions following a predetermined pattern to create maze-like paths.",
+        description:
+          "A grid of quarter-circle arcs that connect to form continuous, flowing labyrinth patterns.",
         links: [
           {
             label: "Thomas Laubenberger",
@@ -33,14 +37,14 @@ export const TemplateCanvasContainer = () => {
         {
           key: "size",
           label: "Size",
-          minStepMax: [2, 1, 10],
+          minStepMax: [SIZE_MIN, 1, SIZE_MAX],
           value: values.size as number,
           onChange: handleChange,
         },
         {
           key: "pattern",
           label: "Pattern",
-          minStepMax: [0, 1, 35],
+          minStepMax: [PATTERN_MIN, 1, PATTERN_MAX],
           value: values.pattern as number,
           onChange: handleChange,
         },
@@ -52,6 +56,9 @@ export const TemplateCanvasContainer = () => {
         height={500}
         size={values.size as number}
         pattern={values.pattern as number}
+        onSizeChange={(val) => setValue("size", val)}
+        onPatternChange={(val) => setValue("pattern", val)}
+        onReset={reset}
       />
     </ArtworkLayout>
   );

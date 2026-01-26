@@ -1,4 +1,15 @@
 import React from "react";
+import { useCanvasInteraction } from "../../../hooks/useCanvasInteraction";
+
+// Control limits
+export const SIZE_MIN = 1;
+export const SIZE_MAX = 6;
+export const GRID_SIZE_MIN = 20;
+export const GRID_SIZE_MAX = 40;
+export const CIRCLE_SIZE_MIN = 3;
+export const CIRCLE_SIZE_MAX = 12;
+export const OFFSET_MIN = 0;
+export const OFFSET_MAX = 10;
 
 interface Props {
   width?: number;
@@ -7,6 +18,9 @@ interface Props {
   gridSize: number; // total circles across canvas
   circleSize: number;
   offset: number;
+  onCircleSizeChange?: (value: number) => void;
+  onOffsetChange?: (value: number) => void;
+  onReset?: () => void;
 }
 
 export const Canvas = ({
@@ -16,8 +30,25 @@ export const Canvas = ({
   gridSize,
   circleSize,
   offset,
+  onCircleSizeChange,
+  onOffsetChange,
+  onReset,
 }: Props) => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
+
+  const { handlers } = useCanvasInteraction({
+    canvasRef,
+    horizontal: {
+      min: OFFSET_MIN,
+      max: OFFSET_MAX,
+      onChange: onOffsetChange,
+    },
+    vertical: {
+      min: CIRCLE_SIZE_MIN,
+      max: CIRCLE_SIZE_MAX,
+      onChange: onCircleSizeChange,
+    },
+  });
 
   const draw = () => {
     const canvas = canvasRef.current;
@@ -129,9 +160,21 @@ export const Canvas = ({
     draw();
   }, [size, gridSize, circleSize, offset, width, height]);
 
+  const handleDoubleClick = () => {
+    onReset?.();
+  };
+
   return (
     <>
-      <canvas ref={canvasRef} width={width} height={height} />
+      <canvas
+        ref={canvasRef}
+        width={width}
+        height={height}
+        onMouseMove={handlers.onMouseMove}
+        onTouchMove={handlers.onTouchMove}
+        onDoubleClick={handleDoubleClick}
+        style={{ touchAction: "none" }}
+      />
       {typeof window !== "undefined" && window.localStorage.debug && (
         <>
           <button onClick={draw}>Redraw</button>

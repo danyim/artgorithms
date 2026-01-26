@@ -1,19 +1,50 @@
 import React from "react";
+import { useCanvasInteraction } from "../../../hooks/useCanvasInteraction";
 import { drawConcentricCircleBands } from "./util";
+
+export const FRAGMENTATION_MIN = 10;
+export const FRAGMENTATION_MAX = 60;
+export const COLOR_OFFSET_MIN = 0;
+export const COLOR_OFFSET_MAX = 11;
 
 interface Props {
   width?: number;
   height?: number;
   size: number;
   bands: number;
+  fragmentation: number;
+  colorOffset: number;
+  onFragmentationChange?: (value: number) => void;
+  onColorOffsetChange?: (value: number) => void;
+  onReset?: () => void;
 }
 
-export const Canvas = ({ width, height, bands, size }: Props) => {
+export const Canvas = ({
+  width,
+  height,
+  bands,
+  size,
+  fragmentation,
+  colorOffset,
+  onFragmentationChange,
+  onColorOffsetChange,
+  onReset,
+}: Props) => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
 
-  const handleOnMouseMove = () => {
-    draw();
-  };
+  const { handlers } = useCanvasInteraction({
+    canvasRef,
+    horizontal: {
+      min: FRAGMENTATION_MIN,
+      max: FRAGMENTATION_MAX,
+      onChange: onFragmentationChange,
+    },
+    vertical: {
+      min: COLOR_OFFSET_MIN,
+      max: COLOR_OFFSET_MAX,
+      onChange: onColorOffsetChange,
+    },
+  });
 
   const draw = () => {
     const canvas = canvasRef.current;
@@ -47,7 +78,7 @@ export const Canvas = ({ width, height, bands, size }: Props) => {
     const centerY = height / 2;
     const maxRadius = Math.min(centerX, centerY);
 
-    drawConcentricCircleBands(ctx, centerX, centerY, size, bands, colors, maxRadius);
+    drawConcentricCircleBands(ctx, centerX, centerY, size, bands, colors, maxRadius, fragmentation, colorOffset);
   };
 
   const handleOnClear = () => {
@@ -62,7 +93,11 @@ export const Canvas = ({ width, height, bands, size }: Props) => {
 
   React.useEffect(() => {
     draw();
-  }, [bands, size, width, height]);
+  }, [bands, size, width, height, fragmentation, colorOffset]);
+
+  const handleDoubleClick = () => {
+    onReset?.();
+  };
 
   return (
     <>
@@ -70,7 +105,9 @@ export const Canvas = ({ width, height, bands, size }: Props) => {
         ref={canvasRef}
         width={width}
         height={height}
-        onMouseMove={handleOnMouseMove}
+        onMouseMove={handlers.onMouseMove}
+        onTouchMove={handlers.onTouchMove}
+        onDoubleClick={handleDoubleClick}
       />
       {typeof window !== "undefined" && window.localStorage.debug && (
         <>

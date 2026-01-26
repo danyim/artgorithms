@@ -1,9 +1,10 @@
-import Canvas from "./Canvas";
+import Canvas, { BOX_SIZE_MIN, BOX_SIZE_MAX, PATTERN_MIN, PATTERN_MAX } from "./Canvas";
 import ArtworkLayout from "../../ArtworkLayout";
 import { useUrlParams } from "../../../hooks/useUrlParams";
 
 const PARAM_CONFIG = {
   pattern: { key: "pt", type: "number" as const, default: 2458 },
+  boxSize: { key: "bs", type: "number" as const, default: 8 },
 };
 
 type ParamKey = keyof typeof PARAM_CONFIG;
@@ -21,14 +22,10 @@ export const TemplateCanvasContainer = () => {
         title: "50/50",
         artistName: "Tauba Auerbach",
         year: "2008",
-        description: (
-          <>
-            <h4 className="placard-title">Instructions</h4>
-            <p className="placard">
-              A repeating pattern of 3x4 squares on a 16x16 grid
-            </p>
-          </>
-        ),
+        instructions:
+          "Fill a grid with black and white squares according to a binary pattern. Each unique pattern creates a different visual rhythm through the balance of positive and negative space.",
+        description:
+          "A meditation on binary systems and visual perception, where black and white squares are arranged according to mathematical patterns. The work explores how simple rules generate complex visual textures, bridging computation and aesthetics.",
         links: [
           {
             label: "Tauba Auerbach",
@@ -40,14 +37,29 @@ export const TemplateCanvasContainer = () => {
         {
           key: "pattern",
           label: "Pattern",
-          minStepMax: [2, 14, 4095],
+          minStepMax: [PATTERN_MIN, 14, PATTERN_MAX],
           value: values.pattern as number,
+          onChange: handleChange,
+        },
+        {
+          key: "boxSize",
+          label: "Size",
+          minStepMax: [BOX_SIZE_MIN, 1, BOX_SIZE_MAX],
+          value: values.boxSize as number,
           onChange: handleChange,
         },
       ]}
       onReset={reset}
     >
-      <Canvas width={384} height={512} pattern={values.pattern as number} />
+      <Canvas
+        width={384}
+        height={512}
+        pattern={values.pattern as number}
+        boxSize={values.boxSize as number}
+        onPatternChange={(val) => setValue("pattern", val)}
+        onBoxSizeChange={(val) => setValue("boxSize", val)}
+        onReset={reset}
+      />
     </ArtworkLayout>
   );
 };

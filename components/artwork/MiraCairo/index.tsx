@@ -32,8 +32,10 @@ export const MiraCairoContainer = () => {
         title: "Mira Cairo",
         artistName: "Verner Panton",
         year: "1990",
+        instructions:
+          "Draw a grid of hollow squares. Apply Perlin noise to determine which squares are filled black and which remain white, creating organic wave patterns.",
         description:
-          "A grid of hollow squares with thick strokes creates a pixel-like rendering of organic wave patterns. The contrast between dark and light squares forms flowing, abstract shapes reminiscent of topographical contours.",
+          "A grid of hollow squares creates a pixel-like rendering of organic wave patterns. The contrast between dark and light forms flowing shapes reminiscent of topographical contours.",
       }}
       controls={[
         {

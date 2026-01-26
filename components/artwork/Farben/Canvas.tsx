@@ -1,6 +1,12 @@
 import React from "react";
+import { useCanvasInteraction } from "../../../hooks/useCanvasInteraction";
 import { randomHueColor } from "../../../utils/color";
 import { createWrappedRow } from "../../../utils/polygon";
+
+export const SIZE_MIN = 4;
+export const SIZE_MAX = 16;
+export const SPACE_MIN = 0;
+export const SPACE_MAX = 20;
 
 interface Props {
   width: number;
@@ -9,14 +15,37 @@ interface Props {
   size: number;
   saturation: number;
   outline: boolean;
+  onSizeChange?: (value: number) => void;
+  onSpaceChange?: (value: number) => void;
+  onReset?: () => void;
 }
 
-export const Canvas = ({ width, height, space, size, saturation, outline }: Props) => {
+export const Canvas = ({
+  width,
+  height,
+  space,
+  size,
+  saturation,
+  outline,
+  onSizeChange,
+  onSpaceChange,
+  onReset,
+}: Props) => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
 
-  const handleMouseMove = () => {
-    draw();
-  };
+  const { handlers } = useCanvasInteraction({
+    canvasRef,
+    horizontal: {
+      min: SIZE_MIN,
+      max: SIZE_MAX,
+      onChange: onSizeChange,
+    },
+    vertical: {
+      min: SPACE_MIN,
+      max: SPACE_MAX,
+      onChange: onSpaceChange,
+    },
+  });
 
   const draw = () => {
     const canvas = canvasRef.current;
@@ -131,12 +160,18 @@ export const Canvas = ({ width, height, space, size, saturation, outline }: Prop
     draw();
   }, [space, width, height, size, saturation, outline]);
 
+  const handleDoubleClick = () => {
+    onReset?.();
+  };
+
   return (
     <canvas
       ref={canvasRef}
       width={width}
       height={height}
-      onMouseMove={handleMouseMove}
+      onMouseMove={handlers.onMouseMove}
+      onTouchMove={handlers.onTouchMove}
+      onDoubleClick={handleDoubleClick}
     />
   );
 };

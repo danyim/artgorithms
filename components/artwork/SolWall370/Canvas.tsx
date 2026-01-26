@@ -1,18 +1,40 @@
 import React from "react";
 import { drawBands } from "../SolColorBands/util";
+import { useCanvasInteraction } from "../../../hooks/useCanvasInteraction";
+
+// Control limits
+export const SPACE_MIN = 5;
+export const SPACE_MAX = 50;
+export const ROTATION_MIN = 0;
+export const ROTATION_MAX = 180;
 
 interface Props {
   width: number;
   height: number;
   space: number;
+  rotation: number;
+  onSpaceChange?: (value: number) => void;
+  onRotationChange?: (value: number) => void;
+  onReset?: () => void;
 }
 
-export const Canvas = ({ width, height, space }: Props) => {
+export const Canvas = ({ width, height, space, rotation, onSpaceChange, onRotationChange, onReset }: Props) => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
 
-  const handleOnMouseMove = () => {
-    // draw();
-  };
+  const { handlers } = useCanvasInteraction({
+    canvasRef,
+    horizontal: {
+      min: SPACE_MIN,
+      max: SPACE_MAX,
+      onChange: onSpaceChange,
+    },
+    vertical: {
+      min: ROTATION_MIN,
+      max: ROTATION_MAX,
+      decimals: 1,
+      onChange: onRotationChange,
+    },
+  });
 
   const draw = () => {
     const canvas = canvasRef.current;
@@ -60,7 +82,7 @@ export const Canvas = ({ width, height, space }: Props) => {
       height / 2 - size / 2,
       bandSize,
       numBands,
-      90,
+      rotation,
       [
         [0, 0, 0],
         [255, 255, 255],
@@ -82,7 +104,11 @@ export const Canvas = ({ width, height, space }: Props) => {
 
   React.useEffect(() => {
     draw();
-  }, [space, width, height]);
+  }, [space, rotation, width, height]);
+
+  const handleDoubleClick = () => {
+    onReset?.();
+  };
 
   return (
     <>
@@ -90,7 +116,10 @@ export const Canvas = ({ width, height, space }: Props) => {
         ref={canvasRef}
         width={width}
         height={height}
-        onMouseMove={handleOnMouseMove}
+        onMouseMove={handlers.onMouseMove}
+        onTouchMove={handlers.onTouchMove}
+        onDoubleClick={handleDoubleClick}
+        style={{ touchAction: "none" }}
       />
       {typeof window !== "undefined" && window.localStorage.debug && (
         <>

@@ -5,9 +5,10 @@ interface Props {
   width?: number;
   height?: number;
   space: number;
+  rotation: number;
 }
 
-export const Canvas = ({ width, height, space }: Props) => {
+export const Canvas = ({ width, height, space, rotation }: Props) => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
 
   const handleOnMouseMove = () => {
@@ -79,7 +80,7 @@ export const Canvas = ({ width, height, space }: Props) => {
       height / 2 - size / 2,
       bandSize,
       numBands,
-      0,
+      rotation,
       [
         [0, 0, 0],
         [255, 255, 255],
@@ -101,7 +102,7 @@ export const Canvas = ({ width, height, space }: Props) => {
 
   React.useEffect(() => {
     draw();
-  }, [space, width, height]);
+  }, [space, rotation, width, height]);
 
   return (
     <>

@@ -4,6 +4,7 @@ interface Props {
   width?: number;
   height?: number;
   bandCount: number;
+  onReset?: () => void;
 }
 
 // Single continuous ribbon path traced from reference
@@ -40,6 +41,7 @@ const RIBBON_PATH = [
 export const Canvas = ({
   width = 500,
   height = 500,
+  onReset,
 }: Props) => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
 
@@ -93,9 +95,13 @@ export const Canvas = ({
     draw();
   }, [width, height]);
 
+  const handleDoubleClick = () => {
+    onReset?.();
+  };
+
   return (
     <>
-      <canvas ref={canvasRef} width={width} height={height} />
+      <canvas ref={canvasRef} width={width} height={height} onDoubleClick={handleDoubleClick} />
       {typeof window !== "undefined" && window.localStorage.debug && (
         <>
           <button onClick={draw}>Redraw</button>

@@ -1,15 +1,39 @@
 import React from "react";
 import { Point } from "../../../utils/polygon";
+import { useCanvasInteraction } from "../../../hooks/useCanvasInteraction";
+
+// Control limits
+export const SPACE_MIN = 5;
+export const SPACE_MAX = 50;
+export const LINE_WIDTH_MIN = 1;
+export const LINE_WIDTH_MAX = 11;
 
 interface Props {
   width: number;
   height: number;
   space: number;
   lineWidth: number;
+  onSpaceChange?: (value: number) => void;
+  onLineWidthChange?: (value: number) => void;
+  onReset?: () => void;
 }
 
-export const Canvas = ({ width, height, space, lineWidth }: Props) => {
+export const Canvas = ({ width, height, space, lineWidth, onSpaceChange, onLineWidthChange, onReset }: Props) => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
+
+  const { handlers } = useCanvasInteraction({
+    canvasRef,
+    horizontal: {
+      min: SPACE_MIN,
+      max: SPACE_MAX,
+      onChange: onSpaceChange,
+    },
+    vertical: {
+      min: LINE_WIDTH_MIN,
+      max: LINE_WIDTH_MAX,
+      onChange: onLineWidthChange,
+    },
+  });
 
   const addLine = (
     ctx: CanvasRenderingContext2D,
@@ -190,7 +214,21 @@ export const Canvas = ({ width, height, space, lineWidth }: Props) => {
     draw();
   }, [space, lineWidth, width, height]);
 
-  return <canvas ref={canvasRef} width={width} height={height} />;
+  const handleDoubleClick = () => {
+    onReset?.();
+  };
+
+  return (
+    <canvas
+      ref={canvasRef}
+      width={width}
+      height={height}
+      onMouseMove={handlers.onMouseMove}
+      onTouchMove={handlers.onTouchMove}
+      onDoubleClick={handleDoubleClick}
+      style={{ touchAction: "none" }}
+    />
+  );
 };
 
 export default Canvas;

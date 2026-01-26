@@ -7,6 +7,7 @@ interface Props {
   space: number;
   onMouseMove: (e) => void;
   onMouseOut: (e) => void;
+  onReset?: () => void;
 }
 
 export const Canvas = ({
@@ -15,6 +16,7 @@ export const Canvas = ({
   space,
   onMouseMove,
   onMouseOut,
+  onReset,
 }: Props) => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
 
@@ -93,6 +95,10 @@ export const Canvas = ({
     draw();
   }, [space]);
 
+  const handleDoubleClick = () => {
+    onReset?.();
+  };
+
   return (
     <canvas
       ref={canvasRef}
@@ -100,6 +106,7 @@ export const Canvas = ({
       height={height}
       onMouseMove={onMouseMove}
       onMouseOut={onMouseOut}
+      onDoubleClick={handleDoubleClick}
     />
   );
 };

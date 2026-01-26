@@ -1,4 +1,4 @@
-import Canvas from "./Canvas";
+import Canvas, { SIZE_MIN, SIZE_MAX, SPACE_MIN, SPACE_MAX } from "./Canvas";
 import ArtworkLayout from "../../ArtworkLayout";
 import { Checkbox } from "../../Checkbox";
 import { useUrlParams } from "../../../hooks/useUrlParams";
@@ -34,23 +34,27 @@ export const Farben = ({ width = 1000, height = 450 }: Props) => {
         title: "256 Farben",
         artistName: "Gerhard Richter",
         year: "1974",
+        instructions:
+          "Arrange colored rectangles in a grid. Colors are selected systematically from combinations of primary and secondary hues at varying saturations and values.",
+        description:
+          "A grid of colored rectangles arranged in rows and columns, showcasing a systematic permutation of colors derived from mixing primary hues.",
         links: [
           { label: "SF MOMA", url: "https://www.sfmoma.org/artwork/FC.643" },
         ],
       }}
       controls={[
         {
-          key: "space",
-          label: "Spacing",
-          minStepMax: [5, 5, 20],
-          value: values.space as number,
+          key: "size",
+          label: "Columns",
+          minStepMax: [SIZE_MIN, 1, SIZE_MAX],
+          value: values.size as number,
           onChange: handleChange,
         },
         {
-          key: "size",
-          label: "Columns",
-          minStepMax: [4, 1, 16],
-          value: values.size as number,
+          key: "space",
+          label: "Spacing",
+          minStepMax: [SPACE_MIN, 1, SPACE_MAX],
+          value: values.space as number,
           onChange: handleChange,
         },
         {
@@ -78,6 +82,9 @@ export const Farben = ({ width = 1000, height = 450 }: Props) => {
         size={values.size as number}
         saturation={values.saturation as number}
         outline={values.outline as boolean}
+        onSizeChange={(val) => setValue("size", val)}
+        onSpaceChange={(val) => setValue("space", val)}
+        onReset={reset}
       />
     </ArtworkLayout>
   );

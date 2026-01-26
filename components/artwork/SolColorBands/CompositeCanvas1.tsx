@@ -1,4 +1,5 @@
 import React from "react";
+import { useCanvasInteraction } from "../../../hooks/useCanvasInteraction";
 import { drawFrame, drawRatioFrame } from "../../../utils/art";
 import { Bounds } from "../../../utils/polygon";
 import {
@@ -6,18 +7,52 @@ import {
   drawConcentricCircles,
   drawConcentricTriangles,
 } from "./util";
+import { SIZE_MIN, SIZE_MAX } from "./Canvas";
 
 interface Props {
   width?: number;
   height?: number;
   size: number;
+  onSizeChange?: (value: number) => void;
 }
 
-export const CompositeCanvas1 = ({ width, height, size }: Props) => {
+export const CompositeCanvas1 = ({ width, height, size, onSizeChange }: Props) => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
+  const lastYRef = React.useRef<number | null>(null);
 
-  const handleOnMouseMove = () => {
-    draw();
+  const { handlers } = useCanvasInteraction({
+    canvasRef,
+    horizontal: {
+      min: SIZE_MIN,
+      max: SIZE_MAX,
+      onChange: onSizeChange,
+    },
+  });
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    handlers.onMouseMove(e);
+    const rect = canvasRef.current?.getBoundingClientRect();
+    if (rect) {
+      const y = e.clientY - rect.top;
+      if (lastYRef.current !== null && Math.abs(y - lastYRef.current) > 2) {
+        draw();
+      }
+      lastYRef.current = y;
+    }
+  };
+
+  const handleTouchMove = (e: React.TouchEvent<HTMLCanvasElement>) => {
+    handlers.onTouchMove(e);
+    if (e.touches.length > 0) {
+      const rect = canvasRef.current?.getBoundingClientRect();
+      if (rect) {
+        const y = e.touches[0].clientY - rect.top;
+        if (lastYRef.current !== null && Math.abs(y - lastYRef.current) > 2) {
+          draw();
+        }
+        lastYRef.current = y;
+      }
+    }
   };
 
   const draw = () => {
@@ -132,7 +167,8 @@ export const CompositeCanvas1 = ({ width, height, size }: Props) => {
         ref={canvasRef}
         width={width}
         height={height}
-        onMouseMove={handleOnMouseMove}
+        onMouseMove={handleMouseMove}
+        onTouchMove={handleTouchMove}
       />
       {typeof window !== "undefined" && window.localStorage.debug && (
         <>

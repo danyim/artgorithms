@@ -1,9 +1,14 @@
-import Canvas from "./Canvas";
+import Canvas, {
+  SKEW_MIN,
+  SKEW_MAX,
+  STEPS_MIN,
+  STEPS_MAX,
+} from "./Canvas";
 import ArtworkLayout from "../../ArtworkLayout";
 import { useUrlParams } from "../../../hooks/useUrlParams";
 
 const PARAM_CONFIG = {
-  colorIndex: { key: "ci", type: "number" as const, default: 0 },
+  skew: { key: "sk", type: "number" as const, default: 0.8 },
   steps: { key: "st", type: "number" as const, default: 4 },
 };
 
@@ -16,16 +21,16 @@ export const SolWall610CanvasContainer = () => {
     setValue(key as ParamKey, val);
   };
 
-  const handleOnMouseMove = () => {
-    setValue("colorIndex", ((values.colorIndex as number) + 1) % 10);
-  };
-
   return (
     <ArtworkLayout
       artwork={{
         title: "Wall Drawing #610",
         artistName: "Sol LeWitt",
         year: "1989",
+        instructions:
+          "Within six adjacent squares, draw superimposed arcs from the corners and midpoints. The arcs are rendered in graduated ink washes from light to dark.",
+        description:
+          "Sweeping arcs intersect and overlap across a grid of squares, rendered in gradations from pale gray to deep black. The layered curves create moiré-like interference patterns and an illusion of depth.",
         links: [
           {
             label: "Artsy",
@@ -36,16 +41,16 @@ export const SolWall610CanvasContainer = () => {
       }}
       controls={[
         {
-          key: "colorIndex",
-          label: "Color",
-          minStepMax: [0, 1, 10],
-          value: values.colorIndex as number,
+          key: "skew",
+          label: "Skew",
+          minStepMax: [SKEW_MIN, 0.1, SKEW_MAX],
+          value: values.skew as number,
           onChange: handleChange,
         },
         {
           key: "steps",
           label: "Steps",
-          minStepMax: [2, 1, 8],
+          minStepMax: [STEPS_MIN, 1, STEPS_MAX],
           value: values.steps as number,
           onChange: handleChange,
         },
@@ -55,9 +60,11 @@ export const SolWall610CanvasContainer = () => {
       <Canvas
         width={500}
         height={500}
-        colorIndex={values.colorIndex as number}
+        skew={values.skew as number}
         steps={values.steps as number}
-        handleOnMouseMove={handleOnMouseMove}
+        onSkewChange={(val) => setValue("skew", val)}
+        onStepsChange={(val) => setValue("steps", val)}
+        onReset={reset}
       />
     </ArtworkLayout>
   );

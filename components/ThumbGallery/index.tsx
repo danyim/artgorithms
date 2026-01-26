@@ -1,5 +1,6 @@
 import Link from "next/link";
 import styled from "styled-components";
+import { useRouter } from "next/router";
 import Thumbnail from "./Thumbnail";
 import { manifestArray } from "constants/art-manifest";
 const Container = styled.div`
@@ -34,13 +35,17 @@ const ThumbnailList = styled.ul`
   justify-content: center;
 
   @media (max-width: 768px) {
-    flex-flow: row nowrap;
-    justify-content: flex-start;
+    flex-flow: row wrap;
+    justify-content: center;
+    gap: 0.5rem;
   }
 `;
 interface Props {}
 
 export const ThumbGallery: React.FC<Props> = () => {
+  const router = useRouter();
+  const currentSlug = router.query.slug as string | undefined;
+
   return (
     <Container>
       <ThumbnailList>
@@ -52,6 +57,7 @@ export const ThumbGallery: React.FC<Props> = () => {
               key={artwork.slug}
               slug={artwork.slug}
               href={`/art/${artwork.slug}`}
+              isActive={artwork.slug === currentSlug}
             />
           ))}
       </ThumbnailList>

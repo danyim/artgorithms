@@ -1,4 +1,4 @@
-import Canvas from "./Canvas";
+import Canvas, { SIZE_MIN, SIZE_MAX, COVERAGE_MIN, COVERAGE_MAX } from "./Canvas";
 import ArtworkLayout from "../../ArtworkLayout";
 import { Checkbox } from "../../Checkbox";
 import { useUrlParams } from "../../../hooks/useUrlParams";
@@ -27,22 +27,26 @@ export const UnknownCanvasContainer = () => {
   return (
     <ArtworkLayout
       artwork={{
-        title: "Unknown",
+        title: "Recursive Triangles",
         artistName: "Unknown",
         year: "Unknown",
+        instructions:
+          "Recursively subdivide triangles within a square. At each level, determine whether to continue subdividing based on coverage thresholds and angle constraints.",
+        description:
+          "A fractal composition of nested triangles that divide and multiply across the canvas. The recursive algorithm creates an organic texture reminiscent of shattered glass or crystalline structures, where mathematical precision yields surprisingly natural forms.",
       }}
       controls={[
         {
           key: "size",
           label: "Size",
-          minStepMax: [2, 1, 12],
+          minStepMax: [SIZE_MIN, 1, SIZE_MAX],
           value: values.size as number,
           onChange: handleChange,
         },
         {
           key: "minCoverage",
           label: "Min Coverage",
-          minStepMax: [10, 5, 80],
+          minStepMax: [COVERAGE_MIN, 5, COVERAGE_MAX],
           value: values.minCoverage as number,
           onChange: handleChange,
         },
@@ -79,6 +83,9 @@ export const UnknownCanvasContainer = () => {
         minCoverage={(values.minCoverage as number) / 100}
         minAngle={values.minAngle as number}
         maxAngle={values.maxAngle as number}
+        onSizeChange={(val) => setValue("size", val)}
+        onMinCoverageChange={(val) => setValue("minCoverage", val)}
+        onReset={reset}
       />
     </ArtworkLayout>
   );

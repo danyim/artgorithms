@@ -1,5 +1,6 @@
 import React from "react";
 import debug from "debug";
+import { useCanvasInteraction } from "../../../hooks/useCanvasInteraction";
 import {
   Bounds,
   createWrappedRow,
@@ -12,6 +13,11 @@ import {
   generateRandomPointsOnBounds,
   generatePolygonInsideBounds,
 } from "./util";
+
+export const SIZE_MIN = 2;
+export const SIZE_MAX = 12;
+export const COVERAGE_MIN = 10;
+export const COVERAGE_MAX = 80;
 
 type Edge = "top" | "right" | "bottom" | "left";
 
@@ -265,6 +271,9 @@ interface Props {
   minCoverage?: number;
   minAngle?: number;
   maxAngle?: number;
+  onSizeChange?: (value: number) => void;
+  onMinCoverageChange?: (value: number) => void;
+  onReset?: () => void;
 }
 
 export const Canvas = ({
@@ -276,8 +285,25 @@ export const Canvas = ({
   minCoverage = 0.35,
   minAngle = 8,
   maxAngle = 88,
+  onSizeChange,
+  onMinCoverageChange,
+  onReset,
 }: Props) => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
+
+  const { handlers } = useCanvasInteraction({
+    canvasRef,
+    horizontal: {
+      min: COVERAGE_MIN,
+      max: COVERAGE_MAX,
+      onChange: onMinCoverageChange,
+    },
+    vertical: {
+      min: SIZE_MIN,
+      max: SIZE_MAX,
+      onChange: onSizeChange,
+    },
+  });
 
   const draw = () => {
     const canvas = canvasRef.current;
@@ -453,9 +479,21 @@ export const Canvas = ({
     minAngle,
     maxAngle,
   ]);
+
+  const handleDoubleClick = () => {
+    onReset?.();
+  };
+
   return (
     <>
-      <canvas ref={canvasRef} width={width} height={height} />
+      <canvas
+        ref={canvasRef}
+        width={width}
+        height={height}
+        onMouseMove={handlers.onMouseMove}
+        onTouchMove={handlers.onTouchMove}
+        onDoubleClick={handleDoubleClick}
+      />
       {typeof window !== "undefined" && window.localStorage.debug && (
         <>
           <button onClick={draw}>Redraw</button>

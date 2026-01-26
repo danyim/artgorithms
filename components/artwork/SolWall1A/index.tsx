@@ -1,4 +1,4 @@
-import Canvas from "./Canvas";
+import Canvas, { SPACE_MIN, SPACE_MAX, LINE_WIDTH_MIN, LINE_WIDTH_MAX } from "./Canvas";
 import ArtworkLayout from "../../ArtworkLayout";
 import { useUrlParams } from "../../../hooks/useUrlParams";
 
@@ -22,20 +22,10 @@ export const CanvasContainer = () => {
         title: "Wall Drawing 1: Drawing Series II 18 A",
         artistName: "Sol LeWitt",
         year: "1968",
-        description: (
-          <>
-            <h4 className="placard-title">Instructions</h4>
-            <p className="placard">
-              Produce a 4x4 grid with a black border around each cell. Draw
-              alternating black and white lines of consistent width in each in
-              the following orientations starting from top left to bottom right
-              (right-to-left): minor diagonal, vertical, vertical, minor
-              diagonal, major diagonal, horizontal, horizontal, major diagonal,
-              major diagonal, horizontal, horizontal, major diagonal, minor
-              diagonal, vertical, vertical, minor diagonal.
-            </p>
-          </>
-        ),
+        instructions:
+          "Produce a 4x4 grid with a black border around each cell. Draw alternating black and white lines of consistent width in each in the following orientations starting from top left to bottom right (right-to-left): minor diagonal, vertical, vertical, minor diagonal, major diagonal, horizontal, horizontal, major diagonal, major diagonal, horizontal, horizontal, major diagonal, minor diagonal, vertical, vertical, minor diagonal.",
+        description:
+          "A systematic exploration of four line directions arranged within a grid. The repetition and rotation of vertical, horizontal, and diagonal elements create optical rhythms that exemplify LeWitt's conceptual approach.",
         links: [
           { label: "SF MOMA", url: "https://www.sfmoma.org/artwork/FC.474.2" },
           {
@@ -48,14 +38,14 @@ export const CanvasContainer = () => {
         {
           key: "space",
           label: "Spacing",
-          minStepMax: [5, 5, 50],
+          minStepMax: [SPACE_MIN, 5, SPACE_MAX],
           value: values.space as number,
           onChange: handleChange,
         },
         {
           key: "lineWidth",
           label: "Thickness",
-          minStepMax: [1, 2, 11],
+          minStepMax: [LINE_WIDTH_MIN, 2, LINE_WIDTH_MAX],
           value: values.lineWidth as number,
           onChange: handleChange,
         },
@@ -67,6 +57,9 @@ export const CanvasContainer = () => {
         height={500}
         space={values.space as number}
         lineWidth={values.lineWidth as number}
+        onSpaceChange={(val) => setValue("space", val)}
+        onLineWidthChange={(val) => setValue("lineWidth", val)}
+        onReset={reset}
       />
     </ArtworkLayout>
   );

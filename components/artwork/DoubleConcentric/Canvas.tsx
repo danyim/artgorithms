@@ -1,18 +1,30 @@
 import React from "react";
 import { drawFrame } from "utils/art";
+import { useCanvasInteraction } from "../../../hooks/useCanvasInteraction";
+
+// Control limits
+export const BANDS_MIN = 2;
+export const BANDS_MAX = 20;
 
 interface Props {
   width?: number;
   height?: number;
   bands: number;
+  onBandsChange?: (value: number) => void;
+  onReset?: () => void;
 }
 
-export const Canvas = ({ width, height, bands }: Props) => {
+export const Canvas = ({ width, height, bands, onBandsChange, onReset }: Props) => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
 
-  const handleOnMouseMove = () => {
-    // draw();
-  };
+  const { handlers } = useCanvasInteraction({
+    canvasRef,
+    horizontal: {
+      min: BANDS_MIN,
+      max: BANDS_MAX,
+      onChange: onBandsChange,
+    },
+  });
 
   const draw = () => {
     const canvas = canvasRef.current;
@@ -98,13 +110,20 @@ export const Canvas = ({ width, height, bands }: Props) => {
     draw();
   }, [bands, width, height]);
 
+  const handleDoubleClick = () => {
+    onReset?.();
+  };
+
   return (
     <>
       <canvas
         ref={canvasRef}
         width={width}
         height={height}
-        onMouseMove={handleOnMouseMove}
+        onMouseMove={handlers.onMouseMove}
+        onTouchMove={handlers.onTouchMove}
+        onDoubleClick={handleDoubleClick}
+        style={{ touchAction: "none" }}
       />
       {typeof window !== "undefined" && window.localStorage.debug && (
         <>

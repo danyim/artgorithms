@@ -15,7 +15,8 @@ interface ArtworkInfo {
   title: string;
   artistName: string;
   year: number | string;
-  description?: string | React.ReactNode;
+  instructions?: string; // How the artwork is made (step-by-step process)
+  description?: string; // What the art consists of (descriptive text)
   links?: { label: string; url: string }[];
 }
 
@@ -89,11 +90,21 @@ const MobilePlacard = styled.div`
 
   .links {
     margin-top: 0.5rem;
-    font-size: 0.8rem;
   }
 
-  a {
+  .links-label {
+    font-weight: 600;
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05rem;
+    margin-right: 0.25rem;
+  }
+
+  .links a {
     color: #666;
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03rem;
   }
 `;
 
@@ -110,9 +121,19 @@ const MobileDescription = styled.div`
     margin: 0 auto;
 
     .description {
-      font: normal 400 0.9rem/1.4rem Inter, sans-serif;
-      margin: 0;
-      color: #444;
+      font: normal 400 0.875rem/1.7rem Inter, sans-serif;
+      letter-spacing: 0.02rem;
+      margin: 0 0 1rem;
+    }
+
+    .auxiliary {
+      .placard-title {
+        margin: 0 0 0.25rem;
+      }
+
+      .description {
+        margin: 0;
+      }
     }
   }
 `;
@@ -136,18 +157,39 @@ const DesktopPlacard = styled.div`
   }
 
   .description {
-    font:
-      normal 400 1rem/1.7rem Inter,
-      sans-serif;
-    margin: 0.5rem 0;
+    font: normal 400 0.875rem/1.7rem Inter, sans-serif;
+    letter-spacing: 0.02rem;
+    margin: 0 0 1rem;
   }
 
-  .links {
-    font-size: 0.85rem;
+  .auxiliary {
+    .placard-title {
+      margin: 0 0 0.25rem;
+    }
+
+    .description {
+      margin: 0;
+    }
+
+    .links {
+      font-size: 0.85rem;
+      margin-top: 0.5rem;
+    }
   }
 
-  a {
+  .links-label {
+    font-weight: 600;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05rem;
+    margin-right: 0.25rem;
+  }
+
+  .links a {
     color: inherit;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03rem;
   }
 `;
 
@@ -205,7 +247,8 @@ export const ArtworkLayout: React.FC<Props> = ({
             <p className="artwork-year">{artwork.year}</p>
             {artwork.links && (
               <div className="links">
-                {artwork.links.map((link) => (
+                <span className="links-label">Source(s) </span>
+                {artwork.links.map((link, index) => (
                   <React.Fragment key={link.label}>
                     <a
                       href={link.url}
@@ -214,7 +257,7 @@ export const ArtworkLayout: React.FC<Props> = ({
                     >
                       {link.label}
                     </a>
-                    &nbsp;
+                    {index < artwork.links.length - 1 && ", "}
                   </React.Fragment>
                 ))}
               </div>
@@ -223,12 +266,15 @@ export const ArtworkLayout: React.FC<Props> = ({
           <MobileControls>{renderControls()}</MobileControls>
         </MobileInfoRow>
         <MobileDescription>
-          {artwork.description &&
-            (typeof artwork.description === "string" ? (
-              <p className="description">{artwork.description}</p>
-            ) : (
-              <div className="description">{artwork.description}</div>
-            ))}
+          {artwork.description && (
+            <p className="description">{artwork.description}</p>
+          )}
+          {artwork.instructions && (
+            <div className="auxiliary">
+              <h4 className="placard-title">Instructions</h4>
+              <p className="description">{artwork.instructions}</p>
+            </div>
+          )}
         </MobileDescription>
       </CanvasColumn>
       {/* Desktop: Full placard with controls */}
@@ -240,25 +286,31 @@ export const ArtworkLayout: React.FC<Props> = ({
           </p>
           <p className="artwork-year">{artwork.year}</p>
           <hr />
-          {artwork.description &&
-            (typeof artwork.description === "string" ? (
-              <p className="description">{artwork.description}</p>
-            ) : (
-              <div className="description">{artwork.description}</div>
-            ))}
-          {artwork.links && (
-            <div className="links">
-              {artwork.links.map((link) => (
-                <React.Fragment key={link.label}>
-                  <a href={link.url} target="_blank" rel="noopener noreferrer">
-                    {link.label}
-                  </a>
-                  &nbsp;
-                </React.Fragment>
-              ))}
-            </div>
+          {artwork.description && (
+            <p className="description">{artwork.description}</p>
           )}
-          {renderControls()}
+          <div className="auxiliary">
+            {artwork.instructions && (
+              <>
+                <h4 className="placard-title">Instructions</h4>
+                <p className="description">{artwork.instructions}</p>
+              </>
+            )}
+            {artwork.links && (
+              <div className="links">
+                <span className="links-label">Source(s) </span>
+                {artwork.links.map((link, index) => (
+                  <React.Fragment key={link.label}>
+                    <a href={link.url} target="_blank" rel="noopener noreferrer">
+                      {link.label}
+                    </a>
+                    {index < artwork.links.length - 1 && ", "}
+                  </React.Fragment>
+                ))}
+              </div>
+            )}
+            {renderControls()}
+          </div>
         </DesktopPlacard>
       </PlacardColumn>
     </Grid>

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 
 type ParamType = "number" | "boolean";
 
@@ -33,6 +33,8 @@ export function useUrlParams<T extends string>(
 
   const [values, setValues] = useState<ParamValues<T>>(getDefaults);
   const [initialized, setInitialized] = useState(false);
+  const debounceRef = useRef<NodeJS.Timeout | null>(null);
+  const DEBOUNCE_MS = 200;
 
   // Read from URL params on mount
   useEffect(() => {
@@ -57,32 +59,45 @@ export function useUrlParams<T extends string>(
     setInitialized(true);
   }, [configs, getDefaults]);
 
-  // Update URL params when values change
+  // Update URL params when values change (debounced to prevent crashes from rapid updates)
   useEffect(() => {
     if (!initialized || typeof window === "undefined") return;
 
-    const params = new URLSearchParams();
-
-    for (const controlKey of Object.keys(configs) as T[]) {
-      const config = configs[controlKey];
-      const currentValue = values[controlKey];
-
-      // Only add params that differ from defaults
-      if (currentValue !== config.default) {
-        if (config.type === "boolean") {
-          params.set(config.key, currentValue ? "1" : "0");
-        } else {
-          params.set(config.key, String(currentValue));
-        }
-      }
+    // Clear previous debounce timer
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
     }
 
-    const queryString = params.toString();
-    const newUrl = queryString
-      ? `${window.location.pathname}?${queryString}`
-      : window.location.pathname;
+    debounceRef.current = setTimeout(() => {
+      const params = new URLSearchParams();
 
-    window.history.replaceState(null, "", newUrl);
+      for (const controlKey of Object.keys(configs) as T[]) {
+        const config = configs[controlKey];
+        const currentValue = values[controlKey];
+
+        // Only add params that differ from defaults
+        if (currentValue !== config.default) {
+          if (config.type === "boolean") {
+            params.set(config.key, currentValue ? "1" : "0");
+          } else {
+            params.set(config.key, String(currentValue));
+          }
+        }
+      }
+
+      const queryString = params.toString();
+      const newUrl = queryString
+        ? `${window.location.pathname}?${queryString}`
+        : window.location.pathname;
+
+      window.history.replaceState(null, "", newUrl);
+    }, DEBOUNCE_MS);
+
+    return () => {
+      if (debounceRef.current) {
+        clearTimeout(debounceRef.current);
+      }
+    };
   }, [initialized, values, configs]);
 
   const setValue = useCallback((key: T, value: number | boolean) => {
