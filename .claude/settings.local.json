@@ -15,7 +15,11 @@
       "Bash(ls:*)",
       "Bash(find:*)",
       "Bash(xargs sed:*)",
-      "Bash(npm run build:*)"
+      "Bash(npm run build:*)",
+      "Bash(npx tsc:*)",
+      "Bash(npm run type-check:*)",
+      "Bash(npm run:*)",
+      "WebFetch(domain:math.stackexchange.com)"
     ]
   }
 }

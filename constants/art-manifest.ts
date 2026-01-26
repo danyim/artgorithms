@@ -13,6 +13,9 @@ export enum Artwork {
   "DOUBLE_CONCENTRIC",
   "FIFTY_BY_FIFTY",
   "LABYRINTHS",
+  "MOIRE_CRESCENTS",
+  "MIRA_CAIRO",
+  // "FLOWING_RIBBONS",
   "TEST",
   // "WALL_565",
 }
@@ -37,6 +40,9 @@ export const manifest: Record<Artwork, Pick<ArtworkMetadata, "slug">> = {
   [Artwork.DOUBLE_CONCENTRIC]: { slug: "double-concentric" },
   [Artwork.FIFTY_BY_FIFTY]: { slug: "50x50" },
   [Artwork.LABYRINTHS]: { slug: "labyrinths" },
+  [Artwork.MOIRE_CRESCENTS]: { slug: "moire-crescents" },
+  [Artwork.MIRA_CAIRO]: { slug: "mira-cairo" },
+  // [Artwork.FLOWING_RIBBONS]: { slug: "flowing-ribbons" },
   [Artwork.TEST]: { slug: "test" },
   // [Artwork.WALL_565]: { slug: "wall-565" },
 };
