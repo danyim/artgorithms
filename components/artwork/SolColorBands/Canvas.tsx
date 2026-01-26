@@ -6,10 +6,9 @@ interface Props {
   width?: number;
   height?: number;
   size: number;
-  bands: number;
 }
 
-export const Canvas = ({ width, height, size, bands }: Props) => {
+export const Canvas = ({ width, height, size }: Props) => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
 
   const handleOnMouseMove = () => {
@@ -44,6 +43,10 @@ export const Canvas = ({ width, height, size, bands }: Props) => {
       [78, 76, 160],
       [32, 32, 32],
     ];
+    // Calculate how many bands needed to fill the canvas (use diagonal + buffer for full coverage)
+    const diagonal = Math.sqrt(width * width + height * height);
+    const bands = Math.ceil(diagonal / size) + 2;
+
     drawConcentricTriangles(
       ctx,
       width / 2,
@@ -68,7 +71,7 @@ export const Canvas = ({ width, height, size, bands }: Props) => {
 
   React.useEffect(() => {
     draw();
-  }, [bands, size, width, height]);
+  }, [size, width, height]);
   return (
     <>
       <canvas

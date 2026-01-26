@@ -38,15 +38,15 @@ export const SolWall1111CanvasContainer = () => {
       controls={[
         {
           key: "size",
-          label: "Size",
-          minStepMax: [15, 5, 100],
+          label: "Stroke",
+          minStepMax: [5, 5, 100],
           value: size,
           onChange: handleChange,
         },
         {
           key: "bands",
           label: "Bands",
-          minStepMax: [10, 5, 35],
+          minStepMax: [3, 1, 35],
           value: bands,
           onChange: handleChange,
         },

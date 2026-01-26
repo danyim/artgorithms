@@ -38,11 +38,13 @@ export const drawFrame = (
   ctx.rotate(degToRad(rotationDegrees));
   ctx.translate(-center.x, -center.y);
   // Need the translation here to account for empty spaces when rotated
-  ctx.translate(-bandSize * 3, -bandSize * 3);
-  // log("Returning to ", -(center.x), -(center.y));
+  // Use size-relative offset to ensure coverage at any band count
+  const rotationOffset = size * 0.25;
+  ctx.translate(-rotationOffset, -rotationOffset);
 
-  // TODO: Change k max value to relative value
-  for (let k = 0; k < 25; k++) {
+  // Calculate number of bands needed to fill the rotated area
+  const numBands = Math.ceil((size * 1.5) / bandSize);
+  for (let k = 0; k < numBands; k++) {
     drawBand(ctx, size, bandSize, 0, k * bandSize, colorArray);
   }
   ctx.restore();

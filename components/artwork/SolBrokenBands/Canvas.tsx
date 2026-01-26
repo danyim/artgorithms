@@ -6,9 +6,10 @@ interface Props {
   width?: number;
   height?: number;
   saturation: number;
+  bands: number;
 }
 
-export const Canvas = ({ width, height, saturation }: Props) => {
+export const Canvas = ({ width, height, saturation, bands }: Props) => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
 
   const draw = () => {
@@ -39,13 +40,15 @@ export const Canvas = ({ width, height, saturation }: Props) => {
     // Art params
 
     const frameSize = width / 4;
-    const bandSize = frameSize / 16;
+    const bandSize = frameSize / bands;
+    // Use fixed overlap so frame positions don't change with band count
+    const frameOverlap = frameSize / 16;
 
     const rotations = [90, 0, 135, 45];
     for (let k = 0; k < 4; k++) {
       drawFrame(
         ctx,
-        k * (frameSize - bandSize),
+        k * (frameSize - frameOverlap),
         0,
         frameSize,
         bandSize,
@@ -71,7 +74,7 @@ export const Canvas = ({ width, height, saturation }: Props) => {
 
   React.useEffect(() => {
     draw();
-  }, [saturation, width, height]);
+  }, [saturation, bands, width, height]);
   return (
     <>
       <canvas

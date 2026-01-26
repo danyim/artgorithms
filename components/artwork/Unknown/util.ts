@@ -78,49 +78,34 @@ export const generateTriangleInsideBounds = (
   ctx: CanvasRenderingContext2D,
   bounds: Bounds
 ): Point[] => {
+  return generatePolygonInsideBounds(ctx, bounds, 3);
+};
+
+/** Creates N random points within bounds - allows center filling */
+export const generatePolygonInsideBounds = (
+  ctx: CanvasRenderingContext2D,
+  bounds: Bounds,
+  numPoints: number
+): Point[] => {
   const debugSqSize = 5;
-  // Generate n random points
   const points: Point[] = [];
-  const size = bounds.xMax - bounds.xMin;
 
-  // Find the center
-  const center = getBoundsCenter(bounds);
-
-  ctx.strokeStyle = "blue";
-  // Build a isoceles triangle
-  const baseRadius = randRange(size * 0.2, size * 0.5);
-  const angles = [degToRad(0), degToRad(120), degToRad(240)];
-  angles.forEach((angle, index: number) => {
-    let radius = baseRadius;
-    if (index === 2) {
-      // Generate a new random radius for the last vertex to complete the isoceles
-      radius = randRange(size * 0.4, size * 0.8);
-    }
-    const x = center.x + radius * Math.cos(angle);
-    const y = center.y + radius * Math.sin(angle);
-    if (localStorage.getItem("debugShapes")) {
-      ctx.strokeRect(center.x, center.y, debugSqSize, debugSqSize);
-      ctx.strokeRect(x, y, debugSqSize, debugSqSize);
-    }
+  // Generate truly random points within bounds
+  // This allows inner vertices to be anywhere, including near the center
+  for (let i = 0; i < numPoints; i++) {
+    const x = randRange(bounds.xMin, bounds.xMax);
+    const y = randRange(bounds.yMin, bounds.yMax);
     points.push({ x, y });
-  });
-
-  ctx.strokeStyle = "red";
-  // Rotate the isoceles randomly
-  const randRotateDeg = Math.floor(randRange(0, 360));
-  const rotation = degToRad(randRotateDeg);
-  log("Rotating inner triangle", `${randRotateDeg}°`);
-  const rotatedTriangle = points.map((point) =>
-    rotatePoint(center, point, rotation)
-  );
+  }
 
   if (localStorage.getItem("debugShapes")) {
-    rotatedTriangle.forEach(({ x, y }) => {
+    ctx.strokeStyle = "blue";
+    points.forEach(({ x, y }) => {
       ctx.strokeRect(x, y, debugSqSize, debugSqSize);
     });
   }
 
-  return rotatedTriangle;
+  return points;
 };
 
 export const generateRandomPointsOnBounds = (
@@ -134,43 +119,19 @@ export const generateRandomPointsOnBounds = (
 
   const sideLength = bounds.xMax - bounds.xMin;
   const totalLength = sideLength * 4;
-  /** Max distance that a second point in a pair can be from the first */
-  const maxPairDistance = sideLength;
-  // Generate random points along a straight line
   const randRangePoints: number[] = [];
 
-  log("maxPairDistance", maxPairDistance, "totalLength", totalLength);
-  let lastRangePoint = 0;
-  // Create pairs of points
-  for (let k = 0; k < numPoints / 2; k++) {
-    const polygonSet = [];
-    // Start a pair relative to the last recorded point
-    lastRangePoint =
-      lastRangePoint + randIntegerRange(maxPairDistance / 4, sideLength);
-    polygonSet.push(lastRangePoint);
-    const nextRangePoint = Math.min(
-      lastRangePoint + randIntegerRange(maxPairDistance / 2, maxPairDistance),
-      totalLength
-    );
+  // Generate points evenly distributed around the perimeter (one per segment)
+  // This ensures minimum angular separation to avoid thin sliver polygons
+  const segmentLength = totalLength / numPoints;
+  const margin = segmentLength * 0.15; // Keep points away from segment edges
 
-    // Evaluate if we need to include a corner point
-    if (
-      getRangeQuartile(lastRangePoint, totalLength) !==
-      getRangeQuartile(nextRangePoint, totalLength)
-    ) {
-      // log("CORNER: Between", lastRangePoint, "and", nextRangePoint);
-      // Given that we know that the two quartiles of the pairs are different, idenitfy which corner
-      // need to add and push the appropriate range value to the list
-      const cornerRangeValue = getPreviousQuartileRangeValue(
-        getRangeQuartile(nextRangePoint, totalLength),
-        totalLength
-      );
-      polygonSet.push(cornerRangeValue);
-    }
-    polygonSet.push(nextRangePoint);
-    lastRangePoint = nextRangePoint;
-    polygonSet.forEach((point) => randRangePoints.push(point));
-    log("polygonSet:", polygonSet);
+  for (let k = 0; k < numPoints; k++) {
+    const segmentStart = k * segmentLength;
+    const segmentEnd = (k + 1) * segmentLength;
+    // Place point randomly within segment, with margin from edges
+    const point = randRange(segmentStart + margin, segmentEnd - margin);
+    randRangePoints.push(point);
   }
 
   log("points:", randRangePoints);

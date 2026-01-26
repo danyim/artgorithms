@@ -4,13 +4,19 @@ import ArtworkLayout from "../../ArtworkLayout";
 
 export const SolWall610CanvasContainer = () => {
   const [colorIndex, setColorIndex] = React.useState(0);
+  const [steps, setSteps] = React.useState(4);
 
   const handleReset = () => {
     setColorIndex(0);
+    setSteps(4);
   };
 
   const handleChange = (key: string, val: number) => {
-    setColorIndex(val);
+    if (key === "colorIndex") {
+      setColorIndex(val);
+    } else if (key === "steps") {
+      setSteps(val);
+    }
   };
 
   const handleOnMouseMove = () => {
@@ -39,6 +45,13 @@ export const SolWall610CanvasContainer = () => {
           value: colorIndex,
           onChange: handleChange,
         },
+        {
+          key: "steps",
+          label: "Steps",
+          minStepMax: [2, 1, 8],
+          value: steps,
+          onChange: handleChange,
+        },
       ]}
       onReset={handleReset}
     >
@@ -46,6 +59,7 @@ export const SolWall610CanvasContainer = () => {
         width={500}
         height={500}
         colorIndex={colorIndex}
+        steps={steps}
         handleOnMouseMove={handleOnMouseMove}
       />
     </ArtworkLayout>

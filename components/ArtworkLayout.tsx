@@ -158,11 +158,24 @@ export const ArtworkLayout: React.FC<Props> = ({
   onReset,
   artwork,
 }) => {
+  const handleRandom = () => {
+    controls.forEach((control) => {
+      const [min, step, max] = control.minStepMax;
+      const steps = Math.floor((max - min) / step);
+      const randomStep = Math.floor(Math.random() * (steps + 1));
+      const randomValue = min + randomStep * step;
+      control.onChange(control.key, randomValue);
+    });
+  };
+
   const renderControls = () => {
     if ((controls.length === 0 && !customControls) || !onReset) return null;
 
     return (
-      <CanvasInputs onReset={onReset}>
+      <CanvasInputs
+        onReset={onReset}
+        onRandom={controls.length > 0 ? handleRandom : undefined}
+      >
         {controls.map((control) => (
           <Slider
             key={control.key}

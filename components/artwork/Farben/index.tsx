@@ -9,16 +9,19 @@ interface Props {
 }
 
 const DEFAULT_SPACE = 5;
-const DEFAULT_SIZE = 1;
+const DEFAULT_SIZE = 16;
+const DEFAULT_SATURATION = 75;
 
 export const Farben = ({ width = 1000, height = 450 }: Props) => {
   const [space, setSpace] = React.useState<number>(DEFAULT_SPACE);
   const [size, setSize] = React.useState<number>(DEFAULT_SIZE);
+  const [saturation, setSaturation] = React.useState<number>(DEFAULT_SATURATION);
   const [outline, setOutline] = React.useState<boolean>(false);
 
   const handleReset = () => {
     setSpace(DEFAULT_SPACE);
     setSize(DEFAULT_SIZE);
+    setSaturation(DEFAULT_SATURATION);
     setOutline(false);
   };
 
@@ -29,6 +32,9 @@ export const Farben = ({ width = 1000, height = 450 }: Props) => {
         return;
       case "size":
         setSize(val);
+        return;
+      case "saturation":
+        setSaturation(val);
         return;
     }
   };
@@ -59,9 +65,16 @@ export const Farben = ({ width = 1000, height = 450 }: Props) => {
         },
         {
           key: "size",
-          label: "Size",
-          minStepMax: [1, 1, 10],
+          label: "Columns",
+          minStepMax: [4, 1, 16],
           value: size,
+          onChange: handleChange,
+        },
+        {
+          key: "saturation",
+          label: "Saturation",
+          minStepMax: [15, 5, 100],
+          value: saturation,
           onChange: handleChange,
         },
       ]}
@@ -80,6 +93,7 @@ export const Farben = ({ width = 1000, height = 450 }: Props) => {
         height={height}
         space={space}
         size={size}
+        saturation={saturation}
         outline={outline}
       />
     </ArtworkLayout>

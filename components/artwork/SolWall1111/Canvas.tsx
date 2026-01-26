@@ -24,7 +24,7 @@ export const Canvas = ({ width, height, bands, size }: Props) => {
 
     const ctx = canvas.getContext("2d");
 
-    ctx.clearRect(0, 0, 500, 500);
+    ctx.clearRect(0, 0, width, height);
 
     // Art params
     const colors = [
@@ -42,7 +42,12 @@ export const Canvas = ({ width, height, bands, size }: Props) => {
       [241, 218, 103],
     ];
 
-    drawConcentricCircleBands(ctx, 250, 250, size, bands, colors);
+    // Calculate center and max radius to prevent drawing outside canvas bounds
+    const centerX = width / 2;
+    const centerY = height / 2;
+    const maxRadius = Math.min(centerX, centerY);
+
+    drawConcentricCircleBands(ctx, centerX, centerY, size, bands, colors, maxRadius);
   };
 
   const handleOnClear = () => {
@@ -52,7 +57,7 @@ export const Canvas = ({ width, height, bands, size }: Props) => {
       return;
     }
     const ctx = canvas.getContext("2d");
-    ctx.clearRect(0, 0, 500, 500);
+    ctx.clearRect(0, 0, width, height);
   };
 
   React.useEffect(() => {

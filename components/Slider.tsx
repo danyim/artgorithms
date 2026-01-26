@@ -9,19 +9,22 @@ const Container = styled.div`
 `;
 
 const LabelContainer = styled.div`
-  flex-basis: 7rem;
+  flex-shrink: 0;
+  padding-right: 0.5rem;
 `;
 
 const Label = styled.label`
-  font: normal 400 0.8rem/1rem Inter, sans-serif;
+  font:
+    normal 400 0.8rem/1rem Inter,
+    sans-serif;
   letter-spacing: 0.05rem;
   text-transform: uppercase;
-  min-width: 50px;
+  white-space: nowrap;
 `;
 
 const SliderContainer = styled.div`
   flex: 1 1 auto;
-  width: 100%;
+  min-width: 100px;
 
   // & .slider-track:nth-child(1) {
   //   background: linear-gradient(

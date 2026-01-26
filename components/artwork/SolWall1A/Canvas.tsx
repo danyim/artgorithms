@@ -20,6 +20,7 @@ export const Canvas = ({ width, height, space, lineWidth }: Props) => {
   ) => {
     if (color) ctx.strokeStyle = color;
     ctx.lineWidth = lineWidth;
+    ctx.lineCap = "square";
     ctx.beginPath();
     ctx.moveTo(start.x, start.y);
     ctx.lineTo(end.x, end.y);
@@ -118,6 +119,11 @@ export const Canvas = ({ width, height, space, lineWidth }: Props) => {
     addLine(ctx, { x: 0, y: 0 }, { x: 0, y: h }, c, 2); // Left
     addLine(ctx, { x: w, y: 0 }, { x: w, y: h }, c, 2); // Right
     addLine(ctx, { x: 0, y: h }, { x: w, y: h }, c, 2); // Bottom
+
+    // Clip to cell boundaries to prevent lines from extending past edges
+    const clipPath = new Path2D();
+    clipPath.rect(0, 0, w, h);
+    ctx.clip(clipPath);
 
     for (let k = 0; k < fillFunctions.length; k++) {
       fillFunctions[k].apply(this, [ctx, w, h, padding, lineWidth]);

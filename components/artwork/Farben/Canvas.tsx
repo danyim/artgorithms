@@ -7,10 +7,11 @@ interface Props {
   height: number;
   space: number;
   size: number;
+  saturation: number;
   outline: boolean;
 }
 
-export const Canvas = ({ width, height, space, size, outline }: Props) => {
+export const Canvas = ({ width, height, space, size, saturation, outline }: Props) => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
 
   const handleMouseMove = () => {
@@ -25,23 +26,38 @@ export const Canvas = ({ width, height, space, size, outline }: Props) => {
     }
 
     const ctx = canvas.getContext("2d");
-    ctx.clearRect(0, 0, 1500, 500);
+    ctx.clearRect(0, 0, width, height);
 
     const boxWidth = 55;
     const boxHeight = 22;
-    const numItems = 16 - size + 1;
+
+    // Size directly controls number of columns
+    const numCols = size;
+    // Calculate rows to maintain roughly square visual aspect ratio
+    const numRows = Math.round((numCols * boxWidth) / boxHeight);
+
+    // Calculate grid dimensions
+    const gridWidth = numCols * (boxWidth + space) - space;
+    const gridHeight = numRows * (boxHeight + space) - space;
+
+    // Center the grid on the canvas
+    const offsetX = Math.max(0, (width - gridWidth) / 2);
+    const offsetY = Math.max(0, (height - gridHeight) / 2);
 
     const drawFn = outline ? fillRectWithLines : fillRect;
     createWrappedRow({
-      numItems: numItems ** 2,
-      numPerLine: numItems,
+      numItems: numCols * numRows,
+      numPerLine: numCols,
       width: boxWidth,
       height: boxHeight,
       padding: space,
-      offsetX: 0,
-      offsetY: 0,
+      offsetX,
+      offsetY,
     })
-      .filter((point) => point.x + boxWidth <= width && point.y + boxHeight <= height)
+      .filter(
+        (point) =>
+          point.x + boxWidth <= width && point.y + boxHeight <= height
+      )
       .forEach((point) => {
         drawFn(
           ctx,
@@ -49,8 +65,8 @@ export const Canvas = ({ width, height, space, size, outline }: Props) => {
           point.y,
           boxWidth,
           boxHeight,
-          randomHueColor({ max: 75, min: 15 }, { max: 75, min: 15 }),
-          randomHueColor({ max: 75, min: 15 }, { max: 75, min: 15 })
+          randomHueColor({ max: saturation, min: 15 }, { max: 75, min: 15 }),
+          randomHueColor({ max: saturation, min: 15 }, { max: 75, min: 15 })
         );
       });
   };
@@ -89,7 +105,7 @@ export const Canvas = ({ width, height, space, size, outline }: Props) => {
 
     if (fillColor) ctx.fillStyle = fillColor;
     if (stokeColor) ctx.strokeStyle = stokeColor;
-    ctx.lineWidth = 1;
+    ctx.lineWidth = 2;
 
     // Top
     ctx.moveTo(0, 0);
@@ -113,7 +129,7 @@ export const Canvas = ({ width, height, space, size, outline }: Props) => {
 
   React.useEffect(() => {
     draw();
-  }, [space, width, height, size, outline]);
+  }, [space, width, height, size, saturation, outline]);
 
   return (
     <canvas
