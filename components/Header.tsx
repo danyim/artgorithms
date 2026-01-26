@@ -12,7 +12,7 @@ export const Header: React.FC<Props> = () => {
         <Link href="/">{artgorithmsStyled}</Link>
       </h1>
       <p>
-        <i>merging algorithms with art</i>
+        <i>patterns through computation</i>
       </p>
     </div>
   );
