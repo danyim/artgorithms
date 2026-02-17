@@ -37,9 +37,9 @@ export const CanvasInputs = ({ children, onReset, onRandom }: Props) => {
       {children}
       <div className="actions">
         {onRandom && (
-          <button onClick={onRandom}>Random</button>
+          <button className="hover:opacity-50 transition-opacity" onClick={onRandom}>Random</button>
         )}
-        <button onClick={onReset}>Reset</button>
+        <button className="hover:opacity-50 transition-opacity" onClick={onReset}>Reset</button>
       </div>
     </Container>
   );

@@ -15,10 +15,15 @@ const PARAM_CONFIG = {
 type ParamKey = keyof typeof PARAM_CONFIG;
 
 export const SolWall610CanvasContainer = () => {
-  const { values, setValue, reset } = useUrlParams<ParamKey>(PARAM_CONFIG);
+  const { values, setValue, reset, locked, toggleLock } =
+    useUrlParams<ParamKey>(PARAM_CONFIG);
 
   const handleChange = (key: string, val: number) => {
     setValue(key as ParamKey, val);
+  };
+
+  const handleToggleLock = (key: string) => {
+    toggleLock(key as ParamKey);
   };
 
   return (
@@ -46,6 +51,9 @@ export const SolWall610CanvasContainer = () => {
           minStepMax: [SKEW_MIN, 0.1, SKEW_MAX],
           value: values.skew as number,
           onChange: handleChange,
+          mouseAxis: "vertical",
+          locked: locked.skew,
+          onToggleLock: handleToggleLock,
         },
         {
           key: "steps",
@@ -53,6 +61,9 @@ export const SolWall610CanvasContainer = () => {
           minStepMax: [STEPS_MIN, 1, STEPS_MAX],
           value: values.steps as number,
           onChange: handleChange,
+          mouseAxis: "horizontal",
+          locked: locked.steps,
+          onToggleLock: handleToggleLock,
         },
       ]}
       onReset={reset}
@@ -62,8 +73,8 @@ export const SolWall610CanvasContainer = () => {
         height={500}
         skew={values.skew as number}
         steps={values.steps as number}
-        onSkewChange={(val) => setValue("skew", val)}
-        onStepsChange={(val) => setValue("steps", val)}
+        onSkewChange={locked.skew ? undefined : (val) => setValue("skew", val)}
+        onStepsChange={locked.steps ? undefined : (val) => setValue("steps", val)}
         onReset={reset}
       />
     </ArtworkLayout>

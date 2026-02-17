@@ -10,10 +10,15 @@ const PARAM_CONFIG = {
 type ParamKey = keyof typeof PARAM_CONFIG;
 
 export const SolBrokenBandsCanvasContainer = () => {
-  const { values, setValue, reset } = useUrlParams<ParamKey>(PARAM_CONFIG);
+  const { values, setValue, reset, locked, toggleLock } =
+    useUrlParams<ParamKey>(PARAM_CONFIG);
 
   const handleChange = (key: string, val: number) => {
     setValue(key as ParamKey, val);
+  };
+
+  const handleToggleLock = (key: string) => {
+    toggleLock(key as ParamKey);
   };
 
   return (
@@ -40,6 +45,8 @@ export const SolBrokenBandsCanvasContainer = () => {
           minStepMax: [0, 1, 10],
           value: values.saturation as number,
           onChange: handleChange,
+          locked: locked.saturation,
+          onToggleLock: handleToggleLock,
         },
         {
           key: "bands",
@@ -47,6 +54,8 @@ export const SolBrokenBandsCanvasContainer = () => {
           minStepMax: [4, 1, 32],
           value: values.bands as number,
           onChange: handleChange,
+          locked: locked.bands,
+          onToggleLock: handleToggleLock,
         },
       ]}
       onReset={reset}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useCallback } from "react";
 import styled from "styled-components";
 import Slider from "./Slider";
 import CanvasInputs from "./CanvasInputs";
@@ -9,6 +9,9 @@ interface ControlConfig {
   minStepMax: [number, number, number];
   value: number;
   onChange: (key: string, value: number) => void;
+  mouseAxis?: "horizontal" | "vertical";
+  locked?: boolean;
+  onToggleLock?: (key: string) => void;
 }
 
 interface ArtworkInfo {
@@ -33,10 +36,30 @@ const Grid = styled.div`
   flex: 1 1 auto;
   margin: 3rem 0;
 
+  &::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 120px;
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.06) 0%,
+      transparent 100%
+    );
+    pointer-events: none;
+    z-index: 9998;
+  }
+
   @media (max-width: 768px) {
     flex-direction: column;
     align-items: center;
     margin: 1.5rem 0;
+
+    &::before {
+      height: 80px;
+    }
   }
 `;
 
@@ -202,6 +225,7 @@ export const ArtworkLayout: React.FC<Props> = ({
 }) => {
   const handleRandom = () => {
     controls.forEach((control) => {
+      if (control.locked) return;
       const [min, step, max] = control.minStepMax;
       const steps = Math.floor((max - min) / step);
       const randomStep = Math.floor(Math.random() * (steps + 1));
@@ -209,6 +233,42 @@ export const ArtworkLayout: React.FC<Props> = ({
       control.onChange(control.key, randomValue);
     });
   };
+
+  const handleKeyDown = useCallback(
+    (e: KeyboardEvent) => {
+      // Ignore if user is typing in an input field
+      if (
+        e.target instanceof HTMLInputElement ||
+        e.target instanceof HTMLTextAreaElement
+      ) {
+        return;
+      }
+
+      if (e.key === "1") {
+        const verticalControl = controls.find(
+          (c) => c.mouseAxis === "vertical"
+        );
+        if (verticalControl?.onToggleLock) {
+          verticalControl.onToggleLock(verticalControl.key);
+        }
+      } else if (e.key === "2") {
+        const horizontalControl = controls.find(
+          (c) => c.mouseAxis === "horizontal"
+        );
+        if (horizontalControl?.onToggleLock) {
+          horizontalControl.onToggleLock(horizontalControl.key);
+        }
+      }
+    },
+    [controls]
+  );
+
+  useEffect(() => {
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [handleKeyDown]);
 
   const renderControls = () => {
     if ((controls.length === 0 && !customControls) || !onReset) return null;
@@ -226,6 +286,9 @@ export const ArtworkLayout: React.FC<Props> = ({
             minStepMax={control.minStepMax}
             value={control.value}
             handleChange={control.onChange}
+            mouseAxis={control.mouseAxis}
+            locked={control.locked}
+            onToggleLock={control.onToggleLock}
           />
         ))}
         {customControls}

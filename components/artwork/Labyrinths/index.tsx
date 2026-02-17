@@ -10,10 +10,15 @@ const PARAM_CONFIG = {
 type ParamKey = keyof typeof PARAM_CONFIG;
 
 export const TemplateCanvasContainer = () => {
-  const { values, setValue, reset } = useUrlParams<ParamKey>(PARAM_CONFIG);
+  const { values, setValue, reset, locked, toggleLock } =
+    useUrlParams<ParamKey>(PARAM_CONFIG);
 
   const handleChange = (key: string, val: number) => {
     setValue(key as ParamKey, val);
+  };
+
+  const handleToggleLock = (key: string) => {
+    toggleLock(key as ParamKey);
   };
 
   return (
@@ -40,6 +45,9 @@ export const TemplateCanvasContainer = () => {
           minStepMax: [SIZE_MIN, 1, SIZE_MAX],
           value: values.size as number,
           onChange: handleChange,
+          mouseAxis: "vertical",
+          locked: locked.size,
+          onToggleLock: handleToggleLock,
         },
         {
           key: "pattern",
@@ -47,6 +55,9 @@ export const TemplateCanvasContainer = () => {
           minStepMax: [PATTERN_MIN, 1, PATTERN_MAX],
           value: values.pattern as number,
           onChange: handleChange,
+          mouseAxis: "horizontal",
+          locked: locked.pattern,
+          onToggleLock: handleToggleLock,
         },
       ]}
       onReset={reset}
@@ -56,8 +67,8 @@ export const TemplateCanvasContainer = () => {
         height={500}
         size={values.size as number}
         pattern={values.pattern as number}
-        onSizeChange={(val) => setValue("size", val)}
-        onPatternChange={(val) => setValue("pattern", val)}
+        onSizeChange={locked.size ? undefined : (val) => setValue("size", val)}
+        onPatternChange={locked.pattern ? undefined : (val) => setValue("pattern", val)}
         onReset={reset}
       />
     </ArtworkLayout>

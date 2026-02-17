@@ -10,10 +10,15 @@ const PARAM_CONFIG = {
 type ParamKey = keyof typeof PARAM_CONFIG;
 
 export const CanvasContainer = () => {
-  const { values, setValue, reset } = useUrlParams<ParamKey>(PARAM_CONFIG);
+  const { values, setValue, reset, locked, toggleLock } =
+    useUrlParams<ParamKey>(PARAM_CONFIG);
 
   const handleChange = (key: string, val: number) => {
     setValue(key as ParamKey, val);
+  };
+
+  const handleToggleLock = (key: string) => {
+    toggleLock(key as ParamKey);
   };
 
   return (
@@ -41,6 +46,9 @@ export const CanvasContainer = () => {
           minStepMax: [SPACE_MIN, 5, SPACE_MAX],
           value: values.space as number,
           onChange: handleChange,
+          mouseAxis: "horizontal",
+          locked: locked.space,
+          onToggleLock: handleToggleLock,
         },
         {
           key: "lineWidth",
@@ -48,6 +56,9 @@ export const CanvasContainer = () => {
           minStepMax: [LINE_WIDTH_MIN, 2, LINE_WIDTH_MAX],
           value: values.lineWidth as number,
           onChange: handleChange,
+          mouseAxis: "vertical",
+          locked: locked.lineWidth,
+          onToggleLock: handleToggleLock,
         },
       ]}
       onReset={reset}
@@ -57,8 +68,8 @@ export const CanvasContainer = () => {
         height={500}
         space={values.space as number}
         lineWidth={values.lineWidth as number}
-        onSpaceChange={(val) => setValue("space", val)}
-        onLineWidthChange={(val) => setValue("lineWidth", val)}
+        onSpaceChange={locked.space ? undefined : (val) => setValue("space", val)}
+        onLineWidthChange={locked.lineWidth ? undefined : (val) => setValue("lineWidth", val)}
         onReset={reset}
       />
     </ArtworkLayout>

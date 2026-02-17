@@ -76,12 +76,16 @@ export const Artwork = () => {
           return import("components/artwork/Farben");
         case "wall-370":
           return import("components/artwork/SolWall370");
+        case "wall-442":
+          return import("components/artwork/SolWall442");
         // case "wall-565":
         //   return import("components/artwork/SolWall565");
         case "wall-610":
           return import("components/artwork/SolWall610");
         case "wall-1111":
           return import("components/artwork/SolWall1111");
+        case "wall-1180":
+          return import("components/artwork/SolWall1180");
         case "double-concentric":
           return import("components/artwork/DoubleConcentric");
         case "50x50":

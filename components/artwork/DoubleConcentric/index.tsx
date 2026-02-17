@@ -9,10 +9,15 @@ const PARAM_CONFIG = {
 type ParamKey = keyof typeof PARAM_CONFIG;
 
 export const DoubleConcentricContainer = () => {
-  const { values, setValue, reset } = useUrlParams<ParamKey>(PARAM_CONFIG);
+  const { values, setValue, reset, locked, toggleLock } =
+    useUrlParams<ParamKey>(PARAM_CONFIG);
 
   const handleChange = (key: string, val: number) => {
     setValue(key as ParamKey, val);
+  };
+
+  const handleToggleLock = (key: string) => {
+    toggleLock(key as ParamKey);
   };
 
   return (
@@ -36,6 +41,9 @@ export const DoubleConcentricContainer = () => {
           minStepMax: [BANDS_MIN, 1, BANDS_MAX],
           value: values.bands as number,
           onChange: handleChange,
+          mouseAxis: "horizontal",
+          locked: locked.bands,
+          onToggleLock: handleToggleLock,
         },
       ]}
       onReset={reset}
@@ -44,7 +52,7 @@ export const DoubleConcentricContainer = () => {
         width={500}
         height={250}
         bands={values.bands as number}
-        onBandsChange={(val) => setValue("bands", val)}
+        onBandsChange={locked.bands ? undefined : (val) => setValue("bands", val)}
         onReset={reset}
       />
     </ArtworkLayout>

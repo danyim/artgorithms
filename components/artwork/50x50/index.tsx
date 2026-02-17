@@ -10,10 +10,15 @@ const PARAM_CONFIG = {
 type ParamKey = keyof typeof PARAM_CONFIG;
 
 export const TemplateCanvasContainer = () => {
-  const { values, setValue, reset } = useUrlParams<ParamKey>(PARAM_CONFIG);
+  const { values, setValue, reset, locked, toggleLock } =
+    useUrlParams<ParamKey>(PARAM_CONFIG);
 
   const handleChange = (key: string, val: number) => {
     setValue(key as ParamKey, val);
+  };
+
+  const handleToggleLock = (key: string) => {
+    toggleLock(key as ParamKey);
   };
 
   return (
@@ -25,7 +30,7 @@ export const TemplateCanvasContainer = () => {
         instructions:
           "Fill a grid with black and white squares according to a binary pattern. Each unique pattern creates a different visual rhythm through the balance of positive and negative space.",
         description:
-          "A meditation on binary systems and visual perception, where black and white squares are arranged according to mathematical patterns. The work explores how simple rules generate complex visual textures, bridging computation and aesthetics.",
+          "Black and white squares arranged according to binary patterns, exploring how simple rules generate complex visual textures.",
         links: [
           {
             label: "Tauba Auerbach",
@@ -40,6 +45,9 @@ export const TemplateCanvasContainer = () => {
           minStepMax: [PATTERN_MIN, 14, PATTERN_MAX],
           value: values.pattern as number,
           onChange: handleChange,
+          mouseAxis: "horizontal",
+          locked: locked.pattern,
+          onToggleLock: handleToggleLock,
         },
         {
           key: "boxSize",
@@ -47,6 +55,9 @@ export const TemplateCanvasContainer = () => {
           minStepMax: [BOX_SIZE_MIN, 1, BOX_SIZE_MAX],
           value: values.boxSize as number,
           onChange: handleChange,
+          mouseAxis: "vertical",
+          locked: locked.boxSize,
+          onToggleLock: handleToggleLock,
         },
       ]}
       onReset={reset}
@@ -56,8 +67,8 @@ export const TemplateCanvasContainer = () => {
         height={512}
         pattern={values.pattern as number}
         boxSize={values.boxSize as number}
-        onPatternChange={(val) => setValue("pattern", val)}
-        onBoxSizeChange={(val) => setValue("boxSize", val)}
+        onPatternChange={locked.pattern ? undefined : (val) => setValue("pattern", val)}
+        onBoxSizeChange={locked.boxSize ? undefined : (val) => setValue("boxSize", val)}
         onReset={reset}
       />
     </ArtworkLayout>

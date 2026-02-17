@@ -6,11 +6,20 @@ const Container = styled.div`
   margin: 0.4rem 0;
   display: flex;
   flex-flow: row nowrap;
+  align-items: center;
 `;
 
-const LabelContainer = styled.div`
+const LabelContainer = styled.div<{ $locked?: boolean }>`
   flex-shrink: 0;
   padding-right: 0.5rem;
+  cursor: pointer;
+  user-select: none;
+  opacity: ${({ $locked }) => ($locked ? 0.5 : 1)};
+  transition: opacity 0.15s ease;
+
+  &:hover {
+    opacity: 0.7;
+  }
 `;
 
 const Label = styled.label`
@@ -20,6 +29,40 @@ const Label = styled.label`
   letter-spacing: 0.05rem;
   text-transform: uppercase;
   white-space: nowrap;
+`;
+
+const MouseAxisIndicator = styled.span<{ $axis: "horizontal" | "vertical" }>`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(0, 0, 0, 0.3);
+  font-size: 0.7rem;
+  margin-left: 0.25rem;
+  width: 1.2rem;
+
+  .arrow {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    line-height: 1;
+    text-align: center;
+    transform: ${({ $axis }) => ($axis === "vertical" ? "rotate(90deg)" : "none")};
+  }
+`;
+
+const LockIndicator = styled.span<{ $locked?: boolean }>`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 0.25rem;
+  width: 1rem;
+
+  svg {
+    width: 0.6rem;
+    height: 0.6rem;
+    fill: rgba(0, 0, 0, ${({ $locked }) => ($locked ? 0.5 : 0.2)});
+    transition: fill 0.15s ease;
+  }
 `;
 
 const SliderContainer = styled.div`
@@ -90,6 +133,9 @@ interface Props {
   value: number;
   label: string;
   handleChange: (key: string, val: number) => void;
+  mouseAxis?: "horizontal" | "vertical";
+  locked?: boolean;
+  onToggleLock?: (key: string) => void;
 }
 
 export const Slider = ({
@@ -98,6 +144,9 @@ export const Slider = ({
   minStepMax,
   label,
   handleChange,
+  mouseAxis,
+  locked = false,
+  onToggleLock,
 }: Props) => {
   const [min, step, max] = minStepMax;
   const [position, setPosition] = React.useState(value);
@@ -107,12 +156,23 @@ export const Slider = ({
     handleChange(keyName, value);
   };
 
+  const handleLabelClick = () => {
+    onToggleLock?.(keyName);
+  };
+
   return (
     <Container>
-      <LabelContainer>
+      <LabelContainer $locked={locked} onClick={handleLabelClick}>
         <Label htmlFor={keyName}>
           {label}
-          {/* ({position}) */}
+          {mouseAxis && <MouseAxisIndicator $axis={mouseAxis}><span className="arrow">↔</span></MouseAxisIndicator>}
+          <LockIndicator $locked={locked}>
+            {locked ? (
+              <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zM9 8V6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9z"/></svg>
+            ) : (
+              <svg viewBox="0 0 24 24"><path d="M12 17c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm6-9h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6h2c0-1.66 1.34-3 3-3s3 1.34 3 3v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm0 12H6V10h12v10z"/></svg>
+            )}
+          </LockIndicator>
         </Label>
       </LabelContainer>
       <SliderContainer>

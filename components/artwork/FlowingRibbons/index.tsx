@@ -9,10 +9,15 @@ const PARAM_CONFIG = {
 type ParamKey = keyof typeof PARAM_CONFIG;
 
 export const FlowingRibbonsContainer = () => {
-  const { values, setValue, reset } = useUrlParams<ParamKey>(PARAM_CONFIG);
+  const { values, setValue, reset, locked, toggleLock } =
+    useUrlParams<ParamKey>(PARAM_CONFIG);
 
   const handleChange = (key: string, val: number) => {
     setValue(key as ParamKey, val);
+  };
+
+  const handleToggleLock = (key: string) => {
+    toggleLock(key as ParamKey);
   };
 
   return (
@@ -33,6 +38,8 @@ export const FlowingRibbonsContainer = () => {
           minStepMax: [3, 1, 12],
           value: values.bandCount as number,
           onChange: handleChange,
+          locked: locked.bandCount,
+          onToggleLock: handleToggleLock,
         },
       ]}
       onReset={reset}

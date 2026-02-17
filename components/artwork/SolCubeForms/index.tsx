@@ -19,7 +19,8 @@ export const SolCubeFormsCanvasContainer = ({
   height = 500,
 }: Props) => {
   const containerRef = React.useRef<HTMLDivElement>(null);
-  const { values, setValue, reset } = useUrlParams<ParamKey>(PARAM_CONFIG);
+  const { values, setValue, reset, locked, toggleLock } =
+    useUrlParams<ParamKey>(PARAM_CONFIG);
 
   let mouseOut: ReturnType<typeof setTimeout> | undefined;
 
@@ -27,7 +28,12 @@ export const SolCubeFormsCanvasContainer = ({
     setValue(key as ParamKey, val);
   };
 
+  const handleToggleLock = (key: string) => {
+    toggleLock(key as ParamKey);
+  };
+
   const handleOnMouseMove = (e: React.MouseEvent) => {
+    if (locked.space) return;
     if (mouseOut) {
       clearTimeout(mouseOut);
     }
@@ -40,6 +46,7 @@ export const SolCubeFormsCanvasContainer = ({
   };
 
   const handleOnMouseOut = () => {
+    if (locked.space) return;
     mouseOut = setTimeout(() => {
       setValue("space", PARAM_CONFIG.space.default);
     }, 1500);
@@ -66,6 +73,8 @@ export const SolCubeFormsCanvasContainer = ({
           minStepMax: [5, 5, 50],
           value: values.space as number,
           onChange: handleChange,
+          locked: locked.space,
+          onToggleLock: handleToggleLock,
         },
       ]}
       onReset={reset}
